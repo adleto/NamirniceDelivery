@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.Services.Services;
+using NamirniceDelivery.Services.Interfaces;
 
 namespace NamirniceDelivery.Web
 {
@@ -57,6 +59,11 @@ namespace NamirniceDelivery.Web
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
             });
+
+            services.AddScoped<IKanton, KantonService>();
+            services.AddScoped<IOpcina, OpcinaService>();
+            services.AddScoped<ITipTransakcije, TipTransakcijeService>();
+            services.AddScoped<IPodruznica, PodruznicaService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
