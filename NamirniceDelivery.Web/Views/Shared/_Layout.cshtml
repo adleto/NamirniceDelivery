@@ -1,49 +1,171 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using NamirniceDelivery.Data.Entities
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NamirniceDelivery.Web</title>
+    <title>@ViewData["Title"] - NamirniceDelivery</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <header>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="sidebar-container">
+        <div class="sidebar-logo">
+            NamirniceDelivery
+        </div>
+        <ul class="sidebar-navigation">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li class="header">Profil</li>
+            }
+            else
+            {
+                <li class="header">Menu</li>
+            }
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    Home
+                </a>
+            </li>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @*<li class="">
+                    @if (User.IsInRole("AdministrativniRadnik"))
+                    {
+                        <a class="" asp-controller="Prodavac" asp-action="Profil" asp-route-username="@User.Identity.Name" asp-route-returnUrl="@Context.Request.Path" title="Manage">@User.Identity.Name</a>
+                    }
+                    else if (User.IsInRole("Kupac"))
+                    {
+                        <a class="" asp-controller="Kupac" asp-action="Profil" asp-route-username="@User.Identity.Name" asp-route-returnUrl="@Context.Request.Path" title="Manage">@User.Identity.Name</a>
+                    }
+                </li>*@
+                <li class="" onclick="document.getElementById('logoutForm').submit()">
+                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
+                        <a href="#">Logout</a>
+                    </form>
+                </li>
+            }
+            @*else
+            {
+                <li class="">
+                    <a class="" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </li>
+                <li class="">
+                    <a asp-area="Identity" asp-page="/Account/RegisterProdavac" asp-route-returnUrl="@Context.Request.Path" class="">Register Prodavac</a>
+                </li>
+                <li class="">
+                    <a asp-area="Identity" asp-page="/Account/RegisterKupac" asp-route-returnUrl="@Context.Request.Path" class="">Register Kupac</a>
+                </li>
+            }*@
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li class="header">Panel</li>
+                @if (User.IsInRole("AdministrativniRadnik"))
+                {
+                    @*<li>
+                        <a asp-controller="Prodavac" asp-action="DodajNamirnicu">Dodaj Namirnicu</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Prodavac" asp-action="KreirajNamirnicu">Kreiraj Namirnicu</a>
+                    </li>*@
+                    <li>
+                        <a asp-controller="Prodavac" asp-action="KreirajKategoriju">Kreiraj Kategoriju</a>
+                    </li>
+                    @*<li>
+                        <a asp-controller="Prodavac" asp-action="KreirajPopust">Kreiraj Popust</a>
+                    </li>
+                    <li class="header">Narudžbe</li>
+                    <li>
+                        <a asp-controller="Prodavac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Prodavac" asp-action="DostaveUToku">Dostave u toku</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Prodavac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
+                    </li>
+                    <li class="header">Dodatno</li>
+                    <li>
+                        <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
+                    </li>*@
+                }
+                @*else if (User.IsInRole("Kupac"))
+                {
+                    <li>
+                        <a asp-controller="Kupac" asp-action="Korpa">Korpa</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Kupac" asp-action="SpremljeneNamirnice">Spremljene Namirnice</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Kupac" asp-action="SpremljeniProdavci">Spremljeni Prodavci</a>
+                    </li>
+                    <li class="header">Narudžbe</li>
+                    <li>
+                        <a asp-controller="Kupac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Kupac" asp-action="DostaveUToku">Dostave u toku</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Kupac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
+                    </li>
+                    <li class="header">Dodatno</li>
+                    <li>
+                        <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
+                    </li>
+                }*@
+            }
+        </ul>
+    </div>
+
+    <div class="content-container">
+        <div class="container-fluid">
+            <div>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+@*<header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NamirniceDelivery.Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NamirniceDelivery</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
+                    <partial name="_LoginPartial"/>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+    <partial name="_sideBarPartial"/>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - NamirniceDelivery.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2019 - NamirniceDelivery
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
-</body>
-</html>
+    </footer>*@

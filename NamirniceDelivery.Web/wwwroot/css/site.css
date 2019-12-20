@@ -1,71 +1,85 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿.sidebar-container {
+    position: fixed;
+    width: 220px;
+    height: 100%;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #1a1a1a;
+    color: #fff;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+.content-container {
+    padding-top: 20px;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.sidebar-logo {
+    padding: 10px 15px 10px 30px;
+    font-size: 20px;
+    background-color: #2574A9;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.sidebar-navigation {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    position: relative;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+    .sidebar-navigation li {
+        background-color: transparent;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        line-height: 20px;
+    }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
+        .sidebar-navigation li a {
+            padding: 10px 15px 10px 30px;
+            display: block;
+            color: #fff;
+        }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
+        .sidebar-navigation li .fa {
+            margin-right: 10px;
+        }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
+        .sidebar-navigation li a:active,
+        .sidebar-navigation li a:hover,
+        .sidebar-navigation li a:focus {
+            text-decoration: none;
+            outline: none;
+        }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
+        .sidebar-navigation li::before {
+            background-color: #2574A9;
+            position: absolute;
+            content: '';
+            height: 100%;
+            left: 0;
+            top: 0;
+            -webkit-transition: width 0.2s ease-in;
+            transition: width 0.2s ease-in;
+            width: 3px;
+            z-index: -1;
+        }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+        .sidebar-navigation li:hover::before {
+            width: 100%;
+        }
+
+    .sidebar-navigation .header {
+        font-size: 12px;
+        text-transform: uppercase;
+        background-color: #151515;
+        padding: 10px 15px 10px 30px;
+    }
+
+        .sidebar-navigation .header::before {
+            background-color: transparent;
+        }
+
+.content-container {
+    padding-left: 220px;
+    padding-bottom: 60px;
 }
