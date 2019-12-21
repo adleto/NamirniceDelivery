@@ -53,7 +53,7 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     return Redirect(model.ReturnUrl);
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(PregledKategorija));
             }
             return View(model);
         }
@@ -63,8 +63,38 @@ namespace NamirniceDelivery.Web.Controllers
             return View(new PregledKategorijaViewModel
             {
                 ReturnUrl = returnUrl,
-                KategorijaList = _kategorijaService.GetKategorije().Result
+                KategorijaList = _kategorijaService.GetKategorije()
             });
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult EditKategorija(int kategorijaId, string returnUrl = "")
+        {
+            var kategorija = _kategorijaService.GetKategorija(kategorijaId);
+            return View(new EditKategorijaViewModel
+            {
+                KategorijaId = kategorija.Id,
+                Naziv = kategorija.Naziv,
+                ReturnUrl = returnUrl
+            });
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        [HttpPost]
+        public IActionResult EditKategorija(EditKategorijaViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _kategorijaService.EditKategorija(new Kategorija
+                {
+                    Id = model.KategorijaId,
+                    Naziv = model.Naziv
+                });
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
     }
 }

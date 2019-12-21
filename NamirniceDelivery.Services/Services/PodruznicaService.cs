@@ -17,10 +17,10 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
-        public async Task KreirajPodruznicu(Podruznica podruznica)
+        public void KreirajPodruznicu(Podruznica podruznica)
         {
             _context.Podruznica.Add(podruznica);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }

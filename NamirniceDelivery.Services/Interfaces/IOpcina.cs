@@ -8,7 +8,7 @@ namespace NamirniceDelivery.Services.Interfaces
 {
     public interface IOpcina
     {
-        Task<List<Opcina>> GetOpcine();
+        List<Opcina> GetOpcine();
         Task KreirajOpcinu(Opcina opcina);
     }
 }

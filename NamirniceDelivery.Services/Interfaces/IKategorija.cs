@@ -8,7 +8,9 @@ namespace NamirniceDelivery.Services.Interfaces
 {
     public interface IKategorija
     {
-        Task KreirajKategoriju(Kategorija kategorija);
-        Task<List<Kategorija>> GetKategorije();
+        void KreirajKategoriju(Kategorija kategorija);
+        List<Kategorija> GetKategorije();
+        Kategorija GetKategorija(int id);
+        void EditKategorija(Kategorija kategorija);
     }
 }

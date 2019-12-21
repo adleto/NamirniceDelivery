@@ -143,8 +143,8 @@ namespace NamirniceDelivery.Web.StartupTasks
                 OpcinaId = 2,
                 Opis = "Glavno sladište"
             };
-            _podruznicaService.KreirajPodruznicu(podruznica).Wait();
-            await _podruznicaService.KreirajPodruznicu(podruznica2);
+            _podruznicaService.KreirajPodruznicu(podruznica);
+            _podruznicaService.KreirajPodruznicu(podruznica2);
 
             administrativniRadnik.Podruznica = podruznica;
 

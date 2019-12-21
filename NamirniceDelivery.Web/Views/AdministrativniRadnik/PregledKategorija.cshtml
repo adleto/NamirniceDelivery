@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Pregled Kategorija";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int brojac = 0;
+    int brojac = 1;
 }
 
     <div class="text-center row justify-content-center">
@@ -13,7 +13,7 @@
                 <table class="table table-bordered table-responsive-lg table-striped">
                     <thead>
                         <tr>
-                            <td>Id</td>
+                            <td>Broj</td>
                             <td>Naziv</td>
                             <td>Akcije</td>
                         </tr>
@@ -24,7 +24,7 @@
                             <tr>
                                 <td>@(brojac++)</td>
                                 <td>@k.Naziv</td>
-                                <td><a asp-controller="AdministrativniRadnik" asp-action="EditKategorija" asp-route-returnUrl="@Context.Request.Path">Edit</a></td>
+                                <td><a asp-controller="AdministrativniRadnik" asp-action="EditKategorija" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path">Edit</a></td>
                             </tr>
                         }
                     </tbody>

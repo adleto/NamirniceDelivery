@@ -8,6 +8,6 @@ namespace NamirniceDelivery.Services.Interfaces
 {
     public interface IPodruznica
     {
-        Task KreirajPodruznicu(Podruznica podruznica);
+        void KreirajPodruznicu(Podruznica podruznica);
     }
 }

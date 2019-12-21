@@ -1,0 +1,47 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.EditKategorijaViewModel
+@{
+    ViewData["Title"] = "EditKategorija";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center row justify-content-center">
+    <div class="">
+        <h1>Edit Kategorija</h1>
+
+        <h4>Kategorija</h4>
+        <hr />
+        <div @*class="row"*@>
+            <div @*class="col-md-4"*@>
+                <form asp-action="EditKategorija">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <input type="hidden" asp-for="KategorijaId" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Naziv" class="control-label"></label>
+                        <input asp-for="Naziv" class="form-control" />
+                        <span asp-validation-for="Naziv" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Edit" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if (string.IsNullOrEmpty(Model.ReturnUrl))
+        {
+            <div>
+                <a asp-action="Index">Nazad na panel</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="@Model.ReturnUrl">Idi nazad</a>
+            </div>
+        }
+    </div>
+</div>
+
+

@@ -18,14 +18,26 @@ namespace NamirniceDelivery.Services.Services
         {
             _context = context;
         }
-        public async Task KreirajKategoriju(Kategorija kategorija)
+        public void KreirajKategoriju(Kategorija kategorija)
         {
             _context.Kategorija.Add(kategorija);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
-        public async Task<List<Kategorija>> GetKategorije()
+        public List<Kategorija> GetKategorije()
         {
-            return await _context.Kategorija.ToListAsync();
+            return _context.Kategorija.ToList();
+        }
+
+        public Kategorija GetKategorija(int id)
+        {
+            return _context.Kategorija.Find(id);
+        }
+
+        public void EditKategorija(Kategorija kategorija)
+        {
+            var k = GetKategorija(kategorija.Id);
+            k.Naziv = kategorija.Naziv;
+            _context.SaveChanges();
         }
     }
 }

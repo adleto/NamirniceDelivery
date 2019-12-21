@@ -4,6 +4,7 @@ using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +19,9 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
-        public async Task<List<Opcina>> GetOpcine()
+        public List<Opcina> GetOpcine()
         {
-            return await _context.Opcina.Include(o => o.Kanton).ToListAsync();
+            return _context.Opcina.Include(o => o.Kanton).ToList();
         }
 
         public async Task KreirajOpcinu(Opcina opcina)
