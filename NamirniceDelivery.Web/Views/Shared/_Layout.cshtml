@@ -69,28 +69,17 @@
                 @if (User.IsInRole("AdministrativniRadnik"))
                 {
                     <li>
+                        <a asp-controller="AdministrativniRadnik" asp-action="PregledNamirnica">Pregled Vrsta Namirnica</a>
+                    </li>
+                    <li>
+                        <a asp-controller="AdministrativniRadnik" asp-action="KreirajNamirnica">Kreiraj Vrstu Namirnica</a>
+                    </li>
+                    <li>
                         <a asp-controller="AdministrativniRadnik" asp-action="PregledKategorija">Pregled Kategorija</a>
                     </li>
                     <li>
                         <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju">Kreiraj Kategoriju</a>
                     </li>
-                    @*<li>
-                    <a asp-controller="Prodavac" asp-action="KreirajPopust">Kreiraj Popust</a>
-                </li>
-                <li class="header">Narudžbe</li>
-                <li>
-                    <a asp-controller="Prodavac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
-                </li>
-                <li>
-                    <a asp-controller="Prodavac" asp-action="DostaveUToku">Dostave u toku</a>
-                </li>
-                <li>
-                    <a asp-controller="Prodavac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
-                </li>
-                <li class="header">Dodatno</li>
-                <li>
-                    <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
-                </li>*@
                 }
                 @*else if (User.IsInRole("Kupac"))
             {

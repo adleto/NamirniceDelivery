@@ -83,3 +83,10 @@
     padding-left: 220px;
     padding-bottom: 60px;
 }
+input {
+    text-align: center;
+}
+select {
+    text-align-last: center;
+    padding-right: 29px;
+}

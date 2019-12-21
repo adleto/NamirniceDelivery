@@ -15,11 +15,13 @@ namespace NamirniceDelivery.Web.Controllers
     {
         private static SignInManager<ApplicationUser> _signInManager;
         private readonly IKategorija _kategorijaService;
+        private readonly INamirnica _namirnicaService;
 
-        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService)
+        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService)
         {
             _signInManager = signInManager;
             _kategorijaService = kategorijaService;
+            _namirnicaService = namirnicaService;
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult Index()
@@ -94,6 +96,35 @@ namespace NamirniceDelivery.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult KreirajNamirnica(string returnUrl = "")
+        {
+            return View(new KreirajNamirnicaViewModel
+            {
+                ReturnUrl = returnUrl,
+                KategorijaList = _kategorijaService.GetKategorije()
+            });
+        }
+        [HttpPost]
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult KreirajNamirnica(KreirajNamirnicaViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _namirnicaService.KreirajNamirnica(new Namirnica
+                {
+                    Naziv = model.Naziv,
+                    KategorijaId = model.KategorijaId
+                });
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                return RedirectToAction(nameof(PregledKategorija));
+            }
+            model.KategorijaList = _kategorijaService.GetKategorije();
             return View(model);
         }
     }
