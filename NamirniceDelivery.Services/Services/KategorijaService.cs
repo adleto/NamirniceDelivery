@@ -1,8 +1,10 @@
-﻿using NamirniceDelivery.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +22,10 @@ namespace NamirniceDelivery.Services.Services
         {
             _context.Kategorija.Add(kategorija);
             await _context.SaveChangesAsync();
+        }
+        public async Task<List<Kategorija>> GetKategorije()
+        {
+            return await _context.Kategorija.ToListAsync();
         }
     }
 }

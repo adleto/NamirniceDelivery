@@ -57,5 +57,14 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return View(model);
         }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult PregledKategorija(string returnUrl = "")
+        {
+            return View(new PregledKategorijaViewModel
+            {
+                ReturnUrl = returnUrl,
+                KategorijaList = _kategorijaService.GetKategorije().Result
+            });
+        }
     }
 }

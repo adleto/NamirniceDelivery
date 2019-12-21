@@ -36,15 +36,15 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 @*<li class="">
-                    @if (User.IsInRole("AdministrativniRadnik"))
-                    {
-                        <a class="" asp-controller="Prodavac" asp-action="Profil" asp-route-username="@User.Identity.Name" asp-route-returnUrl="@Context.Request.Path" title="Manage">@User.Identity.Name</a>
-                    }
-                    else if (User.IsInRole("Kupac"))
-                    {
-                        <a class="" asp-controller="Kupac" asp-action="Profil" asp-route-username="@User.Identity.Name" asp-route-returnUrl="@Context.Request.Path" title="Manage">@User.Identity.Name</a>
-                    }
-                </li>*@
+                @if (User.IsInRole("AdministrativniRadnik"))
+                {
+                    <a class="" asp-controller="Prodavac" asp-action="Profil" asp-route-username="@User.Identity.Name" asp-route-returnUrl="@Context.Request.Path" title="Manage">@User.Identity.Name</a>
+                }
+                else if (User.IsInRole("Kupac"))
+                {
+                    <a class="" asp-controller="Kupac" asp-action="Profil" asp-route-username="@User.Identity.Name" asp-route-returnUrl="@Context.Request.Path" title="Manage">@User.Identity.Name</a>
+                }
+            </li>*@
                 <li class="" onclick="document.getElementById('logoutForm').submit()">
                     <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
                         <a href="#">Logout</a>
@@ -52,75 +52,72 @@
                 </li>
             }
             @*else
-            {
-                <li class="">
-                    <a class="" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                </li>
-                <li class="">
-                    <a asp-area="Identity" asp-page="/Account/RegisterProdavac" asp-route-returnUrl="@Context.Request.Path" class="">Register Prodavac</a>
-                </li>
-                <li class="">
-                    <a asp-area="Identity" asp-page="/Account/RegisterKupac" asp-route-returnUrl="@Context.Request.Path" class="">Register Kupac</a>
-                </li>
-            }*@
+        {
+            <li class="">
+                <a class="" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+            <li class="">
+                <a asp-area="Identity" asp-page="/Account/RegisterProdavac" asp-route-returnUrl="@Context.Request.Path" class="">Register Prodavac</a>
+            </li>
+            <li class="">
+                <a asp-area="Identity" asp-page="/Account/RegisterKupac" asp-route-returnUrl="@Context.Request.Path" class="">Register Kupac</a>
+            </li>
+        }*@
             @if (SignInManager.IsSignedIn(User))
             {
                 <li class="header">Panel</li>
                 @if (User.IsInRole("AdministrativniRadnik"))
                 {
-                    @*<li>
-                        <a asp-controller="Prodavac" asp-action="DodajNamirnicu">Dodaj Namirnicu</a>
-                    </li>
                     <li>
-                        <a asp-controller="Prodavac" asp-action="KreirajNamirnicu">Kreiraj Namirnicu</a>
-                    </li>*@
+                        <a asp-controller="AdministrativniRadnik" asp-action="PregledKategorija">Pregled Kategorija</a>
+                    </li>
                     <li>
                         <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju">Kreiraj Kategoriju</a>
                     </li>
                     @*<li>
-                        <a asp-controller="Prodavac" asp-action="KreirajPopust">Kreiraj Popust</a>
-                    </li>
-                    <li class="header">Narudžbe</li>
-                    <li>
-                        <a asp-controller="Prodavac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Prodavac" asp-action="DostaveUToku">Dostave u toku</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Prodavac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
-                    </li>
-                    <li class="header">Dodatno</li>
-                    <li>
-                        <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
-                    </li>*@
+                    <a asp-controller="Prodavac" asp-action="KreirajPopust">Kreiraj Popust</a>
+                </li>
+                <li class="header">Narudžbe</li>
+                <li>
+                    <a asp-controller="Prodavac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
+                </li>
+                <li>
+                    <a asp-controller="Prodavac" asp-action="DostaveUToku">Dostave u toku</a>
+                </li>
+                <li>
+                    <a asp-controller="Prodavac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
+                </li>
+                <li class="header">Dodatno</li>
+                <li>
+                    <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
+                </li>*@
                 }
                 @*else if (User.IsInRole("Kupac"))
-                {
-                    <li>
-                        <a asp-controller="Kupac" asp-action="Korpa">Korpa</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Kupac" asp-action="SpremljeneNamirnice">Spremljene Namirnice</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Kupac" asp-action="SpremljeniProdavci">Spremljeni Prodavci</a>
-                    </li>
-                    <li class="header">Narudžbe</li>
-                    <li>
-                        <a asp-controller="Kupac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Kupac" asp-action="DostaveUToku">Dostave u toku</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Kupac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
-                    </li>
-                    <li class="header">Dodatno</li>
-                    <li>
-                        <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
-                    </li>
-                }*@
+            {
+                <li>
+                    <a asp-controller="Kupac" asp-action="Korpa">Korpa</a>
+                </li>
+                <li>
+                    <a asp-controller="Kupac" asp-action="SpremljeneNamirnice">Spremljene Namirnice</a>
+                </li>
+                <li>
+                    <a asp-controller="Kupac" asp-action="SpremljeniProdavci">Spremljeni Prodavci</a>
+                </li>
+                <li class="header">Narudžbe</li>
+                <li>
+                    <a asp-controller="Kupac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
+                </li>
+                <li>
+                    <a asp-controller="Kupac" asp-action="DostaveUToku">Dostave u toku</a>
+                </li>
+                <li>
+                    <a asp-controller="Kupac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
+                </li>
+                <li class="header">Dodatno</li>
+                <li>
+                    <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
+                </li>
+            }*@
             }
         </ul>
     </div>

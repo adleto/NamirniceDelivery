@@ -1,0 +1,51 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.PregledKategorijaViewModel
+@{
+    ViewData["Title"] = "Pregled Kategorija";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int brojac = 0;
+}
+
+    <div class="text-center row justify-content-center">
+        <div>
+            <h1>Pregled Kategorija</h1>
+            @if (Model.KategorijaList.Any())
+            {
+                <table class="table table-bordered table-responsive-lg table-striped">
+                    <thead>
+                        <tr>
+                            <td>Id</td>
+                            <td>Naziv</td>
+                            <td>Akcije</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var k in Model.KategorijaList)
+                        {
+                            <tr>
+                                <td>@(brojac++)</td>
+                                <td>@k.Naziv</td>
+                                <td><a asp-controller="AdministrativniRadnik" asp-action="EditKategorija" asp-route-returnUrl="@Context.Request.Path">Edit</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p><span>Trenutno ne postoji ni jedna kategorija. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju" asp-route-returnUrl="@Context.Request.Path">nove?</a></span></p>
+            }
+            @if (string.IsNullOrEmpty(Model.ReturnUrl))
+            {
+                <div>
+                    <a asp-action="Index">Nazad na panel</a>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <a href="@Model.ReturnUrl">Idi nazad</a>
+                </div>
+            }
+        </div>
+    </div>
+
