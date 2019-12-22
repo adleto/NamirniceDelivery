@@ -16,12 +16,14 @@ namespace NamirniceDelivery.Web.Controllers
         private static SignInManager<ApplicationUser> _signInManager;
         private readonly IKategorija _kategorijaService;
         private readonly INamirnica _namirnicaService;
+        private readonly IPopust _popustService;
 
-        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService)
+        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService, IPopust popustService)
         {
             _signInManager = signInManager;
             _kategorijaService = kategorijaService;
             _namirnicaService = namirnicaService;
+            _popustService = popustService;
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult Index()
@@ -181,6 +183,54 @@ namespace NamirniceDelivery.Web.Controllers
             }
             model.KategorijaList = _kategorijaService.GetKategorije();
             return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult KreirajPopust(string returnUrl = "")
+        {
+            return View(new KreirajPopustViewModel
+            {
+                ReturnUrl = returnUrl
+            });
+        }
+        [HttpPost]
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult KreirajPopust(KreirajPopustViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _popustService.KreirajPopust(new Popust
+                {
+                    Iznos = model.Iznos??1,
+                    Opis = model.Opis
+                });
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                return RedirectToAction(nameof(PregledPopust));
+            }
+            return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult PregledPopust(string returnUrl = "")
+        {
+            //var v = new PregledNamirnicaViewModel
+            //{
+            //    ReturnUrl = returnUrl,
+            //    KategorijaList = _kategorijaService.GetKategorije()
+            //};
+            //if (kategorijaId != 0)
+            //{
+            //    var k = _kategorijaService.GetKategorija(kategorijaId);
+            //    v.NamirnicaList = _namirnicaService.GetNamirnicePoKategorijama(k);
+            //    v.KategorijaId = kategorijaId;
+            //}
+            //else
+            //{
+            //    v.NamirnicaList = _namirnicaService.GetNamirnice();
+            //    v.KategorijaId = 0;
+            //}
+            return View(/*v*/);
         }
     }
 }

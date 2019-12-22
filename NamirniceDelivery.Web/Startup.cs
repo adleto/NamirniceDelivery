@@ -66,6 +66,7 @@ namespace NamirniceDelivery.Web
             services.AddScoped<IPodruznica, PodruznicaService>();
             services.AddScoped<IKategorija, KategorijaService>();
             services.AddScoped<INamirnica, NamirnicaService>();
+            services.AddScoped<IPopust, PopustService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
