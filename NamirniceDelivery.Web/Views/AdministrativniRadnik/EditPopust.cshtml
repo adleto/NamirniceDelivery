@@ -1,19 +1,20 @@
-﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.KreirajPopustViewModel
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.EditPopustViewModel
 @{
-    ViewData["Title"] = "KreirajPopust";
+    ViewData["Title"] = "EditPopust";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="text-center row justify-content-center">
     <div class="">
-        <h1>Kreiraj Novi Popust</h1>
+        <h1>Edit Popust</h1>
 
         <h4>Popust</h4>
         <hr />
         <div @*class="row"*@>
             <div @*class="col-md-4"*@>
-                <form asp-action="KreirajPopust">
+                <form asp-action="EditPopust">
                     <input type="hidden" asp-for="ReturnUrl" />
+                    <input type="hidden" asp-for="PopustId" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Opis" class="control-label"></label>
@@ -22,11 +23,11 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Iznos" class="control-label"></label>
-                        <input asp-for="Iznos" class="form-control" placeholder="e.g. 15 (%)" title="Unesi postotak bez znaka" />
+                        <input asp-for="Iznos" class="form-control" placeholder="e.g. 15 (%)" title="Unesi postotak bez znaka"/>
                         <span asp-validation-for="Iznos" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Kreiraj" class="btn btn-primary" />
+                        <input type="submit" value="Edit" class="btn btn-primary" />
                     </div>
                 </form>
             </div>

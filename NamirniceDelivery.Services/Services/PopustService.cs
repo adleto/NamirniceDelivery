@@ -17,6 +17,19 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
+        public void EditPopust(Popust popust)
+        {
+            var p = GetPopust(popust.Id);
+            p.Iznos = popust.Iznos;
+            p.Opis = popust.Opis;
+            _context.SaveChanges();
+        }
+
+        public Popust GetPopust(int id)
+        {
+            return _context.Popust.Find(id);
+        }
+
         public List<Popust> GetPopusti()
         {
             return _context.Popust.ToList();

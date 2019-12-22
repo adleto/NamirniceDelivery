@@ -9,5 +9,7 @@ namespace NamirniceDelivery.Services.Interfaces
     {
         void KreirajPopust(Popust popust);
         List<Popust> GetPopusti();
+        Popust GetPopust(int id);
+        void EditPopust(Popust popust);
     }
 }

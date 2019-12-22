@@ -200,7 +200,7 @@ namespace NamirniceDelivery.Web.Controllers
             {
                 _popustService.KreirajPopust(new Popust
                 {
-                    Iznos = model.Iznos??1,
+                    Iznos = (model.Iznos / 100) ?? 1,
                     Opis = model.Opis
                 });
                 if (!string.IsNullOrEmpty(model.ReturnUrl))
@@ -219,6 +219,37 @@ namespace NamirniceDelivery.Web.Controllers
                 ReturnUrl = returnUrl,
                 PopustList = _popustService.GetPopusti()
             });
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult EditPopust(int popustId, string returnUrl = "")
+        {
+            var popust = _popustService.GetPopust(popustId);
+            return View(new EditPopustViewModel
+            {
+                Iznos = popust.Iznos*100,
+                Opis = popust.Opis,
+                ReturnUrl = returnUrl,
+            });
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        [HttpPost]
+        public IActionResult EditPopust(EditPopustViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _popustService.EditPopust(new Popust
+                {
+                    Id = model.PopustId,
+                    Opis = model.Opis,
+                    Iznos = (model.Iznos/100)??1
+                });
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                return RedirectToAction(nameof(PregledNamirnica));
+            }
+            return View(model);
         }
     }
 }
