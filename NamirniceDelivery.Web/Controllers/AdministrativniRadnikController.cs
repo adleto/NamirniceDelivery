@@ -214,23 +214,11 @@ namespace NamirniceDelivery.Web.Controllers
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult PregledPopust(string returnUrl = "")
         {
-            //var v = new PregledNamirnicaViewModel
-            //{
-            //    ReturnUrl = returnUrl,
-            //    KategorijaList = _kategorijaService.GetKategorije()
-            //};
-            //if (kategorijaId != 0)
-            //{
-            //    var k = _kategorijaService.GetKategorija(kategorijaId);
-            //    v.NamirnicaList = _namirnicaService.GetNamirnicePoKategorijama(k);
-            //    v.KategorijaId = kategorijaId;
-            //}
-            //else
-            //{
-            //    v.NamirnicaList = _namirnicaService.GetNamirnice();
-            //    v.KategorijaId = 0;
-            //}
-            return View(/*v*/);
+            return View(new PregledPopustViewModel
+            {
+                ReturnUrl = returnUrl,
+                PopustList = _popustService.GetPopusti()
+            });
         }
     }
 }

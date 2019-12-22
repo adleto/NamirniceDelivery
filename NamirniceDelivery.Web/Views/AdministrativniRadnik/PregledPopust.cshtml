@@ -1,0 +1,53 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.PregledPopustViewModel
+@{
+    ViewData["Title"] = "PregledPopust";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int brojac = 1;
+}
+
+<div class="text-center row justify-content-center">
+    <div>
+        <h1>Pregled Popusta</h1>
+        @if (Model.PopustList.Any())
+        {
+            <table class="table table-bordered table-responsive-lg table-striped">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Opis</td>
+                        <td>Iznos</td>
+                        <td>Akcije</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.PopustList)
+                    {
+                    <tr>
+                        <td>@(brojac++)</td>
+                        <td>@p.Opis</td>
+                        <td>@p.Iznos</td>
+                        <td><a asp-controller="AdministrativniRadnik" asp-action="EditPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path">Edit</a></td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p><span>Trenutno ne postoji nijedan popust. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="KreirajPopust" asp-route-returnUrl="@Context.Request.Path">nove?</a></span></p>
+        }
+        @if (string.IsNullOrEmpty(Model.ReturnUrl))
+        {
+            <div>
+                <a asp-action="Index">Nazad na panel</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="@Model.ReturnUrl">Idi nazad</a>
+            </div>
+        }
+    </div>
+</div>
+
