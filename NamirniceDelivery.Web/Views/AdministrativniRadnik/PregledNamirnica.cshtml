@@ -1,0 +1,52 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.PregledNamirnicaViewModel
+@{
+    ViewData["Title"] = "Pregled Vrsta Namirnica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int brojac = 1;
+}
+
+<div class="text-center row justify-content-center">
+    <div>
+        <h1>Pregled Vrsta Namirnica</h1>
+        @if (Model.NamirnicaList.Any())
+        {
+            <table class="table table-bordered table-responsive-lg table-striped">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Naziv</td>
+                        <td>Kategorija</td>
+                        <td>Akcije</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var n in Model.NamirnicaList)
+                    {
+                        <tr>
+                            <td>@(brojac++)</td>
+                            <td>@n.Naziv</td>
+                            <td>@n.Kategorija.Naziv</td>
+                            <td><a asp-controller="AdministrativniRadnik" asp-action="EditNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path">Edit</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p><span>Trenutno ne postoji nijedna vrsta namirnica. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="KreirajNamirnica" asp-route-returnUrl="@Context.Request.Path">nove?</a></span></p>
+        }
+        @if (string.IsNullOrEmpty(Model.ReturnUrl))
+        {
+            <div>
+                <a asp-action="Index">Nazad na panel</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="@Model.ReturnUrl">Idi nazad</a>
+            </div>
+        }
+    </div>
+</div>

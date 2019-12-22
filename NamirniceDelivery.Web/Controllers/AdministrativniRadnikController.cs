@@ -127,5 +127,60 @@ namespace NamirniceDelivery.Web.Controllers
             model.KategorijaList = _kategorijaService.GetKategorije();
             return View(model);
         }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult PregledNamirnica(string returnUrl = "", int kategorijaId=0)
+        {
+            var v = new PregledNamirnicaViewModel
+            {
+                ReturnUrl = returnUrl,
+                KategorijaList = _kategorijaService.GetKategorije()
+            };
+            if (kategorijaId!=0)
+            {
+                var k = _kategorijaService.GetKategorija(kategorijaId);
+                v.NamirnicaList = _namirnicaService.GetNamirnicePoKategorijama(k);
+                v.KategorijaId = kategorijaId;
+            }
+            else
+            {
+                v.NamirnicaList = _namirnicaService.GetNamirnice();
+                v.KategorijaId = 0;
+            }
+            return View(v);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult EditNamirnica(int namirnicaId, string returnUrl = "")
+        {
+            var namirnica = _namirnicaService.GetNamirnica(namirnicaId);
+            return View(new EditNamirnicaViewModel
+            {
+                KategorijaId = namirnica.Kategorija.Id,
+                Naziv = namirnica.Naziv,
+                ReturnUrl = returnUrl,
+                NamirnicaId = namirnica.Id,
+                KategorijaList = _kategorijaService.GetKategorije()
+            });
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        [HttpPost]
+        public IActionResult EditNamirnica(EditNamirnicaViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _namirnicaService.EditNamirnica(new Namirnica
+                {
+                    Id = model.NamirnicaId,
+                    Naziv = model.Naziv,
+                    KategorijaId = model.KategorijaId
+                });
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                return RedirectToAction(nameof(PregledNamirnica));
+            }
+            model.KategorijaList = _kategorijaService.GetKategorije();
+            return View(model);
+        }
     }
 }

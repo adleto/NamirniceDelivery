@@ -18,6 +18,14 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
+        public void EditNamirnica(Namirnica namirnica)
+        {
+            var n = GetNamirnica(namirnica.Id);
+            n.KategorijaId = namirnica.KategorijaId;
+            n.Naziv = namirnica.Naziv;
+            _context.SaveChanges();
+        }
+
         public Namirnica GetNamirnica(int id)
         {
             return _context.Namirnica
