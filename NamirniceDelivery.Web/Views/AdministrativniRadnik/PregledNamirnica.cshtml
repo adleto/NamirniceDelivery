@@ -8,23 +8,33 @@
 <div class="text-center row justify-content-center">
     <div>
         <h1>Pregled Vrsta Namirnica</h1>
-        <select id="kategorijaFilter" onchange="filtrirajKategorija()" title="Filter po kategorijama">
-            <option value="0">Sve kategorije</option>
-            @foreach (var k in Model.KategorijaList)
-            {
-                if (Model.KategorijaId != 0)
-                {
-                    if (k.Id == Model.KategorijaId)
-                    {
-                        <option selected value="@k.Id">@k.Naziv</option>
-                        continue;
-                    }
-                }
-                <option value="@k.Id">@k.Naziv</option>
-            }
-        </select>
+        <br />
         @if (Model.NamirnicaList.Any())
         {
+            <div class="row">
+                <div class="col-md-12 text-right mb-1">
+                    <a asp-controller="AdministrativniRadnik" asp-action="KreirajNamirnica" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success" title="Dodaj novu vrstu namirnice">+</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-1">
+                    <select id="kategorijaFilter" onchange="filtrirajKategorija()" title="Filter po kategorijama">
+                        <option value="0">Sve kategorije</option>
+                        @foreach (var k in Model.KategorijaList)
+                        {
+                            if (Model.KategorijaId != 0)
+                            {
+                                if (k.Id == Model.KategorijaId)
+                                {
+                                    <option selected value="@k.Id">@k.Naziv</option>
+                                    continue;
+                                }
+                            }
+                            <option value="@k.Id">@k.Naziv</option>
+                        }
+                    </select>
+                </div>
+            </div>
             <table class="table table-bordered table-responsive-lg table-striped">
                 <thead>
                     <tr>

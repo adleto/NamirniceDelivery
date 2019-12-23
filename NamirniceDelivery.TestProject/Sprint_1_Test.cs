@@ -17,6 +17,8 @@ namespace NamirniceDelivery.TestProject
         FakeSignInManager signInManager;
         Mock<IKategorija> kategorijaService;
         Mock<INamirnica> namirnicaService;
+        Mock<INamirnicaPodruznica> namirnicaPodruznicaService;
+        Mock<IAdministrativniRadnik> administrativniRadnikService;
 
         public Sprint_1_Test()
         {
@@ -24,6 +26,8 @@ namespace NamirniceDelivery.TestProject
             signInManager = new FakeSignInManager();
             kategorijaService = new Mock<IKategorija>();
             namirnicaService = new Mock<INamirnica>();
+            namirnicaPodruznicaService = new Mock<INamirnicaPodruznica>();
+            administrativniRadnikService = new Mock<IAdministrativniRadnik>();
         }
 
         [TestMethod]
@@ -41,7 +45,7 @@ namespace NamirniceDelivery.TestProject
                     Naziv = "Povrće"
                 }
             });
-            AdministrativniRadnikController c = new AdministrativniRadnikController(signInManager,kategorijaService.Object, namirnicaService.Object, popustService.Object);
+            AdministrativniRadnikController c = new AdministrativniRadnikController(signInManager,kategorijaService.Object, namirnicaService.Object, popustService.Object, namirnicaPodruznicaService.Object, administrativniRadnikService.Object);
             ViewResult v = c.PregledKategorija() as ViewResult;
             PregledKategorijaViewModel p = v.Model as PregledKategorijaViewModel;
             Assert.AreEqual(p.KategorijaList.Count, 2);

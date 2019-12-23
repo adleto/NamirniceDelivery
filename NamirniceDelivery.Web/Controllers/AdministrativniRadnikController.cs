@@ -17,13 +17,17 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IKategorija _kategorijaService;
         private readonly INamirnica _namirnicaService;
         private readonly IPopust _popustService;
+        private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
+        private readonly IAdministrativniRadnik _administrativniRadnikService;
 
-        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService, IPopust popustService)
+        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService, IPopust popustService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService)
         {
             _signInManager = signInManager;
             _kategorijaService = kategorijaService;
             _namirnicaService = namirnicaService;
             _popustService = popustService;
+            _namirnicaPodruznicaService = namirnicaPodruznicaService;
+            _administrativniRadnikService = administrativniRadnikService;
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult Index()
@@ -249,6 +253,45 @@ namespace NamirniceDelivery.Web.Controllers
                 }
                 return RedirectToAction(nameof(PregledNamirnica));
             }
+            return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult DodajNamirnicu(string returnUrl = "")
+        {
+            return View(new DodajNamirnicuViewModel
+            {
+                PopustList = _popustService.GetPopusti(),
+                NamirnicaList = _namirnicaService.GetNamirnice(),
+                ReturnUrl = returnUrl
+            });
+        }
+        [HttpPost]
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult DodajNamirnicu(DodajNamirnicuViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var namirnica = new NamirnicaPodruznica
+                {
+                    Aktivna = true,
+                    Cijena = model.Cijena ?? 1,
+                    KolicinaNaStanju = model.KolicinaNaStanju ?? 1,
+                    NamirnicaId = model.NamirnicaId,
+                    PodruznicaId = _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name)
+                };
+                if (model.PopustId != 0)
+                {
+                    namirnica.PopustId = model.PopustId;
+                }
+                _namirnicaPodruznicaService.DodajNamirnicu(namirnica);
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                return RedirectToAction(nameof(PregledKategorija)); //change this
+            }
+            model.PopustList = _popustService.GetPopusti();
+            model.NamirnicaList = _namirnicaService.GetNamirnice();
             return View(model);
         }
     }
