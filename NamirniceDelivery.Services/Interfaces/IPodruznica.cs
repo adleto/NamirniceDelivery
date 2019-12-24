@@ -9,5 +9,7 @@ namespace NamirniceDelivery.Services.Interfaces
     public interface IPodruznica
     {
         void KreirajPodruznicu(Podruznica podruznica);
+        List<Podruznica> GetPodruzniceForKupac(Kupac kupac);
+        List<Podruznica> GetPodruznice();
     }
 }

@@ -10,10 +10,10 @@ namespace NamirniceDelivery.Data.Entities
     {
         public string Ime { get; set; }
         public string Prezime { get; set; }
-        public Opcina OpcinaBoravka { get; set; }
+        public virtual Opcina OpcinaBoravka { get; set; }
         [ForeignKey("Opcina")]
         public int? OpcinaBoravkaId { get; set; }
-        public Opcina OpcinaRodjenja { get; set; }
+        public virtual Opcina OpcinaRodjenja { get; set; }
         [ForeignKey("Opcina")]
         public int? OpcinaRodjenjaId { get; set; }
     }

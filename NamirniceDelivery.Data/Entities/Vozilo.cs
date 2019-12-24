@@ -12,7 +12,7 @@ namespace NamirniceDelivery.Data.Entities
         public string TipVozila { get; set; }
         public string RegistarskeOznake { get; set; }
         public string MarkaVozila { get; set; }
-        public Vozac Vozac { get; set; }
+        public virtual Vozac Vozac { get; set; }
         [ForeignKey("Vozac")]
         public string VozacId { get; set; }
     }

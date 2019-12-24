@@ -13,7 +13,7 @@ namespace NamirniceDelivery.Data.Entities
         public int TransakcijaId { get; set; }
         public decimal Cijena { get; set; }
         public int Kolicina { get; set; }
-        public Namirnica Namirnica { get; set; }
+        public virtual Namirnica Namirnica { get; set; }
         [ForeignKey("Namirnica")]
         public int NamirnicaId { get; set; }
         [NotMapped]

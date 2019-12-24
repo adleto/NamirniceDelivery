@@ -37,6 +37,7 @@ namespace NamirniceDelivery.Services.Services
         public NamirnicaPodruznica GetNamirnicaPodruznica(int id)
         {
             return _context.NamirnicaPodruznica
+                .Include(np => np.Podruznica)
                 .Include(np => np.Popust)
                 .Include(np => np.Namirnica)
                     .ThenInclude(n => n.Kategorija)
@@ -44,9 +45,17 @@ namespace NamirniceDelivery.Services.Services
                 .FirstOrDefault();
         }
 
+        public List<NamirnicaPodruznica> GetNamirniceForKupac(Kupac kupac)
+        {
+            return GetNamirnicePodruznica()
+                .Where(np => np.Podruznica.OpcinaId == kupac.OpcinaBoravkaId)
+                .ToList();
+        }
+
         public List<NamirnicaPodruznica> GetNamirnicePodruznica()
         {
             return _context.NamirnicaPodruznica
+                .Include(np => np.Podruznica)
                 .Include(np => np.Popust)
                 .Include(np => np.Namirnica)
                     .ThenInclude(n => n.Kategorija)

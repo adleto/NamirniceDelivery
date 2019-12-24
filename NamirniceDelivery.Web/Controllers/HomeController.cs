@@ -30,10 +30,10 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     return RedirectToAction("Index", "AdministrativniRadnik");
                 }
-                //else if (User.IsInRole(""))
-                //{
-                //    return RedirectToAction("Index", "");
-                //}
+                else if (User.IsInRole("Kupac"))
+                {
+                    return RedirectToAction("Index", "Kupac");
+                }
             }
             return View();
         }

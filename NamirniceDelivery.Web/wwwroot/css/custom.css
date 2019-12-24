@@ -1,0 +1,8 @@
+/* your styles go here */
+#mainSection input {
+    text-align: center;
+}
+#mainSection select {
+    text-align-last: center;
+    padding-right: 29px;
+}

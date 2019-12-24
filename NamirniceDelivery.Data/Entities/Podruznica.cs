@@ -9,10 +9,11 @@ namespace NamirniceDelivery.Data.Entities
     {
         public int Id { get; set; }
         public string Adresa { get; set; }
-        virtual public Opcina Opcina { get; set; }
+        public virtual Opcina Opcina { get; set; }
         [ForeignKey("Opcina")]
         public int OpcinaId { get; set; }
+        public string Naziv { get; set; }
         public string Opis { get; set; }
-        public List<NamirnicaPodruznica> NamirnicaPodruznica { get; set; }
+        public virtual List<NamirnicaPodruznica> NamirnicaPodruznica { get; set; }
     }
 }

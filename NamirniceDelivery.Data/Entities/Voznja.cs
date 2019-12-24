@@ -18,9 +18,9 @@ namespace NamirniceDelivery.Data.Entities
         public virtual Podruznica PodruznicaKraj { get; set; }
         [ForeignKey("Podruznica")]
         public int PodruznicaKrajId { get; set; }
-        public Vozac Vozac { get; set; }
+        public virtual Vozac Vozac { get; set; }
         [ForeignKey("Vozac")]
         public string VozacId { get; set; }
-        public List<NamirnicaVoznja> NamirnicaVoznja { get; set; }
+        public virtual List<NamirnicaVoznja> NamirnicaVoznja { get; set; }
     }
 }

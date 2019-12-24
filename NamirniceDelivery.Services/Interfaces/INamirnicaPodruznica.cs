@@ -18,5 +18,6 @@ namespace NamirniceDelivery.Services.Interfaces
         NamirnicaPodruznica GetNamirnicaPodruznica(int id);
         void ToogleStatusNamirnicaPodruznica(int id);
         void EditNamirnicaPodruznica(NamirnicaPodruznica namirnicaPodruznica);
+        List<NamirnicaPodruznica> GetNamirniceForKupac(Kupac kupac);
     }
 }

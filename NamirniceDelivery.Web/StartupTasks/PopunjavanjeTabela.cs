@@ -135,13 +135,15 @@ namespace NamirniceDelivery.Web.StartupTasks
             Podruznica podruznica = new Podruznica { 
                 Adresa = "Adresa BB",
                 OpcinaId = 1,
-                Opis = "Glavna podružnica"
+                Opis = "Glavna podružnica",
+                Naziv = "Granap 1"
             };
             Podruznica podruznica2 = new Podruznica
             {
                 Adresa = "Adresa BB",
-                OpcinaId = 2,
-                Opis = "Glavno sladište"
+                OpcinaId = 1,
+                Opis = "Glavno sladište",
+                Naziv = "Granap Skladište 1"
             };
             _podruznicaService.KreirajPodruznicu(podruznica);
             _podruznicaService.KreirajPodruznicu(podruznica2);

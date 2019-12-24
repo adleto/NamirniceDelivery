@@ -468,6 +468,9 @@ namespace NamirniceDelivery.Data.Migrations
                     b.Property<string>("Adresa")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Naziv")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OpcinaId")
                         .HasColumnType("int");
 
