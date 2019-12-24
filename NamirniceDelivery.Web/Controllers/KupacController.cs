@@ -17,13 +17,15 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IKupac _kupacService;
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
         private readonly IPodruznica _podruznicaService;
+        private readonly IKorpaStavka _korpaStavkaService;
 
-        public KupacController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IPodruznica podruznicaService)
+        public KupacController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IPodruznica podruznicaService, IKorpaStavka korpaStavkaService)
         {
             _signInManager = signInManager;
             _kupacService = kupacService;
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
             _podruznicaService = podruznicaService;
+            _korpaStavkaService = korpaStavkaService;
         }
 
         public async Task<IActionResult> DemoLogin()
@@ -40,6 +42,40 @@ namespace NamirniceDelivery.Web.Controllers
                 NamirnicaList = _namirnicaPodruznicaService.GetNamirniceForKupac(kupac),
                 PodruznicaList = _podruznicaService.GetPodruzniceForKupac(kupac)
             });
+        }
+        [Authorize(Roles = "Kupac")]
+        [HttpPost]
+        public IActionResult KorpaDodaj(string[] namirnicaPodruznicaId, string[] kolicina)
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            for (int i = 0; i < namirnicaPodruznicaId.Count(); i++)
+            {
+                if (int.TryParse(kolicina[i], out int brojNamirnica))
+                {
+                    if (brojNamirnica > 0)
+                    {
+                        _korpaStavkaService.DodajUKorpu(int.Parse(namirnicaPodruznicaId[i]), brojNamirnica, kupac);
+                    }
+                }
+            }
+            return RedirectToAction(nameof(Korpa));
+        }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult Korpa()
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            return View(new KorpaViewModel
+            {
+                NamirniceUKorpiList = _korpaStavkaService.GetNamirniceUKorpi(kupac),
+                TotalCijena = _korpaStavkaService.GetTotalCijena(kupac)
+            });
+        }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult UkloniIzKorpe(int korpaStavkaId)
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            _korpaStavkaService.UkloniStavku(korpaStavkaId, kupac);
+            return RedirectToAction(nameof(Korpa));
         }
     }
 }

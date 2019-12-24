@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NamirniceDelivery.Data", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NamirniceDelivery.Services", "NamirniceDelivery.Services\NamirniceDelivery.Services.csproj", "{CA00F7B2-8B63-4661-AF4B-4E1ABF51EE94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NamirniceDelivery.TestProject", "NamirniceDelivery.TestProject\NamirniceDelivery.TestProject.csproj", "{68E72A8E-B995-4ED7-B8D8-1DF4415BE90B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NamirniceDelivery.TestProject", "NamirniceDelivery.TestProject\NamirniceDelivery.TestProject.csproj", "{68E72A8E-B995-4ED7-B8D8-1DF4415BE90B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

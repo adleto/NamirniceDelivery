@@ -45,6 +45,7 @@
         <br />
         @if (Model.NamirnicaList.Any())
         {
+            <form action="" method="post">
             <div class="card-deck">
                 @foreach (var p in Model.NamirnicaList)
                 {
@@ -61,6 +62,9 @@
                                     <div title="Popust" class="btn btn-warning rounded-circle">-@p.Popust.Iznos.ToString("P1")</div>
                                 }
                             </p>
+                            <input type="hidden" value="@p.Id" name="namirnicaPodruznicaId" />
+                            <input type="number" title="Količina za kupiti" onchange="otkljucaj(@p.Id)" min="0" max="@p.KolicinaNaStanju" step="1" value="0" name="kolicina">
+                            <input type="submit" id="@p.Id" class="btn btn-info" value="Brza kupovina" formaction="/Kupac/BrzaKupovina" disabled />
                         </div>
                     </div>
                     @if (counterNamirnica % 4 == 0)
@@ -69,6 +73,8 @@
                     }
                 }
             </div>
+            <input type="submit" class="btn btn-success rounded" value="Dodaj odabrane u korpu" formaction="Kupac/KorpaDodaj" />
+            </form>
         }
         else
         {
@@ -77,4 +83,11 @@
     </div>
     </div>
 </div>
+
+<script>
+    function otkljucaj(id) {
+        var submiter = document.getElementById(id);
+        submiter.disabled = false;
+    }
+</script>
 

@@ -1,0 +1,60 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Kupac.KorpaViewModel
+@{
+    ViewData["Title"] = "Korpa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center row justify-content-center">
+    <div>
+        <h1>Korpa</h1>
+        <br />
+        <div>
+            <p>Ukupna cijena -> @(Model.TotalCijena.ToString("F") + "KM")</p>
+        </div>
+        <div>
+            @if (Model.NamirniceUKorpiList.Count != 0)
+            {
+                <form asp-action="Kupi" method="post">
+                    <input class="btn btn-success" type="submit" value="Potvrdi kupovinu" />
+                </form>
+            }
+        </div>
+        <br />
+        <br />
+        <h3>Artikli u korpi</h3>
+
+        @if (Model.NamirniceUKorpiList.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Podružnica</td>
+                        <td>Cijena</td>
+                        <td>Količina</td>
+                        <td>Cijena Total</td>
+                        <td>Akcije</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model.NamirniceUKorpiList)
+                    {
+                        <tr>
+                            <td><a @*asp-controller="" asp-action="" asp-route-returnUrl="@Context.Request.Path"*@>@x.NamirnicaPodruznica.Podruznica.Naziv</a></td>
+                            <td>@(x.NamirnicaPodruznica.CijenaSaPopustom.ToString("F") + "KM")</td>
+                            <td>@x.Kolicina</td>
+                            <td>@((x.CijenaStavkeTotal).ToString("F") + "KM")</td>
+                            <td><a asp-action="UkloniIzKorpe" asp-route-korpaStavkaId="@x.Id" class="btn btn-danger">Ukloni</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div>
+                <p>Trenutno nema namirnica u korpi.</p>
+            </div>
+        }
+    </div>
+</div>
+
