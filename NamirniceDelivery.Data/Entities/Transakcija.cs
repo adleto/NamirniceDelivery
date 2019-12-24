@@ -9,9 +9,9 @@ namespace NamirniceDelivery.Data.Entities
     {
         public int Id { get; set; }
         public bool DostavaUspjesna { get; set; }
-        public DateTime DatumUspjesneDostave { get; set; }
+        public DateTime? DatumUspjesneDostave { get; set; }
         public bool NarudzbaPrihvacenaOdRadnika { get; set; }
-        public DateTime DatumPrihvacanjaNarudzbe { get; set; }
+        public DateTime? DatumPrihvacanjaNarudzbe { get; set; }
         public bool RadnikOstavioDojam { get; set; }
         public bool KupacOstavioDojam { get; set; }
         public virtual List<KupljeneNamirnice> KupljeneNamirnice { get; set; }

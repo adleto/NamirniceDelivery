@@ -18,14 +18,16 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
         private readonly IPodruznica _podruznicaService;
         private readonly IKorpaStavka _korpaStavkaService;
+        private readonly ITransakcija _transakcijaService;
 
-        public KupacController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IPodruznica podruznicaService, IKorpaStavka korpaStavkaService)
+        public KupacController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IPodruznica podruznicaService, IKorpaStavka korpaStavkaService, ITransakcija transakcijaService)
         {
             _signInManager = signInManager;
             _kupacService = kupacService;
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
             _podruznicaService = podruznicaService;
             _korpaStavkaService = korpaStavkaService;
+            _transakcijaService = transakcijaService;
         }
 
         public async Task<IActionResult> DemoLogin()
@@ -76,6 +78,31 @@ namespace NamirniceDelivery.Web.Controllers
             var kupac = _kupacService.GetKupac(User.Identity.Name);
             _korpaStavkaService.UkloniStavku(korpaStavkaId, kupac);
             return RedirectToAction(nameof(Korpa));
+        }
+        [HttpPost]
+        [Authorize(Roles = "Kupac")]
+        public IActionResult Kupi()
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            _transakcijaService.RealizujKupovine(_korpaStavkaService.GetNamirniceUKorpi(kupac));
+            return RedirectToAction(nameof(Index));
+            // TODO: redirectaj kasnije na detalje transakcije
+        }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult BrzaKupovina(string[] namirnicaPodruznicaId, string[] kolicina)
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            for (int i = 0; i < namirnicaPodruznicaId.Count(); i++)
+            {
+                int brojNamirnica = int.Parse(kolicina[i]);
+                if (brojNamirnica > 0)
+                {
+                    int idNamirnice = int.Parse(namirnicaPodruznicaId[i]);
+                    _transakcijaService.BrzaKupovina(_namirnicaPodruznicaService.GetNamirnicaPodruznica(idNamirnice), brojNamirnica, kupac);
+                }
+            }
+            return RedirectToAction(nameof(Index));
+            // TODO: redirectaj kasnije na detalje transakcije
         }
     }
 }

@@ -7,6 +7,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191220020827_Rejting.cs" />
     <Compile Remove="Migrations\20191220020827_Rejting.Designer.cs" />
+    <Compile Remove="Migrations\20191224232526_nullable fields.cs" />
+    <Compile Remove="Migrations\20191224232526_nullable fields.Designer.cs" />
+    <Compile Remove="Migrations\20191224233050_nullable fields.cs" />
+    <Compile Remove="Migrations\20191224233050_nullable fields.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
