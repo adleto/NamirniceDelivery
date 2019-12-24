@@ -48,7 +48,8 @@ namespace NamirniceDelivery.Services.Services
         public List<NamirnicaPodruznica> GetNamirniceForKupac(Kupac kupac)
         {
             return GetNamirnicePodruznica()
-                .Where(np => np.Podruznica.OpcinaId == kupac.OpcinaBoravkaId)
+                .Where(np => np.Aktivna == true && 
+                    np.Podruznica.OpcinaId == kupac.OpcinaBoravkaId)
                 .ToList();
         }
 
