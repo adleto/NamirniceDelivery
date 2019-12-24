@@ -315,11 +315,11 @@ namespace NamirniceDelivery.Web.Controllers
             return View(v);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult UkloniNamirnicaPodruznica(int idNamirnicaPodruznica, string returnUrl="")
+        public IActionResult UkloniNamirnicaPodruznica(int namirnicaPodruznicaId, string returnUrl="")
         {
-            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(idNamirnicaPodruznica).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(namirnicaPodruznicaId).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
             {
-                _namirnicaPodruznicaService.UkloniNamirnicaPodruznica(idNamirnicaPodruznica);
+                _namirnicaPodruznicaService.UkloniNamirnicaPodruznica(namirnicaPodruznicaId);
             }
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -328,17 +328,66 @@ namespace NamirniceDelivery.Web.Controllers
             return RedirectToAction(nameof(PregledNamirnicaPodruznica));
         }
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult NamirnicaToogleStatus(string returnUrl, int idNamirnicaPodruznica)
+        public IActionResult NamirnicaToogleStatus(int namirnicaPodruznicaId, string returnUrl = "")
         {
-            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(idNamirnicaPodruznica).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(namirnicaPodruznicaId).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
             {
-                _namirnicaPodruznicaService.ToogleStatusNamirnicaPodruznica(idNamirnicaPodruznica);
+                _namirnicaPodruznicaService.ToogleStatusNamirnicaPodruznica(namirnicaPodruznicaId);
             }
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
             }
             return RedirectToAction(nameof(PregledNamirnicaPodruznica));
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult EditNamirnicaPodruznica(int namirnicaPodruznicaId, string returnUrl = "")
+        {
+            var namirnica = _namirnicaPodruznicaService.GetNamirnicaPodruznica(namirnicaPodruznicaId);
+            var model = new EditNamirnicaPodruznicaViewModel
+            {
+                Aktivna = namirnica.Aktivna,
+                Cijena = namirnica.Cijena,
+                KolicinaNaStanju = namirnica.KolicinaNaStanju,
+                Naziv = namirnica.Namirnica.Naziv,
+                NamirnicaPodruznicaId = namirnica.Id,
+                PopustList = _popustService.GetPopusti()
+            };
+            if (namirnica.Popust != null)
+            {
+                model.PopustId = namirnica.PopustId??1;
+            }
+            return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        [HttpPost]
+        public IActionResult EditNamirnicaPodruznica(EditNamirnicaPodruznicaViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(model.NamirnicaPodruznicaId).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+                {
+                    NamirnicaPodruznica namirnica = new NamirnicaPodruznica
+                    {
+                        Id = model.NamirnicaPodruznicaId,
+                        Aktivna = model.Aktivna,
+                        Cijena = model.Cijena ?? 1,
+                        KolicinaNaStanju = model.KolicinaNaStanju
+                    };
+                    if (model.PopustId != 0)
+                    {
+                        namirnica.PopustId = model.PopustId;
+                    }
+                    _namirnicaPodruznicaService.EditNamirnicaPodruznica(namirnica);
+                }
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                return RedirectToAction(nameof(PregledNamirnicaPodruznica));
+            }
+            model.PopustList = _popustService.GetPopusti();
+            return View(model);
         }
     }
 }

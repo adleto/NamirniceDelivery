@@ -17,5 +17,6 @@ namespace NamirniceDelivery.Services.Interfaces
         void UkloniNamirnicaPodruznica(int id);
         NamirnicaPodruznica GetNamirnicaPodruznica(int id);
         void ToogleStatusNamirnicaPodruznica(int id);
+        void EditNamirnicaPodruznica(NamirnicaPodruznica namirnicaPodruznica);
     }
 }

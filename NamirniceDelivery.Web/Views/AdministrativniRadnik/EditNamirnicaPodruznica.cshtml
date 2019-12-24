@@ -1,0 +1,81 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.EditNamirnicaPodruznicaViewModel
+@{
+    ViewData["Title"] = "EditNamirnicaPodruznica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center row justify-content-center">
+    <div class="">
+        <h1>Edit Namirnica</h1>
+
+        <h4>Namirnica</h4>
+        <hr />
+        <div @*class="row"*@>
+            <div @*class="col-md-4"*@>
+                <form asp-action="EditNamirnicaPodruznica">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <input type="hidden" asp-for="NamirnicaPodruznicaId" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Naziv" class="control-label"></label>
+                        <input title="Ovo polje se ne može mijenjati" disabled asp-for="Naziv" class="form-control" />
+                        <span asp-validation-for="Naziv" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Cijena" class="control-label"></label>
+                        <input asp-for="Cijena" class="form-control" />
+                        <span asp-validation-for="Cijena" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KolicinaNaStanju" class="control-label"></label>
+                        <input asp-for="KolicinaNaStanju" class="form-control" />
+                        <span asp-validation-for="KolicinaNaStanju" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Aktivna" /> @Html.DisplayNameFor(model => model.Aktivna)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PopustId"></label>
+                        <select class="form-control" asp-for="PopustId">
+                            <option value="0">Nema</option>
+                            @foreach (var popust in Model.PopustList)
+                            {
+                                if (popust.Id == Model.PopustId)
+                                {
+                                    <option title="@(popust.Iznos*100)%" selected value="@popust.Id">@popust.Opis</option>
+                                }
+                                else
+                                {
+                                    <option title="@(popust.Iznos*100)%" value="@popust.Id">@popust.Opis</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="PopustId" class="text-danger"></span><br />
+                        <a asp-action="KreirajPopust">Dodaj novi popust</a>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Edit" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if (string.IsNullOrEmpty(Model.ReturnUrl))
+        {
+            <div>
+                <a asp-action="Index">Nazad na panel</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="@Model.ReturnUrl">Idi nazad</a>
+            </div>
+        }
+    </div>
+</div>
+
+
+

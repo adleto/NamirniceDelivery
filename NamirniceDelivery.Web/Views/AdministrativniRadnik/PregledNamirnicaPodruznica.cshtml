@@ -66,14 +66,14 @@
                             <td>
                                 @if (n.Aktivna == true)
                                 {
-                                    <a asp-action="NamirnicaToogleStatus" asp-route-id="@n.Id">Deaktiviraj</a>
+                                    <a asp-action="NamirnicaToogleStatus" asp-route-namirnicaPodruznicaId="@n.Id">Deaktiviraj</a>
                                 }
                                 else
                                 {
-                                    <a asp-action="NamirnicaToogleStatus" asp-route-id="@n.Id">Aktiviraj</a>
+                                    <a asp-action="NamirnicaToogleStatus" asp-route-namirnicaPodruznicaId="@n.Id">Aktiviraj</a>
                                 } |
-                                <a asp-controller="AdministrativniRadnik" asp-action="UkloniNamirnicaPodruznica" asp-route-id="@n.Id" asp-route-returnUrl="@Context.Request.Path">Ukloni</a> |
-                                <a asp-controller="AdministrativniRadnik" asp-action="EditNamirnicaPodruznica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path">Edit</a>
+                                <a asp-controller="AdministrativniRadnik" asp-action="UkloniNamirnicaPodruznica" asp-route-namirnicaPodruznicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path">Ukloni</a> |
+                                <a asp-controller="AdministrativniRadnik" asp-action="EditNamirnicaPodruznica" asp-route-namirnicaPodruznicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path">Edit</a>
                             </td>
                         </tr>
                     }

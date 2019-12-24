@@ -24,6 +24,16 @@ namespace NamirniceDelivery.Services.Services
             _context.SaveChanges();
         }
 
+        public void EditNamirnicaPodruznica(NamirnicaPodruznica namirnicaPodruznica)
+        {
+            var namirnica = GetNamirnicaPodruznica(namirnicaPodruznica.Id);
+            namirnica.Aktivna = namirnicaPodruznica.Aktivna;
+            namirnica.Cijena = namirnicaPodruznica.Cijena;
+            namirnica.PopustId = namirnicaPodruznica.PopustId;
+            namirnica.KolicinaNaStanju = namirnicaPodruznica.KolicinaNaStanju;
+            _context.SaveChanges();
+        }
+
         public NamirnicaPodruznica GetNamirnicaPodruznica(int id)
         {
             return _context.NamirnicaPodruznica
