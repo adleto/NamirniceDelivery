@@ -143,8 +143,7 @@ namespace NamirniceDelivery.Web.Controllers
             };
             if (kategorijaId!=0)
             {
-                var k = _kategorijaService.GetKategorija(kategorijaId);
-                v.NamirnicaList = _namirnicaService.GetNamirnicePoKategorijama(k);
+                v.NamirnicaList = _namirnicaService.GetNamirnicePoKategorijama(_kategorijaService.GetKategorija(kategorijaId));
                 v.KategorijaId = kategorijaId;
             }
             else
@@ -288,11 +287,58 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     return Redirect(model.ReturnUrl);
                 }
-                return RedirectToAction(nameof(PregledKategorija)); //change this
+                return RedirectToAction(nameof(PregledNamirnicaPodruznica));
             }
             model.PopustList = _popustService.GetPopusti();
             model.NamirnicaList = _namirnicaService.GetNamirnice();
             return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult PregledNamirnicaPodruznica(string returnUrl = "", int kategorijaId = 0)
+        {
+            int podruznicaId = _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name);
+            var v = new PregledNamirnicaPodruznicaViewModel
+            {
+                ReturnUrl = returnUrl,
+                KategorijaList = _kategorijaService.GetKategorije()
+            };
+            if (kategorijaId != 0)
+            {
+                v.NamirnicaList = _namirnicaPodruznicaService.GetNamirnicePodruznicaKategorija(_kategorijaService.GetKategorija(kategorijaId), podruznicaId);
+                v.KategorijaId = kategorijaId;
+            }
+            else
+            {
+                v.NamirnicaList = _namirnicaPodruznicaService.GetNamirnicePodruznica(podruznicaId);
+                v.KategorijaId = 0;
+            }
+            return View(v);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult UkloniNamirnicaPodruznica(int idNamirnicaPodruznica, string returnUrl="")
+        {
+            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(idNamirnicaPodruznica).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            {
+                _namirnicaPodruznicaService.UkloniNamirnicaPodruznica(idNamirnicaPodruznica);
+            }
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(PregledNamirnicaPodruznica));
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult NamirnicaToogleStatus(string returnUrl, int idNamirnicaPodruznica)
+        {
+            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(idNamirnicaPodruznica).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            {
+                _namirnicaPodruznicaService.ToogleStatusNamirnicaPodruznica(idNamirnicaPodruznica);
+            }
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(PregledNamirnicaPodruznica));
         }
     }
 }
