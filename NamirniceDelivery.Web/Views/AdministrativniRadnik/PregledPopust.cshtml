@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "PregledPopust";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int brojac = 1;
 }
 
 <div class="text-center row justify-content-center">
@@ -29,11 +28,11 @@
                     @foreach (var p in Model.PopustList)
                     {
                         <tr>
-                            <td>@(brojac++).</td>
+                            <td>@(Model.PopustList.IndexOf(p)+1).</td>
                             <td>@p.Opis</td>
                             <td>@((p.Iznos * 100).ToString() + "%")</td>
                             <td>
-                                @if (Model.Deletable[brojac - 2])
+                                @if (Model.Deletable[Model.PopustList.IndexOf(p)])
                                 {
                                     <a asp-action="UkloniPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
                                 }

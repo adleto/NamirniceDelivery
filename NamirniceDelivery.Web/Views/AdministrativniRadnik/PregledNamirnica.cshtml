@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Pregled Vrsta Namirnica";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int brojac = 1;
 }
 
 <div class="text-center row justify-content-center">
@@ -49,11 +48,11 @@
                     @foreach (var n in Model.NamirnicaList)
                     {
                         <tr>
-                            <td>@(brojac++).</td>
+                            <td>@(Model.NamirnicaList.IndexOf(n)+1).</td>
                             <td>@n.Naziv</td>
                             <td>@n.Kategorija.Naziv</td>
                             <td>
-                                @if (Model.Deletable[brojac - 2])
+                                @if (Model.Deletable[Model.NamirnicaList.IndexOf(n)])
                                 {
                                     <a asp-action="UkloniNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
                                 }

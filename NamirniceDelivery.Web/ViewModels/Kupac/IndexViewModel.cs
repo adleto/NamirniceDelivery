@@ -11,5 +11,7 @@ namespace NamirniceDelivery.Web.ViewModels.Kupac
         public string Username { get; set; }
         public List<NamirnicaPodruznica> NamirnicaList { get; set; }
         public List<Podruznica> PodruznicaList { get; set; }
+        public List<NamirnicaPodruznica> SpremljeneNamirniceList { get; set; }
+        public List<Podruznica> SpremljenePodruzniceList { get; set; }
     }
 }

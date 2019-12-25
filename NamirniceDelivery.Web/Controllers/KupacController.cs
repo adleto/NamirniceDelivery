@@ -42,7 +42,9 @@ namespace NamirniceDelivery.Web.Controllers
             return View(new IndexViewModel { 
                 Username = kupac.UserName,
                 NamirnicaList = _namirnicaPodruznicaService.GetNamirniceForKupac(kupac),
-                PodruznicaList = _podruznicaService.GetPodruzniceForKupac(kupac)
+                PodruznicaList = _podruznicaService.GetPodruzniceForKupac(kupac),
+                SpremljeneNamirniceList = KonvertujSpremljeneUNamirnice(_kupacService.GetSpremljeneNamirnice(kupac.Id)),
+                SpremljenePodruzniceList = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id))
             });
         }
         [Authorize(Roles = "Kupac")]
@@ -172,7 +174,7 @@ namespace NamirniceDelivery.Web.Controllers
         private List<NamirnicaPodruznica> KonvertujSpremljeneUNamirnice(List<KupacSpremljeneNamirnice> list)
         {
             return list
-                .Select(ksn => _namirnicaPodruznicaService.GetNamirnicaPodruznica(ksn.Id))
+                .Select(ksn => _namirnicaPodruznicaService.GetNamirnicaPodruznica(ksn.NamirnicaPodruznicaId))
                 .ToList();
         }
         private List<Podruznica> KonvertujSpremljeneUPodruznice(List<KupacSpremljenePodruznice> list)

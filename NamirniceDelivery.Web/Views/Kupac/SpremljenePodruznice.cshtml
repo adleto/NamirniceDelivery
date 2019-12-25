@@ -2,40 +2,13 @@
 @{
     ViewData["Title"] = "SpremljenePodruznice";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int counterPodruznica = 0;
 }
 
 <div class="text-center row justify-content-center">
     <div>
         <h1>Spremljene Podružnice</h1>
         <br />
-        @if (Model.SpremljenePodruzniceList.Any())
-        {
-            <div class="card-deck">
-                @foreach (var p in Model.SpremljenePodruzniceList)
-                {
-                    counterPodruznica++;
-                    <div class="card text-white bg-secondary mb-3 rounded" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">@p.Naziv</h5>
-                            <p class="card-text">
-                                @p.Opis<br />
-                                Adresa: @p.Adresa<br />
-                            </p>
-                            <a href="#" class="btn btn-primary rounded">Posjeti Shop</a>
-                        </div>
-                    </div>
-                    @if (counterPodruznica % 4 == 0)
-                    {
-                        <div class="w-100 d-none d-md-block d-lg-block"><!-- wrap every 3 on md--></div>
-                    }
-                }
-            </div>
-        }
-        else
-        {
-            <p><span>Nemate spremljenih podružnica. Spremite <a asp-action="Index">neke!</a></span></p>
-        }
+        <partial name="_PodruznicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledPodruznicaPartialViewModel { PodruznicaList = Model.SpremljenePodruzniceList, SpremljenePodruzniceList = Model.SpremljenePodruzniceList })" />
     </div>
 </div>
 

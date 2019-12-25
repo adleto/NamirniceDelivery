@@ -1,0 +1,39 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Shared.PregledPodruznicaPartialViewModel
+
+@if (Model.PodruznicaList.Any())
+{
+    <div class="card-deck">
+        @foreach (var p in Model.PodruznicaList)
+        {
+            <div class="card text-white bg-secondary mb-3 rounded" style="width: 18rem;">
+                <div class="card-body">
+                    @if (Model.SpremljenePodruzniceList != null)
+                    {
+                        if (Model.SpremljenePodruzniceList.Contains(p))
+                        {
+                            <a asp-controller="Kupac" asp-action="UkloniSpremljenuPodruznicu" asp-route-podruznicaId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger" title="Ukloni iz spremljenih">favorite</i></a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Kupac" asp-action="DodajSpremljenuPodruznicu" asp-route-podruznicaId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-dark" title="Dodaj u spremljene">favorite</i></a>
+                        }
+                    }
+                    <h5 class="card-title">@p.Naziv</h5>
+                    <p class="card-text">
+                        @p.Opis<br />
+                        Adresa: @p.Adresa<br />
+                    </p>
+                    <a href="#" class="btn btn-primary rounded">Posjeti Shop</a>
+                </div>
+            </div>
+            @if (Model.PodruznicaList.IndexOf(p) + 1 % 4 == 0)
+            {
+                <div class="w-100 d-none d-md-block d-lg-block"><!-- wrap every 3 on md--></div>
+            }
+        }
+    </div>
+}
+else
+{
+    <p><span>Nema podružnica na listi.</span></p>
+}

@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Pregled Kategorija";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int brojac = 1;
 }
 
     <div class="text-center row justify-content-center">
@@ -28,10 +27,10 @@
                         @foreach (var k in Model.KategorijaList)
                         {
                             <tr>
-                                <td>@(brojac++).</td>
+                                <td>@(Model.KategorijaList.IndexOf(k)+1).</td>
                                 <td>@k.Naziv</td>
                                 <td>
-                                    @if (Model.Deletable[brojac - 2])
+                                    @if (Model.Deletable[Model.KategorijaList.IndexOf(k)])
                                     {
                                         <a asp-action="UkloniKategoriju" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
                                     }

@@ -2,59 +2,13 @@
 @{
     ViewData["Title"] = "SpremljeneNamirnice";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int counterNamirnica = 0;
 }
 
 <div class="text-center row justify-content-center">
     <div>
         <h1>Spremljene Namirnice</h1>
         <br />
-        <div>
-            @if (Model.SpremljeneNamirniceList.Any())
-            {
-                <form action="" method="post">
-                    <div class="card-deck">
-                        @foreach (var p in Model.SpremljeneNamirniceList)
-                        {
-                            counterNamirnica++;
-                            <div class="card text-white bg-danger mb-3 rounded" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">@p.Namirnica.Naziv</h5>
-                                    <p class="card-text">
-                                        Cijena:<br />
-                                        @((p.CijenaSaPopustom).ToString("F") + "KM")<br />
-                                        Na stanju: @p.KolicinaNaStanju<br />
-                                        @if (p.Popust != null)
-                                        {
-                                            <div title="Popust" class="btn btn-warning rounded-circle">-@p.Popust.Iznos.ToString("P1")</div>
-                                        }
-                                    </p>
-                                    <input type="hidden" value="@p.Id" name="namirnicaPodruznicaId" />
-                                    <input type="number" title="Količina za kupiti" onchange="otkljucaj(@p.Id)" min="0" max="@p.KolicinaNaStanju" step="1" value="0" name="kolicina">
-                                    <input type="submit" id="@p.Id" class="btn btn-info" value="Brza kupovina" formaction="/Kupac/BrzaKupovina" disabled />
-                                </div>
-                            </div>
-                            @if (counterNamirnica % 4 == 0)
-                            {
-                                <div class="w-100 d-none d-md-block d-lg-block"><!-- wrap every 3 on md--></div>
-                            }
-                        }
-                    </div>
-                    <input type="submit" class="btn btn-success rounded" value="Dodaj odabrane u korpu" formaction="Kupac/KorpaDodaj" />
-                </form>
-            }
-            else
-            {
-                <p><span>Nemate spremljenih namirnica. Spremite <a asp-action="Index">neke!</a></span></p>
-            }
-        </div>
+        <partial name="_NamirnicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledNamirnicaPartialViewModel { NamirnicaPodruznicaList = Model.SpremljeneNamirniceList, SpremljeneNamirniceList = Model.SpremljeneNamirniceList })" />
     </div>
 </div>
-
-<script>
-    function otkljucaj(id) {
-        var submiter = document.getElementById(id);
-        submiter.disabled = false;
-    }
-</script>
 
