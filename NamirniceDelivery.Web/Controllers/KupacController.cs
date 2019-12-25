@@ -104,5 +104,27 @@ namespace NamirniceDelivery.Web.Controllers
             return RedirectToAction(nameof(Index));
             // TODO: redirectaj kasnije na detalje transakcije
         }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult DodajSpremljenuNamirnicu(int namirnicaPodruznicaId, string returnUrl = "")
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            _kupacService.DodajSpremljenuNamiricu(kupac.Id, namirnicaPodruznicaId);
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return Redirect(returnUrl);
+        }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult DodajSpremljenuPodruznicu(int podruznicaId, string returnUrl = "")
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            _kupacService.DodajSpremljenuPodruznicu(kupac.Id, podruznicaId);
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return Redirect(returnUrl);
+        }
     }
 }

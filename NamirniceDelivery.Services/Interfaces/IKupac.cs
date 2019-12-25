@@ -8,5 +8,7 @@ namespace NamirniceDelivery.Services.Interfaces
     public interface IKupac
     {
         Kupac GetKupac(string username);
+        void DodajSpremljenuNamiricu(string id, int namirnicaPodruznicaId);
+        void DodajSpremljenuPodruznicu(string id, int podruznicaId);
     }
 }

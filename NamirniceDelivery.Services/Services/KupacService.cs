@@ -18,6 +18,26 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
+        public void DodajSpremljenuNamiricu(string id, int namirnicaPodruznicaId)
+        {
+            _context.KupacSpremljeneNamirnice.Add(new KupacSpremljeneNamirnice
+            {
+                KupacId = id,
+                NamirnicaPodruznicaId = namirnicaPodruznicaId
+            });
+            _context.SaveChanges();
+        }
+
+        public void DodajSpremljenuPodruznicu(string id, int podruznicaId)
+        {
+            _context.KupacSpremljenePodruznice.Add(new KupacSpremljenePodruznice
+            {
+                KupacId = id,
+                PodruznicaId = podruznicaId
+            });
+            _context.SaveChanges();
+        }
+
         public Kupac GetKupac(string username)
         {
             return _context.Kupac
