@@ -148,5 +148,38 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return Redirect(returnUrl);
         }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult SpremljeneNamirnice()
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            return View(new SpremljeneNamirniceViewModel
+            {
+                SpremljeneNamirniceList = KonvertujSpremljeneUNamirnice(_kupacService.GetSpremljeneNamirnice(kupac.Id)),
+                SpremljenePodruzniceList = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id))
+            });
+        }
+
+        [Authorize(Roles = "Kupac")]
+        public IActionResult SpremljenePodruznice()
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            return View(new SpremljenePodruzniceViewModel
+            {
+                SpremljenePodruzniceList = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id))
+            });
+        }
+
+        private List<NamirnicaPodruznica> KonvertujSpremljeneUNamirnice(List<KupacSpremljeneNamirnice> list)
+        {
+            return list
+                .Select(ksn => _namirnicaPodruznicaService.GetNamirnicaPodruznica(ksn.Id))
+                .ToList();
+        }
+        private List<Podruznica> KonvertujSpremljeneUPodruznice(List<KupacSpremljenePodruznice> list)
+        {
+            return list
+                .Select(ksp => _podruznicaService.GetPodruznica(ksp.PodruznicaId))
+                .ToList();
+        }
     }
 }

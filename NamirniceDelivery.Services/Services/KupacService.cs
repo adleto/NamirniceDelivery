@@ -52,6 +52,21 @@ namespace NamirniceDelivery.Services.Services
                 .FirstOrDefault();
         }
 
+        public List<KupacSpremljeneNamirnice> GetSpremljeneNamirnice(string id)
+        {
+            return _context.KupacSpremljeneNamirnice
+                .Include(sn => sn.NamirnicaPodruznica)
+                .Where(sn => sn.KupacId == id && sn.NamirnicaPodruznica.Aktivna == true)
+                .ToList();
+        }
+
+        public List<KupacSpremljenePodruznice> GetSpremljenePodruznice(string id)
+        {
+            return _context.KupacSpremljenePodruznice
+                .Where(sp => sp.KupacId == id)
+                .ToList();
+        }
+
         public void UkloniSpremljenuNamiricu(string id, int namirnicaPodruznicaId)
         {
             _context.KupacSpremljeneNamirnice.Remove(

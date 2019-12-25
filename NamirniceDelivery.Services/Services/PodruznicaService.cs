@@ -19,6 +19,11 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
+        public Podruznica GetPodruznica(int podruznicaId)
+        {
+            return _context.Podruznica.Find(podruznicaId);
+        }
+
         public List<Podruznica> GetPodruznice()
         {
             return _context.Podruznica

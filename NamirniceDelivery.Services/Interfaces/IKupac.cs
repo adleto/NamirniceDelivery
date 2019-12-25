@@ -12,5 +12,7 @@ namespace NamirniceDelivery.Services.Interfaces
         void DodajSpremljenuPodruznicu(string id, int podruznicaId);
         void UkloniSpremljenuNamiricu(string id, int namirnicaPodruznicaId);
         void UkloniSpremljenuPodruznicu(string id, int podruznicaId);
+        List<KupacSpremljenePodruznice> GetSpremljenePodruznice(string id);
+        List<KupacSpremljeneNamirnice> GetSpremljeneNamirnice(string id);
     }
 }
