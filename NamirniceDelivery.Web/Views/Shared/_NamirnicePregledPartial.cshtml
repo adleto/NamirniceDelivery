@@ -31,9 +31,10 @@
                         </p>
                         @if (User.IsInRole("Kupac"))
                         {
-                        <input type="hidden" value="@p.Id" name="namirnicaPodruznicaId" />
-                        <input type="number" title="Količina za kupiti" onchange="otkljucaj(@p.Id)" min="0" max="@p.KolicinaNaStanju" step="1" value="0" name="kolicina">
-                        <input type="submit" id="@p.Id" class="btn btn-info" value="Brza kupovina" formaction="/Kupac/BrzaKupovina" disabled />
+                            <span hidden name="cijena" vrijednost="@p.CijenaSaPopustom"></span>
+                            <input type="hidden" value="@p.Id" name="namirnicaPodruznicaId" />
+                            <input type="number" title="Količina za kupiti" onchange="otkljucaj(@p.Id)" min="0" max="@p.KolicinaNaStanju" step="1" value="0" name="kolicina">
+                            <input type="submit" id="@p.Id" class="btn btn-info" value="Brza kupovina" formaction="/Kupac/BrzaKupovina" disabled />
                         }
                     </div>
                 </div>
@@ -45,7 +46,8 @@
         </div>
         @if (User.IsInRole("Kupac"))
         {
-        <input type="submit" class="btn btn-success rounded" value="Dodaj odabrane u korpu" formaction="Kupac/KorpaDodaj" />
+            <h4>Total <span id="totalCijena">0.00</span>KM</h4>
+            <input type="submit" class="btn btn-success rounded" value="Dodaj odabrane u korpu" formaction="Kupac/KorpaDodaj" />
         }
     </form>
 }
@@ -58,6 +60,15 @@ else
     function otkljucaj(id) {
         var submiter = document.getElementById(id);
         submiter.disabled = false;
+
+        var totalCijenaElement = document.getElementById("totalCijena");
+        var totalCijena = 0;
+        var kolicine = document.getElementsByName("kolicina");
+        var cijene = document.getElementsByName("cijena");
+        for (var i = 0; i < kolicine.length;i++) {
+            totalCijena += kolicine[i].valueAsNumber * cijene[i].attributes.vrijednost.value;
+        }
+        totalCijenaElement.innerHTML = ((totalCijena * 100) / 100).toFixed(2);
     }
 </script>
  }

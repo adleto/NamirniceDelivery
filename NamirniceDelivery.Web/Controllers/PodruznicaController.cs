@@ -31,6 +31,7 @@ namespace NamirniceDelivery.Web.Controllers
             var podruznica = _podruznicaService.GetPodruznica(id);
             var v = new IndexViewModel
             {
+                PodruznicaId = podruznica.Id,
                 Adresa = podruznica.Adresa,
                 Naziv = podruznica.Naziv,
                 Opcina = podruznica.Opcina,

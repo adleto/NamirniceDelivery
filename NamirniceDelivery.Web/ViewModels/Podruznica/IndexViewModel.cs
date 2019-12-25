@@ -8,6 +8,7 @@ namespace NamirniceDelivery.Web.ViewModels.Podruznica
 {
     public class IndexViewModel
     {
+        public int PodruznicaId { get; set; }
         public string ReturnUrl { get; set; }
         public string Naziv { get; set; }
         public string Opis { get; set; }
