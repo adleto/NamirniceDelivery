@@ -26,6 +26,23 @@ namespace NamirniceDelivery.Services.Services
             _context.SaveChanges();
         }
 
+        public List<bool> GetIsDeletable(List<Namirnica> namirnicaList)
+        {
+            List<bool> list = new List<bool>();
+            foreach (var item in namirnicaList)
+            {
+                if (_context.NamirnicaPodruznica.Where(np => np.Namirnica == item).Any())
+                {
+                    list.Add(false);
+                }
+                else
+                {
+                    list.Add(true);
+                }
+            }
+            return list;
+        }
+
         public Namirnica GetNamirnica(int id)
         {
             return _context.Namirnica
@@ -52,6 +69,12 @@ namespace NamirniceDelivery.Services.Services
         public void KreirajNamirnica(Namirnica namirnica)
         {
             _context.Namirnica.Add(namirnica);
+            _context.SaveChanges();
+        }
+
+        public void UkloniNamirnica(int namirnicaId)
+        {
+            _context.Namirnica.Remove(GetNamirnica(namirnicaId));
             _context.SaveChanges();
         }
     }

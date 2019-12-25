@@ -10,5 +10,6 @@ namespace NamirniceDelivery.Web.ViewModels.AdministrativniRadnik
     {
         public string ReturnUrl { get; set; }
         public List<Popust> PopustList { get; set; }
+        public List<bool> Deletable { get; set; }
     }
 }

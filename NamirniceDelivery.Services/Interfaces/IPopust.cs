@@ -11,5 +11,7 @@ namespace NamirniceDelivery.Services.Interfaces
         List<Popust> GetPopusti();
         Popust GetPopust(int id);
         void EditPopust(Popust popust);
+        void UkloniPopust(int popustId);
+        List<bool> GetIsDeletable(List<Popust> popustList);
     }
 }

@@ -68,10 +68,13 @@ namespace NamirniceDelivery.Web.Controllers
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult PregledKategorija(string returnUrl = "")
         {
+            var kategorijaList = _kategorijaService.GetKategorije();
+            List<bool> deletable = _kategorijaService.GetIsDeletable(kategorijaList);
             return View(new PregledKategorijaViewModel
             {
                 ReturnUrl = returnUrl,
-                KategorijaList = _kategorijaService.GetKategorije()
+                KategorijaList = kategorijaList,
+                Deletable = deletable
             });
         }
         [Authorize(Roles = "AdministrativniRadnik")]
@@ -103,6 +106,19 @@ namespace NamirniceDelivery.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult UkloniKategoriju(int kategorijaId, string returnUrl="")
+        {
+            if (!_namirnicaService.GetNamirnicePoKategorijama(_kategorijaService.GetKategorija(kategorijaId)).Any())
+            {
+                _kategorijaService.UkloniKategorija(kategorijaId);
+            }
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(PregledKategorija));
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult KreirajNamirnica(string returnUrl = "")
@@ -151,6 +167,7 @@ namespace NamirniceDelivery.Web.Controllers
                 v.NamirnicaList = _namirnicaService.GetNamirnice();
                 v.KategorijaId = 0;
             }
+            v.Deletable = _namirnicaService.GetIsDeletable(v.NamirnicaList);
             return View(v);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
@@ -188,6 +205,19 @@ namespace NamirniceDelivery.Web.Controllers
             return View(model);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult UkloniNamirnicu(int namirnicaId, string returnUrl = "")
+        {
+            if (!_namirnicaPodruznicaService.GetNamirnicePodruznicaVrsta(_namirnicaService.GetNamirnica(namirnicaId)).Any())
+            {
+                _namirnicaService.UkloniNamirnica(namirnicaId);
+            }
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(PregledNamirnica));
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult KreirajPopust(string returnUrl = "")
         {
             return View(new KreirajPopustViewModel
@@ -217,11 +247,13 @@ namespace NamirniceDelivery.Web.Controllers
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult PregledPopust(string returnUrl = "")
         {
-            return View(new PregledPopustViewModel
+            var v = new PregledPopustViewModel
             {
                 ReturnUrl = returnUrl,
                 PopustList = _popustService.GetPopusti()
-            });
+            };
+            v.Deletable = _popustService.GetIsDeletable(v.PopustList);
+            return View(v);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult EditPopust(int popustId, string returnUrl = "")
@@ -253,6 +285,19 @@ namespace NamirniceDelivery.Web.Controllers
                 return RedirectToAction(nameof(PregledNamirnica));
             }
             return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult UkloniPopust(int popustId, string returnUrl = "")
+        {
+            if (!_namirnicaPodruznicaService.GetNamirnicePodruznicaPopust(_popustService.GetPopust(popustId)).Any())
+            {
+                _popustService.UkloniPopust(popustId);
+            }
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(PregledPopust));
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult DodajNamirnicu(string returnUrl = "")

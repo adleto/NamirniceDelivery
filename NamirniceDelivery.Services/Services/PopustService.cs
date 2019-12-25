@@ -25,6 +25,23 @@ namespace NamirniceDelivery.Services.Services
             _context.SaveChanges();
         }
 
+        public List<bool> GetIsDeletable(List<Popust> popustList)
+        {
+            List<bool> list = new List<bool>();
+            foreach (var item in popustList)
+            {
+                if (_context.NamirnicaPodruznica.Where(np => np.Popust == item).Any())
+                {
+                    list.Add(false);
+                }
+                else
+                {
+                    list.Add(true);
+                }
+            }
+            return list;
+        }
+
         public Popust GetPopust(int id)
         {
             return _context.Popust.Find(id);
@@ -38,6 +55,12 @@ namespace NamirniceDelivery.Services.Services
         public void KreirajPopust(Popust popust)
         {
             _context.Popust.Add(popust);
+            _context.SaveChanges();
+        }
+
+        public void UkloniPopust(int popustId)
+        {
+            _context.Popust.Remove(GetPopust(popustId));
             _context.SaveChanges();
         }
     }

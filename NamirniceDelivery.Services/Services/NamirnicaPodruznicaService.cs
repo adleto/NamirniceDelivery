@@ -83,6 +83,13 @@ namespace NamirniceDelivery.Services.Services
                 .ToList();
         }
 
+        public List<NamirnicaPodruznica> GetNamirnicePodruznicaPopust(Popust popust)
+        {
+            return GetNamirnicePodruznica()
+                .Where(np => np.Popust == popust)
+                .ToList();
+        }
+
         public List<NamirnicaPodruznica> GetNamirnicePodruznicaVrsta(Namirnica namirnica)
         {
             return GetNamirnicePodruznica()

@@ -12,5 +12,7 @@ namespace NamirniceDelivery.Services.Interfaces
         List<Kategorija> GetKategorije();
         Kategorija GetKategorija(int id);
         void EditKategorija(Kategorija kategorija);
+        void UkloniKategorija(int id);
+        List<bool> GetIsDeletable(List<Kategorija> kategorijaList);
     }
 }

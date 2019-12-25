@@ -12,5 +12,7 @@ namespace NamirniceDelivery.Services.Interfaces
         List<Namirnica> GetNamirnice();
         List<Namirnica> GetNamirnicePoKategorijama(Kategorija kategorija);
         void EditNamirnica(Namirnica namirnica);
+        void UkloniNamirnica(int namirnicaId);
+        List<bool> GetIsDeletable(List<Namirnica> namirnicaList);
     }
 }

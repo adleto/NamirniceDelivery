@@ -39,5 +39,28 @@ namespace NamirniceDelivery.Services.Services
             k.Naziv = kategorija.Naziv;
             _context.SaveChanges();
         }
+
+        public void UkloniKategorija(int id)
+        {
+            _context.Kategorija.Remove(GetKategorija(id));
+            _context.SaveChanges();
+        }
+
+        public List<bool> GetIsDeletable(List<Kategorija> kategorijaList)
+        {
+            List<bool> list = new List<bool>();
+            foreach(var item in kategorijaList)
+            {
+                if(_context.Namirnica.Where(n=>n.Kategorija == item).Any())
+                {
+                    list.Add(false);
+                }
+                else
+                {
+                    list.Add(true);
+                }
+            }
+            return list;
+        }
     }
 }
