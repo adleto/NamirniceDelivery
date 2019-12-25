@@ -8,7 +8,7 @@
             {
                 <div class="card text-white bg-danger mb-3 rounded" style="width: 18rem;">
                     <div class="card-body">
-                        @if (Model.SpremljeneNamirniceList != null)
+                        @if (User.IsInRole("Kupac") && Model.SpremljeneNamirniceList != null)
                         {
                             if (Model.SpremljeneNamirniceList.Contains(p))
                             {
@@ -29,9 +29,12 @@
                                 <div title="Popust" class="btn btn-warning rounded-circle">-@p.Popust.Iznos.ToString("P1")</div>
                             }
                         </p>
+                        @if (User.IsInRole("Kupac"))
+                        {
                         <input type="hidden" value="@p.Id" name="namirnicaPodruznicaId" />
                         <input type="number" title="Količina za kupiti" onchange="otkljucaj(@p.Id)" min="0" max="@p.KolicinaNaStanju" step="1" value="0" name="kolicina">
                         <input type="submit" id="@p.Id" class="btn btn-info" value="Brza kupovina" formaction="/Kupac/BrzaKupovina" disabled />
+                        }
                     </div>
                 </div>
                 @if (Model.NamirnicaPodruznicaList.IndexOf(p) + 1 % 4 == 0)
@@ -40,17 +43,21 @@
                 }
             }
         </div>
+        @if (User.IsInRole("Kupac"))
+        {
         <input type="submit" class="btn btn-success rounded" value="Dodaj odabrane u korpu" formaction="Kupac/KorpaDodaj" />
+        }
     </form>
 }
 else
 {
     <p><span>Nema namirnica na listi.</span></p>
 }
-
+@if (User.IsInRole("Kupac")) {
 <script>
     function otkljucaj(id) {
         var submiter = document.getElementById(id);
         submiter.disabled = false;
     }
 </script>
+ }

@@ -7,7 +7,7 @@
         {
             <div class="card text-white bg-secondary mb-3 rounded" style="width: 18rem;">
                 <div class="card-body">
-                    @if (Model.SpremljenePodruzniceList != null)
+                    @if (User.IsInRole("Kupac") && Model.SpremljenePodruzniceList != null)
                     {
                         if (Model.SpremljenePodruzniceList.Contains(p))
                         {
@@ -23,7 +23,7 @@
                         @p.Opis<br />
                         Adresa: @p.Adresa<br />
                     </p>
-                    <a href="#" class="btn btn-primary rounded">Posjeti Shop</a>
+                    <a asp-controller="Podruznica" asp-route-id="@p.Id" class="btn btn-primary rounded">Posjeti Shop</a>
                 </div>
             </div>
             @if (Model.PodruznicaList.IndexOf(p) + 1 % 4 == 0)

@@ -1,16 +1,13 @@
-﻿@model NamirniceDelivery.Web.ViewModels.Kupac.IndexViewModel
+﻿@model  NamirniceDelivery.Web.ViewModels.Podruznica.IndexViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="text-center row justify-content-center">
-    <div>
-        <h1>Kupac Panel | <a href="#" @*asp-route-id="@Model.Username"*@>@Model.Username</a></h1>
-        <br />
-        <h2>Lista podružnica u vašoj blizini</h2>
-        <br />
-        <partial name="_PodruznicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledPodruznicaPartialViewModel { PodruznicaList = Model.PodruznicaList, SpremljenePodruzniceList = Model.SpremljenePodruzniceList })" />
+    <div class="">
+        <h1>Podružnica | @Model.Naziv</h1>
+
         <hr />
         <br />
         <div>
@@ -18,6 +15,19 @@
             <br />
             <partial name="_NamirnicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledNamirnicaPartialViewModel { NamirnicaPodruznicaList = Model.NamirnicaList, SpremljeneNamirniceList = Model.SpremljeneNamirniceList })" />
         </div>
+        <br />
+        @if (string.IsNullOrEmpty(Model.ReturnUrl))
+        {
+            <div>
+                <a asp-controller="Home" asp-action="Index">Nazad na panel</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="@Model.ReturnUrl">Idi nazad</a>
+            </div>
+        }
     </div>
 </div>
 

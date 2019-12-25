@@ -8,6 +8,6 @@ namespace NamirniceDelivery.Web.ViewModels.Kupac
 {
     public class SpremljenePodruzniceViewModel
     {
-        public List<Podruznica> SpremljenePodruzniceList { get; set; }
+        public List<NamirniceDelivery.Data.Entities.Podruznica> SpremljenePodruzniceList { get; set; }
     }
 }
