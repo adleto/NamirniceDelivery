@@ -10,5 +10,7 @@ namespace NamirniceDelivery.Services.Interfaces
         Kupac GetKupac(string username);
         void DodajSpremljenuNamiricu(string id, int namirnicaPodruznicaId);
         void DodajSpremljenuPodruznicu(string id, int podruznicaId);
+        void UkloniSpremljenuNamiricu(string id, int namirnicaPodruznicaId);
+        void UkloniSpremljenuPodruznicu(string id, int podruznicaId);
     }
 }

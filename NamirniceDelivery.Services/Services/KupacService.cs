@@ -51,5 +51,25 @@ namespace NamirniceDelivery.Services.Services
                 .Where(a => a.UserName == username)
                 .FirstOrDefault();
         }
+
+        public void UkloniSpremljenuNamiricu(string id, int namirnicaPodruznicaId)
+        {
+            _context.KupacSpremljeneNamirnice.Remove(
+                _context.KupacSpremljeneNamirnice
+                    .Where(ksn => ksn.KupacId == id && ksn.NamirnicaPodruznicaId == namirnicaPodruznicaId)
+                    .FirstOrDefault()
+            );
+            _context.SaveChanges();
+        }
+
+        public void UkloniSpremljenuPodruznicu(string id, int podruznicaId)
+        {
+            _context.KupacSpremljenePodruznice.Remove(
+                _context.KupacSpremljenePodruznice
+                    .Where(ksp => ksp.KupacId == id && ksp.PodruznicaId == podruznicaId)
+                    .FirstOrDefault()
+            );
+            _context.SaveChanges();
+        }
     }
 }

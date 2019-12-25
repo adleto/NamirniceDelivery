@@ -126,5 +126,27 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return Redirect(returnUrl);
         }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult UkloniSpremljenuNamirnicu(int namirnicaPodruznicaId, string returnUrl = "")
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            _kupacService.UkloniSpremljenuNamiricu(kupac.Id, namirnicaPodruznicaId);
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return Redirect(returnUrl);
+        }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult UkloniSpremljenuPodruznicu(int podruznicaId, string returnUrl = "")
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            _kupacService.UkloniSpremljenuPodruznicu(kupac.Id, podruznicaId);
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return Redirect(returnUrl);
+        }
     }
 }
