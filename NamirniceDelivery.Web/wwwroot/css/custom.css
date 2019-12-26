@@ -6,3 +6,11 @@
     text-align-last: center;
     padding-right: 29px;
 }
+table {
+    display: block !important;
+}
+@media (min-width: 769px) {
+    .table td, .table th {
+        min-width: 100px;
+    }
+}

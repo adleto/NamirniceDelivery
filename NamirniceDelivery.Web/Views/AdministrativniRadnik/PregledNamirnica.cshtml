@@ -35,37 +35,39 @@
                     <a asp-controller="AdministrativniRadnik" asp-action="KreirajNamirnica" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novu vrstu namirnice">+</a>
                 </div>
             </div>
-            <table class="table table-bordered table-responsive-lg table-striped">
-                <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Naziv</td>
-                        <td>Kategorija</td>
-                        <td>Akcije</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var n in Model.NamirnicaList)
-                    {
+            <div class="table-responsive">
+                <table class="table table-bordered table-responsive-lg table-striped">
+                    <thead>
                         <tr>
-                            <td>@(Model.NamirnicaList.IndexOf(n)+1).</td>
-                            <td>@n.Naziv</td>
-                            <td>@n.Kategorija.Naziv</td>
-                            <td>
-                                @if (Model.Deletable[Model.NamirnicaList.IndexOf(n)])
-                                {
-                                    <a asp-action="UkloniNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
-                                }
-                                else
-                                {
-                                    <a href="" title="Namirnica ne može biti obrisana jer postoje namrinice u podružnicama ovog tipa."><i class="material-icons text-dark">delete</i></a>
-                                }
-                                <a asp-action="EditNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
-                            </td>
+                            <th>#</th>
+                            <th>Naziv</th>
+                            <th>Kategorija</th>
+                            <th>Akcije</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var n in Model.NamirnicaList)
+                        {
+                            <tr>
+                                <th>@(Model.NamirnicaList.IndexOf(n) + 1).</th>
+                                <td>@n.Naziv</td>
+                                <td>@n.Kategorija.Naziv</td>
+                                <td>
+                                    @if (Model.Deletable[Model.NamirnicaList.IndexOf(n)])
+                                    {
+                                        <a asp-action="UkloniNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="" title="Namirnica ne može biti obrisana jer postoje namrinice u podružnicama ovog tipa."><i class="material-icons text-dark">delete</i></a>
+                                    }
+                                    <a asp-action="EditNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
         else
         {

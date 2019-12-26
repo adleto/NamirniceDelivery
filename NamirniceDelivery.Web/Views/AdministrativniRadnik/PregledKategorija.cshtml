@@ -15,35 +15,37 @@
                         <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novu kategoriju">+</a>
                     </div>
                 </div>
-                <table class="table table-bordered table-responsive-lg table-striped">
-                    <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Naziv</td>
-                            <td>Akcije</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var k in Model.KategorijaList)
-                        {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                             <tr>
-                                <td>@(Model.KategorijaList.IndexOf(k)+1).</td>
-                                <td>@k.Naziv</td>
-                                <td>
-                                    @if (Model.Deletable[Model.KategorijaList.IndexOf(k)])
-                                    {
-                                        <a asp-action="UkloniKategoriju" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
-                                    }
-                                    else
-                                    {
-                                        <a href="" title="Kategorija ne može biti obrisana jer postoje vrste namrnica koje pripadaju ovoj kategoriji."><i class="material-icons text-dark">delete</i></a>
-                                    }
-                                    <a asp-action="EditKategorija" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
-                                </td>
+                                <th>#</th>
+                                <th>Naziv</th>
+                                <th>Akcije</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var k in Model.KategorijaList)
+                            {
+                                <tr>
+                                    <th>@(Model.KategorijaList.IndexOf(k) + 1).</th>
+                                    <td>@k.Naziv</td>
+                                    <td>
+                                        @if (Model.Deletable[Model.KategorijaList.IndexOf(k)])
+                                        {
+                                            <a asp-action="UkloniKategoriju" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="" title="Kategorija ne može biti obrisana jer postoje vrste namrnica koje pripadaju ovoj kategoriji."><i class="material-icons text-dark">delete</i></a>
+                                        }
+                                        <a asp-action="EditKategorija" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             }
             else
             {

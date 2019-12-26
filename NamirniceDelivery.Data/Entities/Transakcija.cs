@@ -19,6 +19,9 @@ namespace NamirniceDelivery.Data.Entities
         public virtual AdministrativniRadnik AdministrativniRadnik { get; set; }
         [ForeignKey("AdministrativniRadnik")]
         public string AdministrativniRadnikId { get; set; }
+        [ForeignKey("Podruznica")]
+        public int PodruznicaId { get; set; }
+        public virtual Podruznica Podruznica { get; set; }
         public virtual Kupac Kupac { get; set; }
         [ForeignKey("Kupac")]
         public string KupacId { get; set; }

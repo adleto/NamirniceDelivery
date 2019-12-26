@@ -1,0 +1,36 @@
+﻿#headerOne {
+    padding-top: 10rem;
+    padding-bottom: calc(10rem - 72px);
+    min-height: 100vh;
+}
+
+#headerOne h1 {
+    font-size: 2.25rem;
+}
+#headerOne p {
+    font-size: 0.9rem;
+}
+#ponuda {
+    min-height: 100vh;
+}
+
+.tipka {
+    cursor: pointer;
+}
+@media (min-width: 769px) {
+        #headerOne h1 {
+            font-size: 3.5rem;
+        }
+        #headerOne p {
+            font-size: 1rem;
+        }
+}
+
+@media (min-width: 1200px) {
+    #headerOne h1 {
+        font-size: 4rem;
+    }
+    #headerOne p {
+        font-size: 1.2rem;
+    }
+}

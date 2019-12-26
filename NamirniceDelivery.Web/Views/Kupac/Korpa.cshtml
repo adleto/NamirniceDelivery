@@ -25,29 +25,33 @@
 
         @if (Model.NamirniceUKorpiList.Any())
         {
-            <table class="table table-bordered">
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <td>Podružnica</td>
-                        <td>Cijena</td>
-                        <td>Količina</td>
-                        <td>Cijena Total</td>
-                        <td>Akcije</td>
+                        <th>Podružnica</th>
+                        <th>Namirnica</th>
+                        <th>Cijena</th>
+                        <th>Količina</th>
+                        <th>Cijena Total</th>
+                        <th>Akcije</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var x in Model.NamirniceUKorpiList)
                     {
                         <tr>
-                            <td><a @*asp-controller="" asp-action="" asp-route-returnUrl="@Context.Request.Path"*@>@x.NamirnicaPodruznica.Podruznica.Naziv</a></td>
+                            <th><a asp-controller="Podruznica" asp-action="Index" asp-route-id="@x.NamirnicaPodruznica.PodruznicaId" asp-route-returnUrl="@Context.Request.Path">@x.NamirnicaPodruznica.Podruznica.Naziv</a></th>
+                            <td>@x.NamirnicaPodruznica.Namirnica.Naziv</td>
                             <td>@(x.NamirnicaPodruznica.CijenaSaPopustom.ToString("F") + "KM")</td>
                             <td>@x.Kolicina</td>
                             <td>@((x.CijenaStavkeTotal).ToString("F") + "KM")</td>
-                            <td><a asp-action="UkloniIzKorpe" asp-route-korpaStavkaId="@x.Id" class="btn btn-danger">Ukloni</a></td>
+                            <td><a asp-action="UkloniIzKorpe" asp-route-korpaStavkaId="@x.Id"><i class="material-icons text-danger">delete</i></a></td>
                         </tr>
                     }
                 </tbody>
             </table>
+            </div>
         }
         else
         {

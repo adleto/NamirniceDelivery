@@ -26,7 +26,8 @@ namespace NamirniceDelivery.Services.Services
                 KupacOstavioDojam = false,
                 NarudzbaPrihvacenaOdRadnika = false,
                 RadnikOstavioDojam = false,
-                TipTransakcije = _context.TipTransakcije.Find(1)
+                TipTransakcije = _context.TipTransakcije.Find(1),
+                PodruznicaId = namirnicaPodruznica.PodruznicaId
             };
             _context.Transakcija.Add(t);
             _context.KupljeneNamirnice.Add(new KupljeneNamirnice
@@ -61,7 +62,8 @@ namespace NamirniceDelivery.Services.Services
                     KupacOstavioDojam = false,
                     NarudzbaPrihvacenaOdRadnika = false,
                     RadnikOstavioDojam = false,
-                    TipTransakcije = _context.TipTransakcije.Find(1)
+                    TipTransakcije = _context.TipTransakcije.Find(1),
+                    PodruznicaId = podruznica.Id
                 };
 
                 foreach (var stavka in list)

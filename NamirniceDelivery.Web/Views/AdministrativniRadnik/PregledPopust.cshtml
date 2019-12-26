@@ -15,37 +15,39 @@
                     <a asp-controller="AdministrativniRadnik" asp-action="KreirajPopust" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novi popust">+</a>
                 </div>
             </div>
-            <table class="table table-bordered table-responsive-lg table-striped">
-                <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Opis</td>
-                        <td>Iznos</td>
-                        <td>Akcije</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var p in Model.PopustList)
-                    {
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
                         <tr>
-                            <td>@(Model.PopustList.IndexOf(p)+1).</td>
-                            <td>@p.Opis</td>
-                            <td>@((p.Iznos * 100).ToString() + "%")</td>
-                            <td>
-                                @if (Model.Deletable[Model.PopustList.IndexOf(p)])
-                                {
-                                    <a asp-action="UkloniPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
-                                }
-                                else
-                                {
-                                    <a href="" title="Popust ne može biti obrisan jer postoje namrinice u podružnicama koje ga koriste."><i class="material-icons text-dark">delete</i></a>
-                                }
-                                <a asp-action="EditPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
-                            </td>
+                            <th>#</th>
+                            <th>Opis</th>
+                            <th>Iznos</th>
+                            <th>Akcije</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.PopustList)
+                        {
+                            <tr>
+                                <th>@(Model.PopustList.IndexOf(p) + 1).</th>
+                                <td>@p.Opis</td>
+                                <td>@((p.Iznos * 100).ToString() + "%")</td>
+                                <td>
+                                    @if (Model.Deletable[Model.PopustList.IndexOf(p)])
+                                    {
+                                        <a asp-action="UkloniPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="" title="Popust ne može biti obrisan jer postoje namrinice u podružnicama koje ga koriste."><i class="material-icons text-dark">delete</i></a>
+                                    }
+                                    <a asp-action="EditPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
         else
         {

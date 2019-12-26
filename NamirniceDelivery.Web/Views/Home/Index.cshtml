@@ -1,32 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<style>
-    #naslovnica {
-        background-color: #e0e0e0;
-        min-height: 100vh;
-    }
-    .inner-wrapper {
-        padding-top: 150px;
-    }
-    #ponuda{
-        min-height: 100vh;
-    }
-    .tipka{
-        cursor: pointer;
-    }
-</style>
+<link rel="stylesheet" href="~/css/indexHome.css" />
 
 <div class="text-center justify-content-center">
     <div>
-        <div class="inner-wrapper" id="naslovnica">
-            <div>
-                <h1 class="display-3">Welcome guest</h1>
-                <p>
-                    Auto login kao demo <a asp-controller="AdministrativniRadnik" asp-action="DemoLogin">administrativni radnik</a>.<br />
-                    Auto login kao demo <a asp-controller="Kupac" asp-action="DemoLogin">kupac</a>.
-                </p>
-                <button class="btn btn-info rounded tipka" id="buttonPogledaj">Pogledaj ponudu</button>
+        <div class="masthead" id="headerOne">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center justify-content-center text-center">
+                    <div class="col-lg-10 align-self-end">
+                        <h1 class="text-uppercase font-weight-bold">Dobro došli Guest !</h1>
+                        <hr class="divider my-4">
+                    </div>
+                    <div class="col-lg-8 align-self-baseline">
+                        <p class="text-white-75 font-weight-light mb-5">
+                            Za auto login kao demo administrativni radnik klikni <a asp-controller="AdministrativniRadnik" asp-action="DemoLogin">ovdje.</a>
+                            <br />Ili za auto login kao demo kupac klikni <a asp-controller="Kupac" asp-action="DemoLogin">ovdje.</a>
+                        </p>
+                        <button class="btn btn-info btn-xl rounded tipka" id="buttonPogledaj">Pogledaj ponudu</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="ponudaTipka" class="row justify-content-end">
