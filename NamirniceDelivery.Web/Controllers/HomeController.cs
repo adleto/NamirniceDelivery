@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.Web.Models;
+using NamirniceDelivery.Web.ViewModels.Home;
 
 namespace NamirniceDelivery.Web.Controllers
 {
@@ -15,11 +17,15 @@ namespace NamirniceDelivery.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private static SignInManager<ApplicationUser> _signInManager;
+        private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
+        private readonly IPodruznica _podruznicaService;
 
-        public HomeController(ILogger<HomeController> logger, SignInManager<ApplicationUser> signInManager)
+        public HomeController(ILogger<HomeController> logger, SignInManager<ApplicationUser> signInManager, INamirnicaPodruznica namirnicaPodruznicaService, IPodruznica podruznicaService)
         {
             _logger = logger;
             _signInManager = signInManager;
+            _podruznicaService = podruznicaService;
+            _namirnicaPodruznicaService = namirnicaPodruznicaService;
         }
 
         public IActionResult Index()
@@ -35,7 +41,10 @@ namespace NamirniceDelivery.Web.Controllers
                     return RedirectToAction("Index", "Kupac");
                 }
             }
-            return View();
+            return View(new IndexViewModel { 
+                NamirnicaList = _namirnicaPodruznicaService.GetNamirnicePodruznica(),
+                PodruznicaList = _podruznicaService.GetPodruznice()
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

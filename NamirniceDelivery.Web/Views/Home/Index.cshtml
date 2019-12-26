@@ -1,9 +1,65 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    #naslovnica {
+        background-color: #e0e0e0;
+        min-height: 100vh;
+    }
+    .inner-wrapper {
+        padding-top: 150px;
+    }
+    #ponuda{
+        min-height: 100vh;
+    }
+    .tipka{
+        cursor: pointer;
+    }
+</style>
 
-    <div class="text-center">
-        <h1 class="display-4">Welcome guest</h1>
-        <p>Auto login kao <a asp-controller="AdministrativniRadnik" asp-action="DemoLogin">administrativni radnik</a>.</p>
-        <p>Auto login kao <a asp-controller="Kupac" asp-action="DemoLogin">kupac</a>.</p>
+<div class="text-center justify-content-center">
+    <div>
+        <div class="inner-wrapper" id="naslovnica">
+            <div>
+                <h1 class="display-3">Welcome guest</h1>
+                <p>
+                    Auto login kao demo <a asp-controller="AdministrativniRadnik" asp-action="DemoLogin">administrativni radnik</a>.<br />
+                    Auto login kao demo <a asp-controller="Kupac" asp-action="DemoLogin">kupac</a>.
+                </p>
+                <button class="btn btn-info rounded tipka" id="buttonPogledaj">Pogledaj ponudu</button>
+            </div>
+        </div>
+        <div id="ponudaTipka" class="row justify-content-end">
+            <div class="tipka" title="Zatvori ponudu" id="buttonGetBack"><i class="material-icons" style="font-size: 48px;">clearn</i></div>
+        </div>
+        <br />
+        <div id="ponuda" class="justify-content-center row">
+            <div>
+                <h2 class="display-4 mb-4">Podružnice</h2>
+                <partial name="_PodruznicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledPodruznicaPartialViewModel { PodruznicaList = Model.PodruznicaList })" />
+                <br />
+                <hr />
+                <br />
+                <h2 class="display-4 mb-4">Namirnice</h2>
+                <partial name="_NamirnicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledNamirnicaPartialViewModel { NamirnicaPodruznicaList = Model.NamirnicaList })" />
+            </div>
+        </div>
     </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#buttonPogledaj").click(function () {
+            $('html,body').animate({
+                scrollTop: $("#ponudaTipka").offset().top
+            },'slow');
+        });
+    });
+    $(document).ready(function () {
+        $("#buttonGetBack").click(function () {
+            $('html,body').animate({
+                scrollTop: $("body").offset().top
+            },'slow');
+        });
+    });
+</script>
