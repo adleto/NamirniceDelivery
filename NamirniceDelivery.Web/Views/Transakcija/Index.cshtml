@@ -12,6 +12,19 @@
         <h1>Detalji Transakcije</h1>
         <br />
         <partial name="_PregledDetaljaTransakcijePartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledTransakcijaPartialViewModel { TransakcijaList = t, ListType = Model.ListType })" />
+    </div>
+</div>
+<br />
+<hr />
+<br />
+<div class="text-center row justify-content-center">
+    <div>
+        <h3>Artikli</h3>
+        <div class="row justify-content-center">
+            <partial name="_TransakcijaArtikliPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.TransakcijaArtikliPartialViewModel { Transakcija = Model.Transakcija })">
+        </div>
+        <br />
+
         <div>
             @if (!string.IsNullOrEmpty(Model.ReturnUrl))
             {
@@ -21,11 +34,11 @@
             }
             else if (User.IsInRole("Kupac"))
             {
-            <a asp-controller="Kupac" asp-action="Index">Nazad na panel</a>
+                <a asp-controller="Kupac" asp-action="Index">Nazad na panel</a>
             }
             else if (User.IsInRole("AdministrativniRadnik"))
             {
-            <a asp-controller="AdministrativniRadnik" asp-action="Index">Nazad na panel</a>
+                <a asp-controller="AdministrativniRadnik" asp-action="Index">Nazad na panel</a>
             }
         </div>
     </div>

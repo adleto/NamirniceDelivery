@@ -1,0 +1,29 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Shared.TransakcijaArtikliPartialViewModel
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Kategorija</th>
+                <th>Artikal</th>
+                <th>Cijena/komad</th>
+                <th>Količina</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model.Transakcija.KupljeneNamirnice)
+            {
+                <tr>
+                    <th>@(Model.Transakcija.KupljeneNamirnice.IndexOf(x)+1).</th>
+                    <td>@x.Namirnica.Kategorija.Naziv</td>
+                    <td>@x.Namirnica.Naziv</td>
+                    <td>@((x.Cijena).ToString("F") + "KM")</td>
+                    <td>@x.Kolicina</td>
+                    <td>@((x.CijenaTotal).ToString("F") + "KM")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

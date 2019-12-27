@@ -81,6 +81,7 @@ namespace NamirniceDelivery.Services.Services
                 .Include(t => t.TipTransakcije)
                 .Include(t => t.KupljeneNamirnice)
                     .ThenInclude(kn => kn.Namirnica)
+                        .ThenInclude(kn => kn.Kategorija)
                 .ToList();
         }
 
@@ -190,6 +191,7 @@ namespace NamirniceDelivery.Services.Services
                 .Include(t => t.TipTransakcije)
                 .Include(t => t.KupljeneNamirnice)
                     .ThenInclude(kn => kn.Namirnica)
+                        .ThenInclude(kn => kn.Kategorija)
                 .Where(t=>t.Id == transakcijaId)
                 .FirstOrDefault();
         }
