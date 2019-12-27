@@ -1,6 +1,7 @@
-﻿@model NamirniceDelivery.Web.ViewModels.Shared.PregledTransakcijaPartialViewModel
+﻿@using NamirniceDelivery.Web.ViewModels.Shared
+@model NamirniceDelivery.Web.ViewModels.Shared.PregledTransakcijaPartialViewModel
 
-@if (Model.TransakcijaList.Any() && !String.IsNullOrEmpty(Model.ListType))
+@if (Model.TransakcijaList.Any())
 {
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
@@ -10,18 +11,18 @@
                     @if (User.IsInRole("Kupac"))
                     {
                         <th>Podružnica</th>
-                        @if (Model.ListType != "narucene")
+                        @if (Model.ListType != ListType.narucene)
                         {
                             <th>Administrativni radnik</th>
                         }
                         <th>Iznos</th>
                         <th>Tip Transakcije</th>
                         <th>Vrijeme iniciranja narudžbe</th>
-                        @if (Model.ListType != "narucene")
+                        @if (Model.ListType != ListType.narucene)
                         {
                             <th>Vrijeme prihvatanja narudžbe</th>
                         }
-                        @if (Model.ListType == "zavrsene")
+                        @if (Model.ListType == ListType.zavrsene)
                         {
                             <th>Vrijeme dostave</th>
                             <th>Dojam radnika</th>
@@ -34,11 +35,11 @@
                         <th>Iznos</th>
                         <th>Tip Transakcije</th>
                         <th>Vrijeme iniciranja narudžbe</th>
-                        @if (Model.ListType != "narucene")
+                        @if (Model.ListType != ListType.narucene)
                         {
                             <th>Vrijeme prihvatanja narudžbe</th>
                         }
-                        @if (Model.ListType == "zavrsene")
+                        @if (Model.ListType == ListType.zavrsene)
                         {
                             <th>Vrijeme dostave</th>
                             <th>Dojam kupca</th>
@@ -55,21 +56,21 @@
                     @if (User.IsInRole("Kupac"))
                     {
                         <td><a asp-controller="Podruznica" asp-action="Index" asp-route-id="@x.PodruznicaId" asp-route-returnUrl="@Context.Request.Path">@x.Podruznica.Naziv</a></td>
-                        @if (Model.ListType != "narucene")
+                        @if (Model.ListType != ListType.narucene)
                         {
                             <td>@x.AdministrativniRadnik.UserName</td>
                         }
                         <td>@(x.IznosTotal.ToString("F") + "KM")</td>
                         <td>@x.TipTransakcije.NazivTipa</td>
                         <td>@(x.DatumIniciranjaTransakcije.ToString("dd/MM/yy H:mm"))</td>
-                        @if (Model.ListType != "narucene")
+                        @if (Model.ListType != ListType.narucene)
                         {
                             @if (x.NarudzbaPrihvacenaOdRadnika)
                             {
                                 <td>@(x.DatumPrihvacanjaNarudzbe?.ToString("dd/MM/yy H:mm"))</td>
                             }
                         }
-                        @if (Model.ListType == "zavrsene")
+                        @if (Model.ListType == ListType.zavrsene)
                         {
                             @if (x.DostavaUspjesna)
                             {
@@ -92,15 +93,15 @@
                             }
                         }
                         @*Akcije za kupca*@
-                        @if (Model.ListType == "narucene")
+                        @if (Model.ListType == ListType.narucene)
                         {
                             <td>Nema</td>
                         }
-                        @if (Model.ListType == "prihvacene")
+                        @if (Model.ListType == ListType.prihvacene)
                         {
                             <td><a class="btn btn-primary" title="Namirnice su stigle na vrata!">Dostava uspješna</a></td>
                         }
-                        @if (Model.ListType == "zavrsene")
+                        @if (Model.ListType == ListType.zavrsene)
                         {
                             <td>
                                 @if (!x.KupacOstavioDojam)
@@ -121,14 +122,14 @@
                         <td>@(x.IznosTotal.ToString("F") + "KM")</td>
                         <td>@x.TipTransakcije.NazivTipa</td>
                         <td>@(x.DatumIniciranjaTransakcije.ToString("dd/MM/yy H:mm"))</td>
-                        @if (Model.ListType != "narucene")
+                        @if (Model.ListType != ListType.narucene)
                         {
                             @if (x.NarudzbaPrihvacenaOdRadnika)
                             {
                                 <td>@(x.DatumPrihvacanjaNarudzbe?.ToString("dd/MM/yy H:mm"))</td>
                             }
                         }
-                        @if (Model.ListType == "zavrsene")
+                        @if (Model.ListType == ListType.zavrsene)
                         {
                             @if (x.DostavaUspjesna)
                             {
@@ -151,15 +152,15 @@
                             }
                         }
                         @*Akcije za radnika*@
-                        @if (Model.ListType == "narucene")
+                        @if (Model.ListType == ListType.narucene)
                         {
                             <td><a class="btn btn-primary">Prihvati narudžbu</a></td>
                         }
-                        @if (Model.ListType == "prihvacene")
+                        @if (Model.ListType == ListType.prihvacene)
                         {
                             <td>Nema</td>
                         }
-                        @if (Model.ListType == "zavrsene")
+                        @if (Model.ListType == ListType.zavrsene)
                         {
                             <td>
                                 @if (!x.RadnikOstavioDojam)

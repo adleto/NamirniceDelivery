@@ -8,8 +8,8 @@ namespace NamirniceDelivery.Web.ViewModels.Shared
 {
     public class PregledTransakcijaPartialViewModel
     {
-        public List<Transakcija> TransakcijaList { get; set; }
+        public List<Data.Entities.Transakcija> TransakcijaList { get; set; }
         //narucene,prihvacene,zavrsene
-        public string ListType { get; set; }
+        public ListType ListType { get; set; }
     }
 }

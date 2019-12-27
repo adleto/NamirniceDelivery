@@ -1,0 +1,46 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Transakcija.NarudzbeViewModel
+@{
+    ViewData["Title"] = "NepotvrdjeneNarudzbe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-center row justify-content-center">
+    <div>
+        @if (User.IsInRole("Kupac"))
+        {
+            <h1>Vaše narudžbe</h1>
+        }
+        else if (User.IsInRole("AdministrativniRadnik"))
+        {
+            <h1>Pristigle narudžbe</h1>
+        }
+        <br />
+        @if (Model.TransakcijaList.Any())
+        {
+            <partial name="_PregledTransakcijaPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledTransakcijaPartialViewModel { TransakcijaList = Model.TransakcijaList, ListType = NamirniceDelivery.Web.ViewModels.Shared.ListType.narucene })" />
+        }
+        else
+        {
+            <p>
+            @if (User.IsInRole("Kupac"))
+            {
+                <span>Nemate narudžbi.</span>
+            }
+            else if (User.IsInRole("AdministrativniRadnik"))
+            {
+                <span>Ne postoje nove narudžbe.</span>
+            }
+            </p>
+        }
+        <div>
+            @if (User.IsInRole("Kupac"))
+            {
+                <a asp-controller="Kupac" asp-action="Index">Nazad na panel</a>
+            }
+            else if (User.IsInRole("AdministrativniRadnik"))
+            {
+                <a asp-controller="AdministrativniRadnik" asp-action="Index">Nazad na panel</a>
+            }
+        </div>
+    </div>
+</div>
+

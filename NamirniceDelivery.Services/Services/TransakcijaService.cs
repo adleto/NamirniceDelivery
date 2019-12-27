@@ -1,8 +1,10 @@
-﻿using NamirniceDelivery.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace NamirniceDelivery.Services.Services
@@ -39,6 +41,63 @@ namespace NamirniceDelivery.Services.Services
             });
             namirnicaPodruznica.KolicinaNaStanju -= brojNamirnica;
             _context.SaveChanges();
+        }
+
+        public List<Transakcija> GetNepotvrdjeneTransakcijeForKupac(Kupac kupac)
+        {
+            return GetTransakcijeForKupac(kupac)
+                .Where(t => t.NarudzbaPrihvacenaOdRadnika == false)
+                .ToList();
+        }
+
+        public List<Transakcija> GetNepotvrdjeneTransakcijeForPodruznica(Podruznica podruznica)
+        {
+            var t = GetTransakcijeForPodruznica(podruznica)
+                .Where(t => t.NarudzbaPrihvacenaOdRadnika == false)
+                .ToList();
+            return t;
+        }
+
+        public List<Transakcija> GetTransakcije()
+        {
+            var t = _context.Transakcija
+                .Include(t => t.Kupac)
+                .Include(t => t.AdministrativniRadnik)
+                .Include(t => t.Podruznica)
+                .Include(t => t.TipTransakcije)
+                .Include(t => t.KupljeneNamirnice)
+                    .ThenInclude(kn => kn.Namirnica)
+                .ToList();
+            return t;
+        }
+
+        public List<Transakcija> GetTransakcijeForKupac(Kupac kupac)
+        {
+            var t = GetTransakcije()
+                .Where(t => t.Kupac == kupac)
+                .ToList();
+            return t;
+        }
+
+        public List<Transakcija> GetTransakcijeForPodruznica(Podruznica podruznica)
+        {
+            return GetTransakcije()
+                .Where(t => t.Podruznica == podruznica)
+                .ToList();
+        }
+
+        public List<Transakcija> GetTransakcijeForRadnik(AdministrativniRadnik radnik)
+        {
+            var tList = GetTransakcije();
+            var list = new List<Transakcija>();
+            foreach(var t in tList)
+            {
+                if(t.AdministrativniRadnik!=null && t.AdministrativniRadnik == radnik)
+                {
+                    list.Add(t);
+                }
+            }
+            return list;
         }
 
         public void RealizujKupovine(List<KorpaStavka> list)
@@ -80,7 +139,7 @@ namespace NamirniceDelivery.Services.Services
                         _context.KorpaStavka.Remove(stavka);
 
                         if(stavka.NamirnicaPodruznica.KolicinaNaStanju- stavka.Kolicina > 0) {
-                            // this is you know
+                            // kolicina to 0
                             stavka.NamirnicaPodruznica.KolicinaNaStanju -= stavka.Kolicina;
                         }
                         else

@@ -4,65 +4,65 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="text-center row justify-content-center">
-        <div>
-            <h1>Pregled Kategorija</h1>
-            <br />
-            @if (Model.KategorijaList.Any())
-            {
-                <div class="row">
-                    <div class="col-md-12 text-right mb-1">
-                        <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novu kategoriju">+</a>
-                    </div>
+<div class="text-center row justify-content-center">
+    <div>
+        <h1>Pregled Kategorija</h1>
+        <br />
+        @if (Model.KategorijaList.Any())
+        {
+            <div class="row">
+                <div class="col-md-12 text-right mb-1">
+                    <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novu kategoriju">+</a>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Naziv</th>
+                            <th>Akcije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var k in Model.KategorijaList)
+                        {
                             <tr>
-                                <th>#</th>
-                                <th>Naziv</th>
-                                <th>Akcije</th>
+                                <th>@(Model.KategorijaList.IndexOf(k) + 1).</th>
+                                <td>@k.Naziv</td>
+                                <td>
+                                    @if (Model.Deletable[Model.KategorijaList.IndexOf(k)])
+                                    {
+                                        <a asp-action="UkloniKategoriju" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="" title="Kategorija ne može biti obrisana jer postoje vrste namrnica koje pripadaju ovoj kategoriji."><i class="material-icons text-dark">delete</i></a>
+                                    }
+                                    <a asp-action="EditKategorija" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var k in Model.KategorijaList)
-                            {
-                                <tr>
-                                    <th>@(Model.KategorijaList.IndexOf(k) + 1).</th>
-                                    <td>@k.Naziv</td>
-                                    <td>
-                                        @if (Model.Deletable[Model.KategorijaList.IndexOf(k)])
-                                        {
-                                            <a asp-action="UkloniKategoriju" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
-                                        }
-                                        else
-                                        {
-                                            <a href="" title="Kategorija ne može biti obrisana jer postoje vrste namrnica koje pripadaju ovoj kategoriji."><i class="material-icons text-dark">delete</i></a>
-                                        }
-                                        <a asp-action="EditKategorija" asp-route-kategorijaId="@k.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else
-            {
-                <p><span>Trenutno ne postoji nijedna kategorija. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju" asp-route-returnUrl="@Context.Request.Path">nove?</a></span></p>
-            }
-            @if (string.IsNullOrEmpty(Model.ReturnUrl))
-            {
-                <div>
-                    <a asp-action="Index">Nazad na panel</a>
-                </div>
-            }
-            else
-            {
-                <div>
-                    <a href="@Model.ReturnUrl">Idi nazad</a>
-                </div>
-            }
-        </div>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p><span>Trenutno ne postoji nijedna kategorija. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="KreirajKategoriju" asp-route-returnUrl="@Context.Request.Path">nove?</a></span></p>
+        }
+        @if (string.IsNullOrEmpty(Model.ReturnUrl))
+        {
+            <div>
+                <a asp-action="Index">Nazad na panel</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="@Model.ReturnUrl">Idi nazad</a>
+            </div>
+        }
     </div>
+</div>
 
