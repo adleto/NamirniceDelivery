@@ -52,7 +52,7 @@
                 @foreach (var x in Model.TransakcijaList)
                 {
                 <tr>
-                    <th>@(Model.TransakcijaList.IndexOf(x) + 1).</th>
+                    <th><a asp-action="Index" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path">@(Model.TransakcijaList.IndexOf(x) + 1).</a></th>
                     @if (User.IsInRole("Kupac"))
                     {
                         <td><a asp-controller="Podruznica" asp-action="Index" asp-route-id="@x.PodruznicaId" asp-route-returnUrl="@Context.Request.Path">@x.Podruznica.Naziv</a></td>
@@ -106,8 +106,8 @@
                             <td>
                                 @if (!x.KupacOstavioDojam)
                                 {
-                                    <a class="btn btn-primary rounded">Ostavi pozitivan dojam</a><span>|</span>
-                                    <a class="btn btn-danger rounded">Ostavi negativan dojam</a>
+                                    <a title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
+                                    <a title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
                                 }
                                 else
                                 {
@@ -165,8 +165,8 @@
                             <td>
                                 @if (!x.RadnikOstavioDojam)
                                 {
-                                    <a class="btn btn-primary rounded">Ostavi pozitivan dojam</a><span>|</span>
-                                    <a class="btn btn-danger rounded">Ostavi negativan dojam</a>
+                                    <a title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
+                                    <a title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
                                 }
                                 else
                                 {

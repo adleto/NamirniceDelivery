@@ -180,5 +180,18 @@ namespace NamirniceDelivery.Services.Services
                     t.DostavaUspjesna == false)
                 .ToList();
         }
+
+        public Transakcija GetTansakcija(int transakcijaId)
+        {
+            return _context.Transakcija
+                .Include(t => t.Kupac)
+                .Include(t => t.AdministrativniRadnik)
+                .Include(t => t.Podruznica)
+                .Include(t => t.TipTransakcije)
+                .Include(t => t.KupljeneNamirnice)
+                    .ThenInclude(kn => kn.Namirnica)
+                .Where(t=>t.Id == transakcijaId)
+                .FirstOrDefault();
+        }
     }
 }

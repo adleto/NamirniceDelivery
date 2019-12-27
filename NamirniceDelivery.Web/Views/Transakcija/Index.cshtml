@@ -1,0 +1,33 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Transakcija.IndexViewModel
+@{
+    var t = new List<NamirniceDelivery.Data.Entities.Transakcija>();
+    t.Add(Model.Transakcija);
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center row justify-content-center">
+    <div>
+        <h1>Detalji Transakcije</h1>
+        <br />
+        <partial name="_PregledDetaljaTransakcijePartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledTransakcijaPartialViewModel { TransakcijaList = t, ListType = Model.ListType })" />
+        <div>
+            @if (!string.IsNullOrEmpty(Model.ReturnUrl))
+            {
+                <div>
+                    <a href="@Model.ReturnUrl">Idi nazad</a>
+                </div>
+            }
+            else if (User.IsInRole("Kupac"))
+            {
+            <a asp-controller="Kupac" asp-action="Index">Nazad na panel</a>
+            }
+            else if (User.IsInRole("AdministrativniRadnik"))
+            {
+            <a asp-controller="AdministrativniRadnik" asp-action="Index">Nazad na panel</a>
+            }
+        </div>
+    </div>
+</div>
+

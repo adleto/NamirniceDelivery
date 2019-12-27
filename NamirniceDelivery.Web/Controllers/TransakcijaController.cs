@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.Web.ViewModels.Shared;
 using NamirniceDelivery.Web.ViewModels.Transakcija;
 
 namespace NamirniceDelivery.Web.Controllers
@@ -27,10 +28,44 @@ namespace NamirniceDelivery.Web.Controllers
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        public IActionResult Index(int transakcijaId, string returnUrl = "")
+        {
+            var t = _transakcijaService.GetTansakcija(transakcijaId);
+            if (User.IsInRole("Kupac"))
+            {
+                if(User.Identity.Name != t.Kupac.UserName)
+                {
+                    return RedirectToAction("Index", "Kupac");
+                }
+            }
+            else if (User.IsInRole("AdministrativniRadnik"))
+            {
+                var radnik = _administrativniRadnikService.GetRadnik(User.Identity.Name);
+                if (!t.NarudzbaPrihvacenaOdRadnika)
+                {
+                    if(t.PodruznicaId != radnik.PodruznicaId)
+                    {
+                        return RedirectToAction("Index", "AdministrativniRadnik");
+                    }
+                }
+                else
+                {
+                    if(t.AdministrativniRadnik==null || t.AdministrativniRadnikId != radnik.Id)
+                    {
+                        return RedirectToAction("Index", "AdministrativniRadnik");
+                    }
+                }
+            }
+            var model = new IndexViewModel
+            {
+                Transakcija = t,
+                ReturnUrl = returnUrl
+            };
+            if (t.DostavaUspjesna) model.ListType = ListType.zavrsene;
+            else if (t.NarudzbaPrihvacenaOdRadnika) model.ListType = ListType.prihvacene;
+            else model.ListType = ListType.narucene;
+            return View(model);
+        }
         public IActionResult NepotvrdjeneNarudzbe()
         {
             var v = new NarudzbeViewModel();
