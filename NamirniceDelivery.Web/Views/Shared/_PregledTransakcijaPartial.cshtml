@@ -154,7 +154,7 @@
                         @*Akcije za radnika*@
                         @if (Model.ListType == ListType.narucene)
                         {
-                            <td><a class="btn btn-primary rounded">Prihvati narudžbu</a></td>
+                            <td><a asp-controller="AdministrativniRadnik" asp-action="PrihvatiNarudzbu" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" class="btn btn-primary rounded">Prihvati narudžbu</a></td>
                         }
                         @if (Model.ListType == ListType.prihvacene)
                         {

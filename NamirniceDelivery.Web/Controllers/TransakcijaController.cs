@@ -46,7 +46,7 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return View(v);
         }
-        public IActionResult NarudzbeUToku()
+        public IActionResult DostaveUToku()
         {
             var v = new NarudzbeViewModel();
             if (User.IsInRole("Kupac"))

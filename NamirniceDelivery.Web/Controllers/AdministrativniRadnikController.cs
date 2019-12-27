@@ -19,8 +19,9 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IPopust _popustService;
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
         private readonly IAdministrativniRadnik _administrativniRadnikService;
+        private readonly IAkcijeTransakcija _akcijeTransakcijaService;
 
-        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService, IPopust popustService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService)
+        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService, IPopust popustService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService, IAkcijeTransakcija akcijeTransakcijaService)
         {
             _signInManager = signInManager;
             _kategorijaService = kategorijaService;
@@ -28,6 +29,7 @@ namespace NamirniceDelivery.Web.Controllers
             _popustService = popustService;
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
             _administrativniRadnikService = administrativniRadnikService;
+            _akcijeTransakcijaService = akcijeTransakcijaService;
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult Index()
@@ -433,6 +435,17 @@ namespace NamirniceDelivery.Web.Controllers
             }
             model.PopustList = _popustService.GetPopusti();
             return View(model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult PrihvatiNarudzbu(int transakcijaId, string returnUrl="")
+        {
+            var radnik = _administrativniRadnikService.GetRadnik(User.Identity.Name);
+            _akcijeTransakcijaService.OdobriTranskaciju(transakcijaId, radnik);
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction("Transakcija", "DostaveUToku");
+            }
+            return Redirect(returnUrl);
         }
     }
 }
