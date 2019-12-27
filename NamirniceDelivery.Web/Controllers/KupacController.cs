@@ -19,8 +19,9 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IPodruznica _podruznicaService;
         private readonly IKorpaStavka _korpaStavkaService;
         private readonly ITransakcija _transakcijaService;
+        private readonly IAkcijeTransakcija _akcijeTransakcijaService;
 
-        public KupacController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IPodruznica podruznicaService, IKorpaStavka korpaStavkaService, ITransakcija transakcijaService)
+        public KupacController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IPodruznica podruznicaService, IKorpaStavka korpaStavkaService, ITransakcija transakcijaService, IAkcijeTransakcija akcijeTransakcijaService)
         {
             _signInManager = signInManager;
             _kupacService = kupacService;
@@ -28,6 +29,7 @@ namespace NamirniceDelivery.Web.Controllers
             _podruznicaService = podruznicaService;
             _korpaStavkaService = korpaStavkaService;
             _transakcijaService = transakcijaService;
+            _akcijeTransakcijaService = akcijeTransakcijaService;
         }
 
         public async Task<IActionResult> DemoLogin()
@@ -168,6 +170,18 @@ namespace NamirniceDelivery.Web.Controllers
                 SpremljenePodruzniceList = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id))
             });
         }
+        [Authorize(Roles = "Kupac")]
+        public IActionResult DostavaUspjesna(int transakcijaId, string returnUrl="")
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            _akcijeTransakcijaService.DostavaUspjela(transakcijaId, kupac);
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction("ZavrseneTransakcije", "Transakcija");
+            }
+            return Redirect(returnUrl);
+        }
+        
 
         private List<NamirnicaPodruznica> KonvertujSpremljeneUNamirnice(List<KupacSpremljeneNamirnice> list)
         {

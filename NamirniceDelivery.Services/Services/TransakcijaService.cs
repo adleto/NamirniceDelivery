@@ -169,7 +169,7 @@ namespace NamirniceDelivery.Services.Services
         public List<Transakcija> GetZavrseneTransakcijeForKupac(Kupac kupac)
         {
             return GetTransakcijeForKupac(kupac)
-                .Where(t => t.DostavaUspjesna = true)
+                .Where(t => t.DostavaUspjesna == true)
                 .ToList();
         }
 

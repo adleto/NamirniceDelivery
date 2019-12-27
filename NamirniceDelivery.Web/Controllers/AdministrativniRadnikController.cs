@@ -443,7 +443,7 @@ namespace NamirniceDelivery.Web.Controllers
             _akcijeTransakcijaService.OdobriTranskaciju(transakcijaId, radnik);
             if (string.IsNullOrEmpty(returnUrl))
             {
-                return RedirectToAction("Transakcija", "DostaveUToku");
+                return RedirectToAction("DostaveUToku", "Transakcija");
             }
             return Redirect(returnUrl);
         }

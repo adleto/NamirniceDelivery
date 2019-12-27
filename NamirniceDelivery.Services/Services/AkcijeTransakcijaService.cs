@@ -16,12 +16,27 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
+        public void DostavaUspjela(int transakcijaId, Kupac kupac)
+        {
+            var transakcija = GetTransakcija(transakcijaId);
+            if(transakcija.NarudzbaPrihvacenaOdRadnika == true &&
+                transakcija.DostavaUspjesna == false &&
+                transakcija.KupacId == kupac.Id)
+            {
+                transakcija.DostavaUspjesna = true;
+                transakcija.DatumUspjesneDostave = DateTime.Now;
+                _context.SaveChanges();
+            }
+        }
+
         public void OdobriTranskaciju(int transakcijaId, AdministrativniRadnik radnik)
         {
             var transakcija = GetTransakcija(transakcijaId);
             if (transakcija.NarudzbaPrihvacenaOdRadnika == false &&
+                transakcija.DostavaUspjesna == false &&
                 transakcija.PodruznicaId == radnik.PodruznicaId)
             {
+                transakcija.AdministrativniRadnik = radnik;
                 transakcija.NarudzbaPrihvacenaOdRadnika = true;
                 transakcija.DatumPrihvacanjaNarudzbe = DateTime.Now;
                 _context.SaveChanges();
