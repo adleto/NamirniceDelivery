@@ -9,5 +9,7 @@ namespace NamirniceDelivery.Services.Interfaces
     {
         void OdobriTranskaciju(int transakcijaId, AdministrativniRadnik radnik);
         void DostavaUspjela(int transakcijaId, Kupac kupac);
+        void KupacOstaviPozitivan(int transakcijaId);
+        void KupacOstaviNegativan(int transakcijaId);
     }
 }

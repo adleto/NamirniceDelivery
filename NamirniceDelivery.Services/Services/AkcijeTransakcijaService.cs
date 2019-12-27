@@ -29,6 +29,22 @@ namespace NamirniceDelivery.Services.Services
             }
         }
 
+        public void KupacOstaviNegativan(int transakcijaId)
+        {
+            var t = GetTransakcija(transakcijaId);
+            t.KupacOstavioDojam = true;
+            t.DojamKupac = "Negativan";
+            _context.SaveChanges();
+        }
+
+        public void KupacOstaviPozitivan(int transakcijaId)
+        {
+            var t = GetTransakcija(transakcijaId);
+            t.KupacOstavioDojam = true;
+            t.DojamKupac = "Pozitivan";
+            _context.SaveChanges();
+        }
+
         public void OdobriTranskaciju(int transakcijaId, AdministrativniRadnik radnik)
         {
             var transakcija = GetTransakcija(transakcijaId);

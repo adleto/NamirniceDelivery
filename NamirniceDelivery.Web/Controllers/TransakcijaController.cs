@@ -18,14 +18,16 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly ITransakcija _transakcijaService;
         private readonly IPodruznica _podruznicaService;
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
+        private readonly IAkcijeTransakcija _akcijeTransakcijaService;
 
-        public TransakcijaController(IKupac kupacService, IAdministrativniRadnik administrativniRadnikService, ITransakcija transakcijaService, IPodruznica podruznicaService, INamirnicaPodruznica namirnicaPodruznicaService)
+        public TransakcijaController(IKupac kupacService, IAdministrativniRadnik administrativniRadnikService, ITransakcija transakcijaService, IPodruznica podruznicaService, INamirnicaPodruznica namirnicaPodruznicaService, IAkcijeTransakcija akcijeTransakcijaService)
         {
             _kupacService = kupacService;
             _administrativniRadnikService = administrativniRadnikService;
             _transakcijaService = transakcijaService;
             _podruznicaService = podruznicaService;
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
+            _akcijeTransakcijaService = akcijeTransakcijaService;
         }
 
         public IActionResult Index(int transakcijaId, string returnUrl = "")
@@ -110,6 +112,58 @@ namespace NamirniceDelivery.Web.Controllers
                 v.TransakcijaList = _transakcijaService.GetZavrseneTransakcijeForRadnik(radnik);
             }
             return View(v);
+        }
+        public IActionResult OstaviPozitivanDojam(int transakcijaId, string returnUrl="")
+        {
+            var transakcija = _transakcijaService.GetTansakcija(transakcijaId);
+            if (transakcija.DostavaUspjesna)
+            {
+                if(transakcija.Kupac.UserName == User.Identity.Name ||
+                    transakcija.AdministrativniRadnik.UserName == User.Identity.Name)
+                {
+                    if (User.IsInRole("Kupac"))
+                    {
+                        _akcijeTransakcijaService.KupacOstaviPozitivan(transakcijaId);
+                    }
+                    else if (User.IsInRole("AdministrativniRadnik"))
+                    {
+                        //dojam radnik
+                    }
+
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    return RedirectToAction(nameof(ZavrseneTransakcije));
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult OstaviNegativanDojam(int transakcijaId, string returnUrl = "")
+        {
+            var transakcija = _transakcijaService.GetTansakcija(transakcijaId);
+            if (transakcija.DostavaUspjesna)
+            {
+                if (transakcija.Kupac.UserName == User.Identity.Name ||
+                    transakcija.AdministrativniRadnik.UserName == User.Identity.Name)
+                {
+                    if (User.IsInRole("Kupac"))
+                    {
+                        _akcijeTransakcijaService.KupacOstaviNegativan(transakcijaId);
+                    }
+                    else if (User.IsInRole("AdministrativniRadnik"))
+                    {
+                        //dojam radnik
+                    }
+
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    return RedirectToAction(nameof(ZavrseneTransakcije));
+                }
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
