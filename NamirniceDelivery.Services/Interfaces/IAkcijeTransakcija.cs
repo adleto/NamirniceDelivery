@@ -11,5 +11,7 @@ namespace NamirniceDelivery.Services.Interfaces
         void DostavaUspjela(int transakcijaId, Kupac kupac);
         void KupacOstaviPozitivan(int transakcijaId);
         void KupacOstaviNegativan(int transakcijaId);
+        void RadnikOstaviPozitivan(int transakcijaId);
+        void RadnikOstaviNegativan(int transakcijaId);
     }
 }

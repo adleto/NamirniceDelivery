@@ -106,8 +106,8 @@
                             <td>
                                 @if (!x.KupacOstavioDojam)
                                 {
-                                    <a title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
-                                    <a title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
+                                    <a asp-controller="Transakcija" asp-action="OstaviPozitivanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
+                                    <a asp-controller="Transakcija" asp-action="OstaviNegativanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
                                 }
                                 else
                                 {
@@ -165,8 +165,8 @@
                             <td>
                                 @if (!x.RadnikOstavioDojam)
                                 {
-                                    <a title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
-                                    <a title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
+                                    <a asp-controller="Transakcija" asp-action="OstaviPozitivanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
+                                    <a asp-controller="Transakcija" asp-action="OstaviNegativanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
                                 }
                                 else
                                 {

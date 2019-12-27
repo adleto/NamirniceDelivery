@@ -123,16 +123,22 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     if (User.IsInRole("Kupac"))
                     {
-                        _akcijeTransakcijaService.KupacOstaviPozitivan(transakcijaId);
+                        if (!transakcija.KupacOstavioDojam)
+                        {
+                            _akcijeTransakcijaService.KupacOstaviPozitivan(transakcijaId);
+                        }
                     }
                     else if (User.IsInRole("AdministrativniRadnik"))
                     {
-                        //dojam radnik
+                        if (!transakcija.RadnikOstavioDojam)
+                        {
+                            _akcijeTransakcijaService.RadnikOstaviPozitivan(transakcijaId);
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
-                        return Redirect(returnUrl);
+                        //return Redirect(returnUrl);
                     }
                     return RedirectToAction(nameof(ZavrseneTransakcije));
                 }
@@ -149,16 +155,21 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     if (User.IsInRole("Kupac"))
                     {
-                        _akcijeTransakcijaService.KupacOstaviNegativan(transakcijaId);
+                        if (!transakcija.KupacOstavioDojam)
+                        {
+                            _akcijeTransakcijaService.KupacOstaviNegativan(transakcijaId);
+                        }
                     }
                     else if (User.IsInRole("AdministrativniRadnik"))
                     {
-                        //dojam radnik
+                        if (!transakcija.RadnikOstavioDojam) {
+                            _akcijeTransakcijaService.RadnikOstaviNegativan(transakcijaId);
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
-                        return Redirect(returnUrl);
+                        //return Redirect(returnUrl);
                     }
                     return RedirectToAction(nameof(ZavrseneTransakcije));
                 }

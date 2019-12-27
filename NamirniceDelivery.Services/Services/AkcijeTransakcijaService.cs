@@ -58,6 +58,23 @@ namespace NamirniceDelivery.Services.Services
                 _context.SaveChanges();
             }
         }
+
+        public void RadnikOstaviNegativan(int transakcijaId)
+        {
+            var t = GetTransakcija(transakcijaId);
+            t.RadnikOstavioDojam = true;
+            t.DojamRadnik = "Negativan";
+            _context.SaveChanges();
+        }
+
+        public void RadnikOstaviPozitivan(int transakcijaId)
+        {
+            var t = GetTransakcija(transakcijaId);
+            t.RadnikOstavioDojam = true;
+            t.DojamRadnik = "Pozitivan";
+            _context.SaveChanges();
+        }
+
         private Transakcija GetTransakcija(int transakcijaId)
         {
             return _context.Transakcija.Find(transakcijaId);
