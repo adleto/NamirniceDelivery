@@ -99,15 +99,15 @@
                         }
                         @if (Model.ListType == ListType.prihvacene)
                         {
-                            <td><a class="btn btn-primary" title="Namirnice su stigle na vrata!">Dostava uspješna</a></td>
+                            <td><a class="btn btn-primary rounded" title="Namirnice su stigle na vrata!">Dostava uspješna</a></td>
                         }
                         @if (Model.ListType == ListType.zavrsene)
                         {
                             <td>
                                 @if (!x.KupacOstavioDojam)
                                 {
-                                    <a class="btn btn-primary">Ostavi pozitivan dojam</a><span>|</span>
-                                    <a class="btn btn-danger">Ostavi negativan dojam</a>
+                                    <a class="btn btn-primary rounded">Ostavi pozitivan dojam</a><span>|</span>
+                                    <a class="btn btn-danger rounded">Ostavi negativan dojam</a>
                                 }
                                 else
                                 {
@@ -154,7 +154,7 @@
                         @*Akcije za radnika*@
                         @if (Model.ListType == ListType.narucene)
                         {
-                            <td><a class="btn btn-primary">Prihvati narudžbu</a></td>
+                            <td><a class="btn btn-primary rounded">Prihvati narudžbu</a></td>
                         }
                         @if (Model.ListType == ListType.prihvacene)
                         {
@@ -165,8 +165,8 @@
                             <td>
                                 @if (!x.RadnikOstavioDojam)
                                 {
-                                    <a class="btn btn-primary">Ostavi pozitivan dojam</a><span>|</span>
-                                    <a class="btn btn-danger">Ostavi negativan dojam</a>
+                                    <a class="btn btn-primary rounded">Ostavi pozitivan dojam</a><span>|</span>
+                                    <a class="btn btn-danger rounded">Ostavi negativan dojam</a>
                                 }
                                 else
                                 {

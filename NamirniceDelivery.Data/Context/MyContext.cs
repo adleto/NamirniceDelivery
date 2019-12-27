@@ -4,7 +4,7 @@ using NamirniceDelivery.Data.Entities;
 
 namespace NamirniceDelivery.Data.Context
 {
-    public class MyContext:IdentityDbContext
+    public class MyContext : IdentityDbContext
     {
         public MyContext(DbContextOptions<MyContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -14,13 +14,9 @@ namespace NamirniceDelivery.Data.Context
                 .HasOne(t => t.Kupac)
                 .WithMany(p => p.Transakcije)
                 .IsRequired();
-            modelBuilder.Entity<Transakcija>()
-                .HasOne(t => t.AdministrativniRadnik)
-                .WithMany(p => p.Transakcije)
-                .IsRequired();
             modelBuilder.Entity<KupljeneNamirnice>()
                 .HasOne(k => k.Transakcija)
-                .WithMany(t=>t.KupljeneNamirnice)
+                .WithMany(t => t.KupljeneNamirnice)
                 .IsRequired();
             modelBuilder.Entity<KorpaStavka>()
                 .HasOne(k => k.NamirnicaPodruznica)
@@ -31,7 +27,7 @@ namespace NamirniceDelivery.Data.Context
                 .WithMany(p => p.NamirnicaPodruznica)
                 .IsRequired();
             modelBuilder.Entity<KupacSpremljeneNamirnice>()
-                .HasOne(k=>k.NamirnicaPodruznica)
+                .HasOne(k => k.NamirnicaPodruznica)
                 .WithMany()
                 .IsRequired();
             modelBuilder.Entity<KupacSpremljeneNamirnice>()

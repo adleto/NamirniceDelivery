@@ -10,8 +10,8 @@ using NamirniceDelivery.Data.Context;
 namespace NamirniceDelivery.Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20191220021627_Nullable popust")]
-    partial class Nullablepopust
+    [Migration("20191227003353_dodani entitti")]
+    partial class dodanientitti
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -470,6 +470,9 @@ namespace NamirniceDelivery.Data.Migrations
                     b.Property<string>("Adresa")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Naziv")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OpcinaId")
                         .HasColumnType("int");
 
@@ -524,16 +527,15 @@ namespace NamirniceDelivery.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AdministrativniRadnikId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DatumIniciranjaTransakcije")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DatumPrihvacanjaNarudzbe")
+                    b.Property<DateTime?>("DatumPrihvacanjaNarudzbe")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DatumUspjesneDostave")
+                    b.Property<DateTime?>("DatumUspjesneDostave")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DojamKupac")
@@ -555,6 +557,9 @@ namespace NamirniceDelivery.Data.Migrations
                     b.Property<bool>("NarudzbaPrihvacenaOdRadnika")
                         .HasColumnType("bit");
 
+                    b.Property<int>("PodruznicaId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("RadnikOstavioDojam")
                         .HasColumnType("bit");
 
@@ -566,6 +571,8 @@ namespace NamirniceDelivery.Data.Migrations
                     b.HasIndex("AdministrativniRadnikId");
 
                     b.HasIndex("KupacId");
+
+                    b.HasIndex("PodruznicaId");
 
                     b.HasIndex("TipTransakcijeId");
 
@@ -883,13 +890,17 @@ namespace NamirniceDelivery.Data.Migrations
                 {
                     b.HasOne("NamirniceDelivery.Data.Entities.AdministrativniRadnik", "AdministrativniRadnik")
                         .WithMany("Transakcije")
-                        .HasForeignKey("AdministrativniRadnikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AdministrativniRadnikId");
 
                     b.HasOne("NamirniceDelivery.Data.Entities.Kupac", "Kupac")
                         .WithMany("Transakcije")
                         .HasForeignKey("KupacId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NamirniceDelivery.Data.Entities.Podruznica", "Podruznica")
+                        .WithMany()
+                        .HasForeignKey("PodruznicaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

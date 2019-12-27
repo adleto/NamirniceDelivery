@@ -43,6 +43,22 @@ namespace NamirniceDelivery.Services.Services
             _context.SaveChanges();
         }
 
+        public List<Transakcija> GetTransakcijeUTokuForRadnik(AdministrativniRadnik radnik)
+        {
+            return GetTransakcijeForRadnik(radnik)
+                .Where(t => t.NarudzbaPrihvacenaOdRadnika == true &&
+                    t.DostavaUspjesna == false)
+                .ToList();
+        }
+
+        public List<Transakcija> GetTransakcijeUTokuForKupac(Kupac kupac)
+        {
+            return GetTransakcijeForKupac(kupac)
+                .Where(t => t.NarudzbaPrihvacenaOdRadnika == true &&
+                    t.DostavaUspjesna == false)
+                .ToList();
+        }
+
         public List<Transakcija> GetNepotvrdjeneTransakcijeForKupac(Kupac kupac)
         {
             return GetTransakcijeForKupac(kupac)
@@ -52,15 +68,14 @@ namespace NamirniceDelivery.Services.Services
 
         public List<Transakcija> GetNepotvrdjeneTransakcijeForPodruznica(Podruznica podruznica)
         {
-            var t = GetTransakcijeForPodruznica(podruznica)
+            return GetTransakcijeForPodruznica(podruznica)
                 .Where(t => t.NarudzbaPrihvacenaOdRadnika == false)
                 .ToList();
-            return t;
         }
 
         public List<Transakcija> GetTransakcije()
         {
-            var t = _context.Transakcija
+            return _context.Transakcija
                 .Include(t => t.Kupac)
                 .Include(t => t.AdministrativniRadnik)
                 .Include(t => t.Podruznica)
@@ -68,15 +83,13 @@ namespace NamirniceDelivery.Services.Services
                 .Include(t => t.KupljeneNamirnice)
                     .ThenInclude(kn => kn.Namirnica)
                 .ToList();
-            return t;
         }
 
         public List<Transakcija> GetTransakcijeForKupac(Kupac kupac)
         {
-            var t = GetTransakcije()
+            return GetTransakcije()
                 .Where(t => t.Kupac == kupac)
                 .ToList();
-            return t;
         }
 
         public List<Transakcija> GetTransakcijeForPodruznica(Podruznica podruznica)
@@ -127,7 +140,7 @@ namespace NamirniceDelivery.Services.Services
 
                 foreach (var stavka in list)
                 {
-                    if (stavka.NamirnicaPodruznicaId == podruznica.Id)
+                    if (stavka.NamirnicaPodruznica.PodruznicaId == podruznica.Id)
                     {
                         _context.KupljeneNamirnice.Add(new KupljeneNamirnice
                         {

@@ -525,7 +525,6 @@ namespace NamirniceDelivery.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AdministrativniRadnikId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DatumIniciranjaTransakcije")
@@ -889,9 +888,7 @@ namespace NamirniceDelivery.Data.Migrations
                 {
                     b.HasOne("NamirniceDelivery.Data.Entities.AdministrativniRadnik", "AdministrativniRadnik")
                         .WithMany("Transakcije")
-                        .HasForeignKey("AdministrativniRadnikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AdministrativniRadnikId");
 
                     b.HasOne("NamirniceDelivery.Data.Entities.Kupac", "Kupac")
                         .WithMany("Transakcije")

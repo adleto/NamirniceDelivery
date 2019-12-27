@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NamirniceDelivery.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class dodanientitti : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -113,7 +113,7 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.KantonId,
                         principalTable: "Kanton",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,6 +144,7 @@ namespace NamirniceDelivery.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adresa = table.Column<string>(nullable: true),
                     OpcinaId = table.Column<int>(nullable: false),
+                    Naziv = table.Column<string>(nullable: true),
                     Opis = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -154,7 +155,7 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.OpcinaId,
                         principalTable: "Opcina",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,7 +169,7 @@ namespace NamirniceDelivery.Data.Migrations
                     Cijena = table.Column<decimal>(nullable: false),
                     Aktivna = table.Column<bool>(nullable: false),
                     KolicinaNaStanju = table.Column<int>(nullable: false),
-                    PopustId = table.Column<int>(nullable: false)
+                    PopustId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -190,7 +191,7 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.PopustId,
                         principalTable: "Popust",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -292,7 +293,7 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.NamirnicaPodruznicaId,
                         principalTable: "NamirnicaPodruznica",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,7 +313,7 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.PodruznicaId,
                         principalTable: "Podruznica",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,13 +323,14 @@ namespace NamirniceDelivery.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DostavaUspjesna = table.Column<bool>(nullable: false),
-                    DatumUspjesneDostave = table.Column<DateTime>(nullable: false),
+                    DatumUspjesneDostave = table.Column<DateTime>(nullable: true),
                     NarudzbaPrihvacenaOdRadnika = table.Column<bool>(nullable: false),
-                    DatumPrihvacanjaNarudzbe = table.Column<DateTime>(nullable: false),
+                    DatumPrihvacanjaNarudzbe = table.Column<DateTime>(nullable: true),
                     RadnikOstavioDojam = table.Column<bool>(nullable: false),
                     KupacOstavioDojam = table.Column<bool>(nullable: false),
                     DatumIniciranjaTransakcije = table.Column<DateTime>(nullable: false),
-                    AdministrativniRadnikId = table.Column<string>(nullable: false),
+                    AdministrativniRadnikId = table.Column<string>(nullable: true),
+                    PodruznicaId = table.Column<int>(nullable: false),
                     KupacId = table.Column<string>(nullable: false),
                     TipTransakcijeId = table.Column<int>(nullable: false),
                     DojamRadnik = table.Column<string>(nullable: true),
@@ -338,11 +340,17 @@ namespace NamirniceDelivery.Data.Migrations
                 {
                     table.PrimaryKey("PK_Transakcija", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Transakcija_Podruznica_PodruznicaId",
+                        column: x => x.PodruznicaId,
+                        principalTable: "Podruznica",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Transakcija_TipTransakcije_TipTransakcijeId",
                         column: x => x.TipTransakcijeId,
                         principalTable: "TipTransakcije",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -353,11 +361,18 @@ namespace NamirniceDelivery.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransakcijaId = table.Column<int>(nullable: false),
                     Cijena = table.Column<decimal>(nullable: false),
-                    Kolicina = table.Column<int>(nullable: false)
+                    Kolicina = table.Column<int>(nullable: false),
+                    NamirnicaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_KupljeneNamirnice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_KupljeneNamirnice_Namirnica_NamirnicaId",
+                        column: x => x.NamirnicaId,
+                        principalTable: "Namirnica",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_KupljeneNamirnice_Transakcija_TransakcijaId",
                         column: x => x.TransakcijaId,
@@ -408,7 +423,9 @@ namespace NamirniceDelivery.Data.Migrations
                     OpcinaRodjenjaId = table.Column<int>(nullable: true),
                     JMBG = table.Column<string>(nullable: true),
                     PodruznicaId = table.Column<int>(nullable: true),
+                    RejtingRadnik = table.Column<int>(nullable: true),
                     Adresa = table.Column<string>(nullable: true),
+                    RejtingKupac = table.Column<int>(nullable: true),
                     KategorijaVozackeDozvole = table.Column<string>(nullable: true),
                     VoziloId = table.Column<int>(nullable: true)
                 },
@@ -420,7 +437,7 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.PodruznicaId,
                         principalTable: "Podruznica",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Opcina_OpcinaBoravkaId",
                         column: x => x.OpcinaBoravkaId,
@@ -463,13 +480,13 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.PodruznicaKrajId,
                         principalTable: "Podruznica",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Voznja_Podruznica_PodruznicaPocetakId",
                         column: x => x.PodruznicaPocetakId,
                         principalTable: "Podruznica",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Voznja_AspNetUsers_VozacId",
                         column: x => x.VozacId,
@@ -496,13 +513,13 @@ namespace NamirniceDelivery.Data.Migrations
                         column: x => x.NamirnicaId,
                         principalTable: "Namirnica",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_NamirnicaVoznja_Voznja_VoznjaId",
                         column: x => x.VoznjaId,
                         principalTable: "Voznja",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -597,6 +614,11 @@ namespace NamirniceDelivery.Data.Migrations
                 column: "PodruznicaId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_KupljeneNamirnice_NamirnicaId",
+                table: "KupljeneNamirnice",
+                column: "NamirnicaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_KupljeneNamirnice_TransakcijaId",
                 table: "KupljeneNamirnice",
                 column: "TransakcijaId");
@@ -650,6 +672,11 @@ namespace NamirniceDelivery.Data.Migrations
                 name: "IX_Transakcija_KupacId",
                 table: "Transakcija",
                 column: "KupacId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transakcija_PodruznicaId",
+                table: "Transakcija",
+                column: "PodruznicaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transakcija_TipTransakcijeId",
@@ -722,7 +749,7 @@ namespace NamirniceDelivery.Data.Migrations
                 column: "KupacId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.NoAction);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_KupacSpremljenePodruznice_AspNetUsers_KupacId",
@@ -730,7 +757,7 @@ namespace NamirniceDelivery.Data.Migrations
                 column: "KupacId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.NoAction);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Transakcija_AspNetUsers_AdministrativniRadnikId",
@@ -738,7 +765,7 @@ namespace NamirniceDelivery.Data.Migrations
                 column: "AdministrativniRadnikId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.NoAction);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Transakcija_AspNetUsers_KupacId",
@@ -746,7 +773,7 @@ namespace NamirniceDelivery.Data.Migrations
                 column: "KupacId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.NoAction);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Vozilo_AspNetUsers_VozacId",

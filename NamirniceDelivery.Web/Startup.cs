@@ -32,7 +32,7 @@ namespace NamirniceDelivery.Web
         {
             services.AddDbContext<MyContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("PleskConnection")));
+                    Configuration.GetConnectionString("LocalConnection")));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyContext>();

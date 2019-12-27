@@ -159,5 +159,53 @@ namespace NamirniceDelivery.Web.StartupTasks
             await UserManager.AddToRoleAsync(administrativniRadnik, "AdministrativniRadnik");
             await UserManager.AddToRoleAsync(kupac, "Kupac");
         }
+        public static void CreateNamirnice(IServiceProvider serviceProvider)
+        {
+            //DO NOT RUN if Podruznica with id = 1 exists
+            var _kategorijaService = serviceProvider.GetRequiredService<IKategorija>();
+            var _namirnicaService = serviceProvider.GetRequiredService<INamirnica>();
+            var _namirnicaPodruznicaService = serviceProvider.GetRequiredService<INamirnicaPodruznica>();
+            var _podruznicaService = serviceProvider.GetRequiredService<IPodruznica>();
+            var _popustService = serviceProvider.GetRequiredService<IPopust>();
+
+            List<string> kategorijaNaziv = new List<string>{ "Voće", "Povrće" };
+            List<List<string>> namirniceNaziv = new List<List<string>>{ 
+                new List<string>{ "Banana", "Jabuka" },
+                new List<string>{ "Kupus", "Krompir" } 
+            };
+
+            var p = new Popust
+            {
+                Iznos = 0.05m,
+                Opis = "Božićni"
+            };
+
+            foreach(var k in kategorijaNaziv)
+            {
+                var kategorija = new Kategorija
+                {
+                    Naziv = k
+                };
+                _kategorijaService.KreirajKategoriju(kategorija);
+                foreach(var n in namirniceNaziv[kategorijaNaziv.IndexOf(k)])
+                {
+                    var namirnica = new Namirnica
+                    {
+                        Naziv = n,
+                        Kategorija = kategorija
+                    };
+                    _namirnicaService.KreirajNamirnica(namirnica);
+                    _namirnicaPodruznicaService.DodajNamirnicu(new NamirnicaPodruznica
+                    {
+                        Aktivna = true,
+                        KolicinaNaStanju = 100,
+                        Namirnica = namirnica,
+                        Podruznica = _podruznicaService.GetPodruznica(1),
+                        Cijena = 2.15m,
+                        Popust = p
+                    });
+                }
+            }
+        }
     }
 }

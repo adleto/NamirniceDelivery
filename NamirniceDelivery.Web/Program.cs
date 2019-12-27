@@ -17,7 +17,7 @@ namespace NamirniceDelivery.Web
         {
             var hostsBuilder = CreateHostBuilder(args).Build();
 
-            //using(var scope = hostsBuilder.Services.CreateScope())
+            //using (var scope = hostsBuilder.Services.CreateScope())
             //{
             //    var services = scope.ServiceProvider;
             //    try
@@ -28,8 +28,9 @@ namespace NamirniceDelivery.Web
             //        PopunjavanjeTabela.DodajTipTransakcije(serviceProvider).Wait();
             //        PopunjavanjeTabela.CreateRoles(serviceProvider).Wait();
             //        PopunjavanjeTabela.CreateFirstUsers(serviceProvider).Wait();
+            //        PopunjavanjeTabela.CreateNamirnice(serviceProvider);
             //    }
-            //    catch(Exception ex)
+            //    catch (Exception ex)
             //    {
             //        var logger = services.GetRequiredService<ILogger<Program>>();
             //        logger.LogError(ex, "Error!");

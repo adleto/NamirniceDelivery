@@ -87,8 +87,7 @@ namespace NamirniceDelivery.Web.Controllers
         {
             var kupac = _kupacService.GetKupac(User.Identity.Name);
             _transakcijaService.RealizujKupovine(_korpaStavkaService.GetNamirniceUKorpi(kupac));
-            return RedirectToAction(nameof(Index));
-            // TODO: redirectaj kasnije na detalje transakcije
+            return RedirectToAction("NepotvrdjeneNarudzbe","Transakcija");
         }
         [Authorize(Roles = "Kupac")]
         public IActionResult BrzaKupovina(string[] namirnicaPodruznicaId, string[] kolicina)
@@ -103,8 +102,7 @@ namespace NamirniceDelivery.Web.Controllers
                     _transakcijaService.BrzaKupovina(_namirnicaPodruznicaService.GetNamirnicaPodruznica(idNamirnice), brojNamirnica, kupac);
                 }
             }
-            return RedirectToAction(nameof(Index));
-            // TODO: redirectaj kasnije na detalje transakcije
+            return RedirectToAction("NepotvrdjeneNarudzbe", "Transakcija");
         }
         [Authorize(Roles = "Kupac")]
         public IActionResult DodajSpremljenuNamirnicu(int namirnicaPodruznicaId, string returnUrl = "")
