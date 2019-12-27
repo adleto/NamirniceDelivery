@@ -5,16 +5,16 @@
 }
 <div class="text-center row justify-content-center">
     <div>
-        <h1>Dostave u toku</h1>
+        <h1>Završene transakcije</h1>
         <br />
         @if (Model.TransakcijaList.Any())
         {
-            <partial name="_PregledTransakcijaPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledTransakcijaPartialViewModel { TransakcijaList = Model.TransakcijaList, ListType = NamirniceDelivery.Web.ViewModels.Shared.ListType.prihvacene })" />
+            <partial name="_PregledTransakcijaPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledTransakcijaPartialViewModel { TransakcijaList = Model.TransakcijaList, ListType = NamirniceDelivery.Web.ViewModels.Shared.ListType.zavrsene })" />
         }
         else
         {
             <p>
-                <span>Nema dostava u toku</span>
+                <span>Nemate završenih transakcija.</span>
             </p>
         }
         <div>

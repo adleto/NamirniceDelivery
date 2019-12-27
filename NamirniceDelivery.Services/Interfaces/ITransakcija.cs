@@ -16,6 +16,8 @@ namespace NamirniceDelivery.Services.Interfaces
         public List<Transakcija> GetTransakcijeForRadnik(AdministrativniRadnik radnik);
         public List<Transakcija> GetNepotvrdjeneTransakcijeForPodruznica(Podruznica podruznica);
         List<Transakcija> GetTransakcijeUTokuForKupac(Kupac kupac);
+        List<Transakcija> GetZavrseneTransakcijeForRadnik(AdministrativniRadnik radnik);
+        List<Transakcija> GetZavrseneTransakcijeForKupac(Kupac kupac);
         List<Transakcija> GetTransakcijeUTokuForRadnik(AdministrativniRadnik radnik);
     }
 }

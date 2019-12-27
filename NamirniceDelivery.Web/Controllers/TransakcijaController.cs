@@ -61,5 +61,20 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return View(v);
         }
+        public IActionResult ZavrseneTransakcije()
+        {
+            var v = new NarudzbeViewModel();
+            if (User.IsInRole("Kupac"))
+            {
+                var kupac = _kupacService.GetKupac(User.Identity.Name);
+                v.TransakcijaList = _transakcijaService.GetZavrseneTransakcijeForKupac(kupac);
+            }
+            else if (User.IsInRole("AdministrativniRadnik"))
+            {
+                var radnik = _administrativniRadnikService.GetRadnik(User.Identity.Name);
+                v.TransakcijaList = _transakcijaService.GetZavrseneTransakcijeForRadnik(radnik);
+            }
+            return View(v);
+        }
     }
 }

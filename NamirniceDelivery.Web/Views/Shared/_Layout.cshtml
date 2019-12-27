@@ -140,6 +140,20 @@
                                 <a asp-controller="Transakcija" asp-action="NepotvrdjeneNarudzbe">Nepotvrđene narudžbe</a>
                             </li>
                         }
+                        <li>
+                            <a asp-controller="Transakcija" asp-action="NarudzbeUToku">Dostave u toku</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Transakcija" asp-action="ZavrseneTransakcije">Završene transakcije</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="admin-menu">
+                    <h5 class="sidenav-heading">Dodatno</h5>
+                    <ul id="side-admin-menu" class="side-menu list-unstyled">
+                        <li>
+                            <a @*asp-controller="Transakcija" asp-action="Statistika"*@>Statistika</a>
+                        </li>
                     </ul>
                 </div>
             }

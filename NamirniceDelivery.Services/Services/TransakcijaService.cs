@@ -43,11 +43,10 @@ namespace NamirniceDelivery.Services.Services
             _context.SaveChanges();
         }
 
-        public List<Transakcija> GetTransakcijeUTokuForRadnik(AdministrativniRadnik radnik)
+        public List<Transakcija> GetZavrseneTransakcijeForRadnik(AdministrativniRadnik radnik)
         {
             return GetTransakcijeForRadnik(radnik)
-                .Where(t => t.NarudzbaPrihvacenaOdRadnika == true &&
-                    t.DostavaUspjesna == false)
+                .Where(t => t.DostavaUspjesna == true)
                 .ToList();
         }
 
@@ -165,6 +164,21 @@ namespace NamirniceDelivery.Services.Services
                 _context.Transakcija.Add(t);
             }
             _context.SaveChanges();
+        }
+
+        public List<Transakcija> GetZavrseneTransakcijeForKupac(Kupac kupac)
+        {
+            return GetTransakcijeForKupac(kupac)
+                .Where(t => t.DostavaUspjesna = true)
+                .ToList();
+        }
+
+        public List<Transakcija> GetTransakcijeUTokuForRadnik(AdministrativniRadnik radnik)
+        {
+            return GetTransakcijeForRadnik(radnik)
+                .Where(t => t.NarudzbaPrihvacenaOdRadnika == true &&
+                    t.DostavaUspjesna == false)
+                .ToList();
         }
     }
 }
