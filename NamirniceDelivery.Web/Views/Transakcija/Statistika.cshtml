@@ -6,27 +6,50 @@
 <script>
 window.onload = function () {
 
-var chart = new CanvasJS.Chart("chartContainer", {
-	theme: "light2", // "light1", "light2", "dark1", "dark2"
-	animationEnabled: true,
-	zoomEnabled: true,
-	title: {
-		text: "Vrijednosti transakcija"
-    },
-    axisY:{
-    title: "Iznos",
-    valueFormatString:  "#,##KM"   // move comma to change formatting
-    },
-    axisX:{
-    title: "Vrijeme"
-    },
-	data: [{
-		type: "line",
-		dataPoints: @Html.Raw(ViewBag.DataPoints)
-	}]
-});
+    var chart = new CanvasJS.Chart("chartContainer", {
+	    theme: "light2", // "light1", "light2", "dark1", "dark2"
+	    animationEnabled: true,
+	    zoomEnabled: true,
+	    title: {
+		    text: "Vrijednosti transakcija"
+        },
+        axisY:{
+        title: "Iznos",
+        valueFormatString:  "#,##KM"   // move comma to change formatting
+        },
+        axisX:{
+        title: "Vrijeme"
+        },
+	    data: [{
+		    type: "line",
+		    dataPoints: @Html.Raw(ViewBag.DataPoints)
+	    }]
+    });
 
-chart.render();
+    chart.render();
+
+    //pie chart
+
+  var dataPie = [
+      {x: "White", value: 223553265},
+      {x: "Black or African American", value: 38929319},
+      {x: "American Indian and Alaska Native", value: 2932248},
+      {x: "Asian", value: 14674252},
+      {x: "Native Hawaiian and Other Pacific Islander", value: 540013},
+      {x: "Some Other Race", value: 19107368},
+      {x: "Two or More Races", value: 9009073}
+  ];
+
+  // create the chart
+  var chartPie = anychart.pie(@Html.Raw(ViewBag.ChartDataPie));
+  // set the chart title
+  chartPie.title("Namirnice");
+
+
+  // display the chart in the container
+  chartPie.container('chartPie');
+  chartPie.draw();
+
 }
 </script>
 
@@ -97,5 +120,8 @@ chart.render();
 </div>
 <br />
 <div id="chartContainer" style="height: 370px; width: 100%"></div>
-
+<br />
+<div id="chartPie" style="height: 370px;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-pie.min.js"></script>

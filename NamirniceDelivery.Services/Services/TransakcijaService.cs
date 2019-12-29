@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.Data.HelperModel;
 using NamirniceDelivery.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -307,6 +308,56 @@ namespace NamirniceDelivery.Services.Services
             }
             return new Tuple<ApplicationUser, int>(naj.User, naj.Kolicina);
         }
+        public List<TransakcijeNamirnica> GetNamirniceUTransakcijiama(ApplicationUser user)
+        {
+            var kn = _context.KupljeneNamirnice
+                .Include(kn=>kn.Namirnica)
+                .Include(kn=>kn.Transakcija)
+                .Where(kn => kn.Transakcija.KupacId == user.Id || kn.Transakcija.AdministrativniRadnikId == user.Id)
+                .ToList();
+            //if (!kn.Any()) return null;
+            List<TransakcijeNamirnica> list = new List<TransakcijeNamirnica>();
+            foreach(var n in kn)
+            {
+                if (PostojiTransakcijeNamirnica(list, n))
+                {
+                    DodajTransakcijeNamirnica(list, n);
+                }
+                else
+                {
+                    list.Add(new TransakcijeNamirnica
+                    {
+                        name = n.Namirnica.Naziv,
+                        value = n.Kolicina
+                    });
+                }
+            }
+            return list;
+        }
+
+        private bool PostojiTransakcijeNamirnica(List<TransakcijeNamirnica> list, KupljeneNamirnice n)
+        {
+            foreach(var item in list)
+            {
+                if(item.name == n.Namirnica.Naziv)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void DodajTransakcijeNamirnica(List<TransakcijeNamirnica> list, KupljeneNamirnice n)
+        {
+            foreach (var item in list)
+            {
+                if (item.name == n.Namirnica.Naziv)
+                {
+                    item.value += n.Kolicina;
+                    return;
+                }
+            }
+        }
 
         private void DodajKorisnika(List<KorisnikKolicina> list, ApplicationUser user)
         {
@@ -348,6 +399,7 @@ namespace NamirniceDelivery.Services.Services
             }
             return false;
         }
+
         class KorisnikKolicina
         {
             public ApplicationUser User { get; set; }

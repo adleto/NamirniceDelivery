@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.Data.HelperModel;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.Web.Models;
 using NamirniceDelivery.Web.ViewModels.Shared;
@@ -194,8 +195,12 @@ namespace NamirniceDelivery.Web.Controllers
             {
                 dataPoints.Add(new DataPoint(transakcije[i].DatumIniciranjaTransakcije.ToString(), transakcije[i].IznosTotal));
             }
-
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+
+            var tNamirnice = _transakcijaService.GetNamirniceUTransakcijiama(user);
+            //var jsonSerialiser = new JavaScriptSerializer();
+            var json = JsonConvert.SerializeObject(tNamirnice);
+            ViewBag.ChartDataPie = json;
 
 
             var v = new StatistikaViewModel

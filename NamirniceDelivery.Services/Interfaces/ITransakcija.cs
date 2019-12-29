@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.Data.HelperModel;
 
 namespace NamirniceDelivery.Services.Interfaces
 {
@@ -25,5 +26,6 @@ namespace NamirniceDelivery.Services.Interfaces
         Tuple<string, int> GetNajNamirnica(ApplicationUser user);
         Tuple<ApplicationUser,int> GetNajPartner(ApplicationUser user);
         public List<Transakcija> GetTransakcije(ApplicationUser user);
+        List<TransakcijeNamirnica> GetNamirniceUTransakcijiama(ApplicationUser user);
     }
 }

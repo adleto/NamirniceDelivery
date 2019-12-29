@@ -11,13 +11,16 @@
         <h2>Lista podružnica u vašoj blizini</h2>
         <br />
         <partial name="_PodruznicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledPodruznicaPartialViewModel { PodruznicaList = Model.PodruznicaList, SpremljenePodruzniceList = Model.SpremljenePodruzniceList })" />
-        <hr />
+    </div>
+</div>
+<br />
+<hr />
+<br />
+<div class="text-center row justify-content-center">
+    <div>
+        <h2>Lista namirnica u ponudi</h2>
         <br />
-        <div>
-            <h2>Lista namirnica u ponudi</h2>
-            <br />
-            <partial name="_NamirnicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledNamirnicaPartialViewModel { NamirnicaPodruznicaList = Model.NamirnicaList, SpremljeneNamirniceList = Model.SpremljeneNamirniceList })" />
-        </div>
+        <partial name="_NamirnicePregledPartial" model="@(new NamirniceDelivery.Web.ViewModels.Shared.PregledNamirnicaPartialViewModel { NamirnicaPodruznicaList = Model.NamirnicaList, SpremljeneNamirniceList = Model.SpremljeneNamirniceList })" />
     </div>
 </div>
 
