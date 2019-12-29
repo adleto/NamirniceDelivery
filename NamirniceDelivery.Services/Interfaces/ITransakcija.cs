@@ -24,5 +24,6 @@ namespace NamirniceDelivery.Services.Interfaces
         Transakcija GetNajvecaTransakcija(ApplicationUser user);
         Tuple<string, int> GetNajNamirnica(ApplicationUser user);
         Tuple<ApplicationUser,int> GetNajPartner(ApplicationUser user);
+        public List<Transakcija> GetTransakcije(ApplicationUser user);
     }
 }

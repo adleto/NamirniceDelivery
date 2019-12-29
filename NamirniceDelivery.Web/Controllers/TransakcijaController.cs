@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.Web.Models;
 using NamirniceDelivery.Web.ViewModels.Shared;
 using NamirniceDelivery.Web.ViewModels.Transakcija;
+using Newtonsoft.Json;
 
 namespace NamirniceDelivery.Web.Controllers
 {
@@ -184,6 +186,18 @@ namespace NamirniceDelivery.Web.Controllers
         public async Task<IActionResult> Statistika()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var transakcije = _transakcijaService.GetTransakcije(user);
+            List<DataPoint> dataPoints = new List<DataPoint>();
+
+            for (int i = 0; i < transakcije.Count; i++)
+            {
+                dataPoints.Add(new DataPoint(transakcije[i].DatumIniciranjaTransakcije.ToString(), transakcije[i].IznosTotal));
+            }
+
+            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+
+
             var v = new StatistikaViewModel
             {
                 TotalVrijednost = _transakcijaService.GetTotalProtok(user),

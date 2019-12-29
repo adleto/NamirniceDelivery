@@ -84,6 +84,19 @@ namespace NamirniceDelivery.Services.Services
                         .ThenInclude(kn => kn.Kategorija)
                 .ToList();
         }
+        public List<Transakcija> GetTransakcije(ApplicationUser user)
+        {
+            return _context.Transakcija
+                .Include(t => t.Kupac)
+                .Include(t => t.AdministrativniRadnik)
+                .Include(t => t.Podruznica)
+                .Include(t => t.TipTransakcije)
+                .Include(t => t.KupljeneNamirnice)
+                    .ThenInclude(kn => kn.Namirnica)
+                        .ThenInclude(kn => kn.Kategorija)
+                .Where(t => t.AdministrativniRadnikId == user.Id || t.KupacId == user.Id)
+                .ToList();
+        }
 
         public List<Transakcija> GetTransakcijeForKupac(Kupac kupac)
         {

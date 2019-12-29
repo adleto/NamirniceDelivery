@@ -3,6 +3,32 @@
     ViewData["Title"] = "Statistika";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+	zoomEnabled: true,
+	title: {
+		text: "Vrijednosti transakcija"
+    },
+    axisY:{
+    title: "Iznos",
+    valueFormatString:  "#,##KM"   // move comma to change formatting
+    },
+    axisX:{
+    title: "Vrijeme"
+    },
+	data: [{
+		type: "line",
+		dataPoints: @Html.Raw(ViewBag.DataPoints)
+	}]
+});
+
+chart.render();
+}
+</script>
 
 <div class="text-center row justify-content-center">
     <div>
@@ -65,8 +91,11 @@
                         <td>Nema</td>
                     }
                 </tr>
-
             </table>
         </div>
     </div>
 </div>
+<br />
+<div id="chartContainer" style="height: 370px; width: 100%"></div>
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
