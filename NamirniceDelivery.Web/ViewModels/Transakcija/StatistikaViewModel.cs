@@ -8,5 +8,7 @@ namespace NamirniceDelivery.Web.ViewModels.Transakcija
     public class StatistikaViewModel
     {
         public decimal TotalVrijednost { get; set; }
+        public Data.Entities.Transakcija NajvecaTransakcija { get; set; }
+        public Tuple<string,int> NajNamirnica { get; set; }
     }
 }

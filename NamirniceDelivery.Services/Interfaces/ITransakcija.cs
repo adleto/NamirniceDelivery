@@ -21,5 +21,7 @@ namespace NamirniceDelivery.Services.Interfaces
         List<Transakcija> GetTransakcijeUTokuForRadnik(AdministrativniRadnik radnik);
         Transakcija GetTansakcija(int transakcijaId);
         decimal GetTotalProtok(ApplicationUser user);
+        Transakcija GetNajvecaTransakcija(ApplicationUser user);
+        Tuple<string, int> GetNajNamirnica(ApplicationUser user);
     }
 }

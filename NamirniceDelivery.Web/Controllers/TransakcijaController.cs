@@ -186,7 +186,9 @@ namespace NamirniceDelivery.Web.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var v = new StatistikaViewModel
             {
-                TotalVrijednost = _transakcijaService.GetTotalProtok(user)
+                TotalVrijednost = _transakcijaService.GetTotalProtok(user),
+                NajvecaTransakcija = _transakcijaService.GetNajvecaTransakcija(user),
+                NajNamirnica = _transakcijaService.GetNajNamirnica(user)
             };
             return View(v);
         }

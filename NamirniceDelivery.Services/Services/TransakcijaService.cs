@@ -206,5 +206,88 @@ namespace NamirniceDelivery.Services.Services
                 .Cast<decimal?>()
                 .Sum() ?? 0;
         }
+
+        public Transakcija GetNajvecaTransakcija(ApplicationUser user)
+        {
+            var t = _context.Transakcija
+                .Include(t => t.KupljeneNamirnice)
+                .Where(t => t.KupacId == user.Id || t.AdministrativniRadnikId == user.Id)
+                .ToList();
+            if (!t.Any()) return null;
+            return t.Where(tr => tr.IznosTotal == (t.Max(t => t.IznosTotal)))
+                .FirstOrDefault();
+        }
+
+        public Tuple<string, int> GetNajNamirnica(ApplicationUser user)
+        {
+            var t = _context.Transakcija
+                .Include(t => t.KupljeneNamirnice)
+                    .ThenInclude(t=>t.Namirnica)
+                .Where(t => t.KupacId == user.Id || t.AdministrativniRadnikId == user.Id)
+                .ToList();
+            if (!t.Any()) return null;
+            List<KupljeneN> list = new List<KupljeneN>();
+            foreach(var transakcija in t)
+            {
+                foreach(var namirnica in transakcija.KupljeneNamirnice)
+                {
+                    if (PostojiNamirnica(list, namirnica))
+                    {
+                        DodajKolicinu(list, namirnica);
+                    }
+                    else
+                    {
+                        list.Add(new KupljeneN
+                        {
+                            Kolicina = namirnica.Kolicina,
+                            Namirnica = namirnica.Namirnica
+                        });
+                    }
+                }
+            }
+            var naj = new KupljeneN
+            {
+                Namirnica = list[0].Namirnica,
+                Kolicina = list[0].Kolicina
+            };
+            foreach(var n in list)
+            {
+                if (n.Kolicina > naj.Kolicina)
+                {
+                    naj = n;
+                }
+            }
+            return Tuple.Create(naj.Namirnica.Naziv, naj.Kolicina);
+        }
+
+        private void DodajKolicinu(List<KupljeneN> list, KupljeneNamirnice namirnica)
+        {
+            foreach(var item in list)
+            {
+                if(item.Namirnica == namirnica.Namirnica)
+                {
+                    item.Kolicina += namirnica.Kolicina;
+                    return;
+                }
+            }
+        }
+
+        private bool PostojiNamirnica(List<KupljeneN> list, KupljeneNamirnice namirnica)
+        {
+            foreach (var item in list)
+            {
+                if (item.Namirnica == namirnica.Namirnica)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        class KupljeneN
+        {
+            public Namirnica Namirnica { get; set; }
+            public int Kolicina { get; set; }
+        }
     }
 }

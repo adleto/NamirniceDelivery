@@ -23,6 +23,38 @@
                         @((Model.TotalVrijednost).ToString("F") + "KM")
                     </td>
                 </tr>
+
+                <tr>
+                    <td>Najveća transakcija</td>
+                    @if (Model.NajvecaTransakcija != null)
+                    {
+                        <td><a title="Detalji" asp-action="Index" asp-route-transakcijaId="@Model.NajvecaTransakcija.Id" asp-route-returnUrl="@Context.Request.Path">@(Model.NajvecaTransakcija.IznosTotal.ToString("F") + "KM")</a></td>
+                    }
+                    else
+                    {
+                        <td>Nema</td>
+                    }
+                </tr>
+
+                <tr>
+                    @if (User.IsInRole("Kupac"))
+                    {
+                        <td>Najviše kupljena namirnica</td>
+                    }
+                    @if (User.IsInRole("AdministrativniRadnik"))
+                    {
+                        <td>Najviše prodata namirnica</td>
+                    }
+                    @if (Model.NajvecaTransakcija != null)
+                    {
+                        <td>@Model.NajNamirnica.Item1 (@Model.NajNamirnica.Item2)</td>
+                    }
+                    else
+                    {
+                        <td>Nema</td>
+                    }
+                </tr>
+
             </table>
         </div>
     </div>
