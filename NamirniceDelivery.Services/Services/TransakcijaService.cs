@@ -260,6 +260,58 @@ namespace NamirniceDelivery.Services.Services
             return Tuple.Create(naj.Namirnica.Naziv, naj.Kolicina);
         }
 
+        public Tuple<ApplicationUser,int> GetNajPartner(ApplicationUser user)
+        {
+            var t = _context.Transakcija
+                .Include(t=>t.Kupac)
+                .Include(t=>t.AdministrativniRadnik)
+                .Where(t => t.KupacId == user.Id || t.AdministrativniRadnikId == user.Id)
+                .ToList();
+            if (!t.Any()) return null;
+            List<KorisnikKolicina> list = new List<KorisnikKolicina>();
+            foreach (var transakcija in t)
+            {
+                if (transakcija.KupacId == user.Id)
+                {
+                    DodajKorisnika(list, transakcija.AdministrativniRadnik);
+                }
+                else
+                {
+                    DodajKorisnika(list, transakcija.Kupac);
+                }
+            }
+            KorisnikKolicina naj = new KorisnikKolicina
+            {
+                Kolicina = 1,
+                User = list[0].User
+            };
+            foreach (var item in list)
+            {
+                if (naj.Kolicina < item.Kolicina)
+                {
+                    naj = item;
+                }
+            }
+            return new Tuple<ApplicationUser, int>(naj.User, naj.Kolicina);
+        }
+
+        private void DodajKorisnika(List<KorisnikKolicina> list, ApplicationUser user)
+        {
+            foreach (var t in list)
+            {
+                if (t.User.Id == user.Id)
+                {
+                    t.Kolicina++;
+                    return;
+                }
+            }
+            list.Add(new KorisnikKolicina
+            {
+                Kolicina = 1,
+                User = user
+            });
+        }
+
         private void DodajKolicinu(List<KupljeneN> list, KupljeneNamirnice namirnica)
         {
             foreach(var item in list)
@@ -283,7 +335,11 @@ namespace NamirniceDelivery.Services.Services
             }
             return false;
         }
-
+        class KorisnikKolicina
+        {
+            public ApplicationUser User { get; set; }
+            public int Kolicina { get; set; }
+        }
         class KupljeneN
         {
             public Namirnica Namirnica { get; set; }

@@ -47,7 +47,18 @@
                     }
                     @if (Model.NajvecaTransakcija != null)
                     {
-                        <td>@Model.NajNamirnica.Item1 (@Model.NajNamirnica.Item2)</td>
+                        <td>@Model.NajNamirnica.Item1 (<span title="Količina kupljena">@Model.NajNamirnica.Item2)</span></td>
+                    }
+                    else
+                    {
+                        <td>Nema</td>
+                    }
+                </tr>
+                <tr>
+                    <td>Najpartner</td>
+                    @if (Model.NajPartner != null)
+                    {
+                        <td>@Model.NajPartner.Item1 (<span title="Broj transakcija">@Model.NajPartner.Item2</span>)</td>
                     }
                     else
                     {

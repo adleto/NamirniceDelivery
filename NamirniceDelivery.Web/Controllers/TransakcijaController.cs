@@ -188,7 +188,8 @@ namespace NamirniceDelivery.Web.Controllers
             {
                 TotalVrijednost = _transakcijaService.GetTotalProtok(user),
                 NajvecaTransakcija = _transakcijaService.GetNajvecaTransakcija(user),
-                NajNamirnica = _transakcijaService.GetNajNamirnica(user)
+                NajNamirnica = _transakcijaService.GetNajNamirnica(user),
+                NajPartner = _transakcijaService.GetNajPartner(user)
             };
             return View(v);
         }

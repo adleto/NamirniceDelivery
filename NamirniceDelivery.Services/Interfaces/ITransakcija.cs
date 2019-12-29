@@ -23,5 +23,6 @@ namespace NamirniceDelivery.Services.Interfaces
         decimal GetTotalProtok(ApplicationUser user);
         Transakcija GetNajvecaTransakcija(ApplicationUser user);
         Tuple<string, int> GetNajNamirnica(ApplicationUser user);
+        Tuple<ApplicationUser,int> GetNajPartner(ApplicationUser user);
     }
 }
