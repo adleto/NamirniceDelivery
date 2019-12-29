@@ -20,6 +20,7 @@
                             <input asp-for="Naziv" class="form-control" />
                             <span asp-validation-for="Naziv" class="text-danger"></span>
                         </div>
+                        @Html.AntiForgeryToken()
                         <div class="form-group">
                             <input type="submit" value="Kreiraj" class="btn btn-primary" />
                         </div>

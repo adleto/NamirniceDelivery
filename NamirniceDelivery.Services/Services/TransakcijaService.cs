@@ -2,6 +2,7 @@
 using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Data.HelperModel;
+using NamirniceDelivery.Services.Additional;
 using NamirniceDelivery.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,8 @@ namespace NamirniceDelivery.Services.Services
             });
             namirnicaPodruznica.KolicinaNaStanju -= brojNamirnica;
             _context.SaveChanges();
+
+            ObavjestiRadnike(namirnicaPodruznica.PodruznicaId);
         }
 
         public List<Transakcija> GetZavrseneTransakcijeForRadnik(AdministrativniRadnik radnik)
@@ -180,6 +183,10 @@ namespace NamirniceDelivery.Services.Services
                 _context.Transakcija.Add(t);
             }
             _context.SaveChanges();
+            foreach(var p in razlicitePodruznice)
+            {
+                ObavjestiRadnike(p.Id);
+            } 
         }
 
         public List<Transakcija> GetZavrseneTransakcijeForKupac(Kupac kupac)
@@ -335,6 +342,17 @@ namespace NamirniceDelivery.Services.Services
             return list;
         }
 
+        private void ObavjestiRadnike(int podruznicaId)
+        {
+            var radnici = _context.AdministrativniRadnik
+                .Where(a => a.PodruznicaId == podruznicaId)
+                .ToList();
+            foreach(var r in radnici)
+            {
+                //ugaseno za sad
+                //NexmoSend.ObavjestiRadnikaNovaNarudzba(r);
+            }
+        }
         private bool PostojiTransakcijeNamirnica(List<TransakcijeNamirnica> list, KupljeneNamirnice n)
         {
             foreach(var item in list)

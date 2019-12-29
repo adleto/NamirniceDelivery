@@ -1,5 +1,6 @@
 ﻿using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.Services.Additional;
 using NamirniceDelivery.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,12 @@ namespace NamirniceDelivery.Services.Services
                 transakcija.NarudzbaPrihvacenaOdRadnika = true;
                 transakcija.DatumPrihvacanjaNarudzbe = DateTime.Now;
                 _context.SaveChanges();
+
+                _context.Entry(transakcija)
+                    .Reference(t => t.Kupac)
+                    .Load();
+                //sms; ugaseno za sad
+                //NexmoSend.ObavjestiKupcaPrihvacenaNarudzba(transakcija.Kupac);
             }
         }
 
