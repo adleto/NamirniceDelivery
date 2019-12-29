@@ -1,7 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using NamirniceDelivery.Data.Entities
 @inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
 <html>
@@ -109,19 +108,6 @@
                             <li>
                                 <a asp-controller="Kupac" asp-action="SpremljenePodruznice">Spremljene Podruznice</a>
                             </li>
-
-                            @*<li>
-                            <a asp-controller="Kupac" asp-action="NeodobreneNarudzbe">Neodobrene narudžbe</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Kupac" asp-action="DostaveUToku">Dostave u toku</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Kupac" asp-action="ZavrseneTransakcije">Završene transakcije</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
-                        </li>*@
                         }
                     </ul>
                 </div>
@@ -152,7 +138,7 @@
                     <h5 class="sidenav-heading">Dodatno</h5>
                     <ul id="side-admin-menu" class="side-menu list-unstyled">
                         <li>
-                            <a @*asp-controller="Transakcija" asp-action="Statistika"*@>Statistika</a>
+                            <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
                         </li>
                     </ul>
                 </div>

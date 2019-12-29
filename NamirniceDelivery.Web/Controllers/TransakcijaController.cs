@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.Web.ViewModels.Shared;
 using NamirniceDelivery.Web.ViewModels.Transakcija;
@@ -19,8 +21,9 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IPodruznica _podruznicaService;
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
         private readonly IAkcijeTransakcija _akcijeTransakcijaService;
+        private static UserManager<ApplicationUser> _userManager;
 
-        public TransakcijaController(IKupac kupacService, IAdministrativniRadnik administrativniRadnikService, ITransakcija transakcijaService, IPodruznica podruznicaService, INamirnicaPodruznica namirnicaPodruznicaService, IAkcijeTransakcija akcijeTransakcijaService)
+        public TransakcijaController(IKupac kupacService, IAdministrativniRadnik administrativniRadnikService, ITransakcija transakcijaService, IPodruznica podruznicaService, INamirnicaPodruznica namirnicaPodruznicaService, IAkcijeTransakcija akcijeTransakcijaService, UserManager<ApplicationUser> userManager)
         {
             _kupacService = kupacService;
             _administrativniRadnikService = administrativniRadnikService;
@@ -28,6 +31,7 @@ namespace NamirniceDelivery.Web.Controllers
             _podruznicaService = podruznicaService;
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
             _akcijeTransakcijaService = akcijeTransakcijaService;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int transakcijaId, string returnUrl = "")
@@ -175,6 +179,16 @@ namespace NamirniceDelivery.Web.Controllers
                 }
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Statistika()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var v = new StatistikaViewModel
+            {
+                TotalVrijednost = _transakcijaService.GetTotalProtok(user)
+            };
+            return View(v);
         }
     }
 }

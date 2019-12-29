@@ -1,0 +1,29 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Transakcija.StatistikaViewModel
+@{
+    ViewData["Title"] = "Statistika";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center row justify-content-center">
+    <div>
+        <h1>Statistika</h1>
+        <br />
+        <div class="table-responsive">
+            <table class="table table-bordered table-dark">
+                <tr>
+                    @if (User.IsInRole("Kupac"))
+                    {
+                        <td>Ukupno utrošeno</td>
+                    }
+                    @if (User.IsInRole("AdministrativniRadnik"))
+                    {
+                        <td>Ukupna zarada</td>
+                    }
+                    <td>
+                        @((Model.TotalVrijednost).ToString("F") + "KM")
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

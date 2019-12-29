@@ -37,7 +37,7 @@ namespace NamirniceDelivery.Services.Services
                 Kolicina = brojNamirnica,
                 NamirnicaId = namirnicaPodruznica.NamirnicaId,
                 Transakcija = t,
-                Cijena = Math.Round(namirnicaPodruznica.CijenaSaPopustom,2)
+                Cijena = Math.Round(namirnicaPodruznica.CijenaSaPopustom, 2)
             });
             namirnicaPodruznica.KolicinaNaStanju -= brojNamirnica;
             _context.SaveChanges();
@@ -103,9 +103,9 @@ namespace NamirniceDelivery.Services.Services
         {
             var tList = GetTransakcije();
             var list = new List<Transakcija>();
-            foreach(var t in tList)
+            foreach (var t in tList)
             {
-                if(t.AdministrativniRadnik!=null && t.AdministrativniRadnik == radnik)
+                if (t.AdministrativniRadnik != null && t.AdministrativniRadnik == radnik)
                 {
                     list.Add(t);
                 }
@@ -117,14 +117,14 @@ namespace NamirniceDelivery.Services.Services
         {
             if (list.Count == 0) return;
             List<Podruznica> razlicitePodruznice = new List<Podruznica>();
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 if (!razlicitePodruznice.Contains(item.NamirnicaPodruznica.Podruznica))
                 {
                     razlicitePodruznice.Add(item.NamirnicaPodruznica.Podruznica);
                 }
             }
-            foreach(var podruznica in razlicitePodruznice)
+            foreach (var podruznica in razlicitePodruznice)
             {
                 Transakcija t = new Transakcija
                 {
@@ -151,7 +151,8 @@ namespace NamirniceDelivery.Services.Services
                         });
                         _context.KorpaStavka.Remove(stavka);
 
-                        if(stavka.NamirnicaPodruznica.KolicinaNaStanju- stavka.Kolicina > 0) {
+                        if (stavka.NamirnicaPodruznica.KolicinaNaStanju - stavka.Kolicina > 0)
+                        {
                             // kolicina to 0
                             stavka.NamirnicaPodruznica.KolicinaNaStanju -= stavka.Kolicina;
                         }
@@ -192,8 +193,18 @@ namespace NamirniceDelivery.Services.Services
                 .Include(t => t.KupljeneNamirnice)
                     .ThenInclude(kn => kn.Namirnica)
                         .ThenInclude(kn => kn.Kategorija)
-                .Where(t=>t.Id == transakcijaId)
+                .Where(t => t.Id == transakcijaId)
                 .FirstOrDefault();
+        }
+
+        public decimal GetTotalProtok(ApplicationUser user)
+        {
+            return _context.KupljeneNamirnice
+                .Include(kn=>kn.Transakcija)
+                .Where(kn => kn.Transakcija.KupacId == user.Id || kn.Transakcija.AdministrativniRadnikId == user.Id)
+                .Select(kn=>kn.Cijena*kn.Kolicina)
+                .Cast<decimal?>()
+                .Sum() ?? 0;
         }
     }
 }

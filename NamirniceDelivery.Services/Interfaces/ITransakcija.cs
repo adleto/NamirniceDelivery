@@ -20,5 +20,6 @@ namespace NamirniceDelivery.Services.Interfaces
         List<Transakcija> GetZavrseneTransakcijeForKupac(Kupac kupac);
         List<Transakcija> GetTransakcijeUTokuForRadnik(AdministrativniRadnik radnik);
         Transakcija GetTansakcija(int transakcijaId);
+        decimal GetTotalProtok(ApplicationUser user);
     }
 }
