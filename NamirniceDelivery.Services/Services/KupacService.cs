@@ -52,6 +52,11 @@ namespace NamirniceDelivery.Services.Services
                 .FirstOrDefault();
         }
 
+        public List<Kupac> GetKupci()
+        {
+            return _context.Kupac.ToList();
+        }
+
         public List<KupacSpremljeneNamirnice> GetSpremljeneNamirnice(string id)
         {
             return _context.KupacSpremljeneNamirnice

@@ -34,5 +34,12 @@ namespace NamirniceDelivery.Services.Additional
         {
             SendSMS("Vaša narudžba je procesuirana. Očekujte dostavu na vašu adresu."/*,k.PhoneNumber*/);
         }
+        public static void PodsjetiKupce(List<Kupac> kupci)
+        {
+            foreach(var k in kupci)
+            {
+                SendSMS("Nove namirnice vas čekaju! Visit: https://p1873.app.fit.ba "/*,k.PhoneNumber*/);
+            }
+        }
     }
 }

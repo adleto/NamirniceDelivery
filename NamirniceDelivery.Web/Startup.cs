@@ -15,6 +15,7 @@ using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Services;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.WorkerProject;
 
 namespace NamirniceDelivery.Web
 {
@@ -59,6 +60,9 @@ namespace NamirniceDelivery.Web
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
             });
+
+            services.AddHostedService<Worker>();
+
 
             services.AddScoped<IKanton, KantonService>();
             services.AddScoped<IOpcina, OpcinaService>();
