@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.Web.Models;
 using NamirniceDelivery.Web.ViewModels.AdministrativniRadnik;
+using OfficeOpenXml;
 
 namespace NamirniceDelivery.Web.Controllers
 {
@@ -446,6 +450,38 @@ namespace NamirniceDelivery.Web.Controllers
                 return RedirectToAction("DostaveUToku", "Transakcija");
             }
             return Redirect(returnUrl);
+        }
+        [Authorize(Roles="AdministrativniRadnik")]
+        public async Task<IActionResult> GetExcelNamirnicePodruznica(CancellationToken cancellationToken)  
+        {  
+            await Task.Yield();
+            var radnik = _administrativniRadnikService.GetRadnik(User.Identity.Name);
+            var listNamirnice = _namirnicaPodruznicaService.GetNamirnicePodruznica(radnik.PodruznicaId ?? 0);
+            var list = new List<NamirnicaExcel>();
+            foreach (var item in listNamirnice)
+            {
+                list.Add(new NamirnicaExcel
+                {
+                    Broj = (listNamirnice.IndexOf(item) + 1).ToString(),
+                    Cijena = item.Cijena.ToString("F") + "KM",
+                    CijenaSaPopustom = item.CijenaSaPopustom.ToString("F") + "KM",
+                    KolicinaNaStanju = item.KolicinaNaStanju.ToString(),
+                    Namirnica = item.Namirnica.Naziv
+                });
+            }
+            var stream = new MemoryStream();  
+  
+            using (var package = new ExcelPackage(stream))  
+            {  
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");  
+                workSheet.Cells.LoadFromCollection(list, true);  
+                package.Save();  
+            }  
+            stream.Position = 0;  
+            string excelName = $"Namirnice-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xlsx";  
+  
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);  
         }
     }
 }
