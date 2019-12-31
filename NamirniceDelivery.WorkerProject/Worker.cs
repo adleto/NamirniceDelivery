@@ -29,7 +29,8 @@ namespace NamirniceDelivery.WorkerProject
                 using var scope = _serviceScopeFactory.CreateScope();
                 var _kupacService = scope.ServiceProvider.GetRequiredService<IKupac>();
                 var kupci = _kupacService.GetKupci();
-                NexmoSend.PodsjetiKupce(kupci);
+                //Ugaseno za sad
+                //NexmoSend.PodsjetiKupce(kupci);
                 //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(2*24*60*60*1000, stoppingToken);
             }
