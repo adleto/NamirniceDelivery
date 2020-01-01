@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.Web.Hubs;
 using NamirniceDelivery.Web.Models;
 using NamirniceDelivery.Web.ViewModels.AdministrativniRadnik;
+using NamirniceDelivery.Web.ViewModels.Shared;
 using OfficeOpenXml;
 
 namespace NamirniceDelivery.Web.Controllers
@@ -24,8 +27,9 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
         private readonly IAdministrativniRadnik _administrativniRadnikService;
         private readonly IAkcijeTransakcija _akcijeTransakcijaService;
+        private readonly IHubContext<MyHub> _hubContext;
 
-        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService, IPopust popustService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService, IAkcijeTransakcija akcijeTransakcijaService)
+        public AdministrativniRadnikController(SignInManager<ApplicationUser> signInManager, IKategorija kategorijaService, INamirnica namirnicaService, IPopust popustService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService, IAkcijeTransakcija akcijeTransakcijaService, IHubContext<MyHub> hubContext)
         {
             _signInManager = signInManager;
             _kategorijaService = kategorijaService;
@@ -34,6 +38,7 @@ namespace NamirniceDelivery.Web.Controllers
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
             _administrativniRadnikService = administrativniRadnikService;
             _akcijeTransakcijaService = akcijeTransakcijaService;
+            _hubContext = hubContext;
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult Index()
@@ -46,16 +51,36 @@ namespace NamirniceDelivery.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult KreirajKategoriju(string returnUrl = "")
+        public IActionResult PregledKategorijaGetData()
         {
-            return View(new KreirajKategorijuViewModel
+            var kategorijaList = _kategorijaService.GetKategorije();
+            return PartialView("_KategorijaListPartialView",new KategorijaListViewModel
+            {
+                KategorijaList = kategorijaList,
+                Deletable = _kategorijaService.GetIsDeletable(kategorijaList)
+            });
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult PregledKategorija(string returnUrl = "")
+        {
+            return View(new PregledViewModel
             {
                 ReturnUrl = returnUrl
             });
         }
-        [HttpPost]
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult KreirajKategoriju(KreirajKategorijuViewModel model)
+        public IActionResult Kategorija(int id = 0)
+        {
+            var model = new KategorijaPartialViewModel { KategorijaId = id};
+            if (id != 0)
+            {
+                model.Naziv = _kategorijaService.GetKategorija(id).Naziv;
+            }
+            return PartialView("_KategorijaPartialView", model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        [HttpPost]
+        public async Task<IActionResult> KategorijaAdd(KategorijaPartialViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -63,40 +88,14 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     Naziv = model.Naziv
                 });
-                if (!string.IsNullOrEmpty(model.ReturnUrl))
-                {
-                    return Redirect(model.ReturnUrl);
-                }
-                return RedirectToAction(nameof(PregledKategorija));
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
             }
-            return View(model);
-        }
-        [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult PregledKategorija(string returnUrl = "")
-        {
-            var kategorijaList = _kategorijaService.GetKategorije();
-            List<bool> deletable = _kategorijaService.GetIsDeletable(kategorijaList);
-            return View(new PregledKategorijaViewModel
-            {
-                ReturnUrl = returnUrl,
-                KategorijaList = kategorijaList,
-                Deletable = deletable
-            });
-        }
-        [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult EditKategorija(int kategorijaId, string returnUrl = "")
-        {
-            var kategorija = _kategorijaService.GetKategorija(kategorijaId);
-            return View(new EditKategorijaViewModel
-            {
-                KategorijaId = kategorija.Id,
-                Naziv = kategorija.Naziv,
-                ReturnUrl = returnUrl
-            });
+            return PartialView("_KategorijaPartialView", model);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         [HttpPost]
-        public IActionResult EditKategorija(EditKategorijaViewModel model)
+        public async Task<IActionResult> KategorijaEdit(KategorijaPartialViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -105,26 +104,21 @@ namespace NamirniceDelivery.Web.Controllers
                     Id = model.KategorijaId,
                     Naziv = model.Naziv
                 });
-                if (!string.IsNullOrEmpty(model.ReturnUrl))
-                {
-                    return Redirect(model.ReturnUrl);
-                }
-                return RedirectToAction(nameof(Index));
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
             }
-            return View(model);
+            return PartialView("_KategorijaPartialView", model);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult UkloniKategoriju(int kategorijaId, string returnUrl="")
+        public async Task<IActionResult> UkloniKategoriju(int id)
         {
-            if (!_namirnicaService.GetNamirnicePoKategorijama(_kategorijaService.GetKategorija(kategorijaId)).Any())
+            if (!_namirnicaService.GetNamirnicePoKategorijama(_kategorijaService.GetKategorija(id)).Any())
             {
-                _kategorijaService.UkloniKategorija(kategorijaId);
+                _kategorijaService.UkloniKategorija(id);
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
             }
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction(nameof(PregledKategorija));
+            return Ok("Failed to delete");
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult KreirajNamirnica(string returnUrl = "")

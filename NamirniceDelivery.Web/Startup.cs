@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +11,7 @@ using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Services;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.WorkerProject;
+using NamirniceDelivery.Web.Hubs;
 
 namespace NamirniceDelivery.Web
 {
@@ -39,6 +35,8 @@ namespace NamirniceDelivery.Web
                 .AddEntityFrameworkStores<MyContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddSignalR();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -107,6 +105,7 @@ namespace NamirniceDelivery.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<MyHub>("/myHub");
             });
         }
     }

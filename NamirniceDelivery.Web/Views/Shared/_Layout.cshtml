@@ -36,6 +36,9 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 </head>
 
 <body>
@@ -66,14 +69,14 @@
                         </a>
                     </li>
                     @*
-                <li>
-                <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Example dropdown </a>
-                <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                    <li><a href="#">Page</a></li>
-                    <li><a href="#">Page</a></li>
-                    <li><a href="#">Page</a></li>
-                </ul>
-                </li>
+                        <li>
+                        <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Example dropdown </a>
+                        <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                            <li><a href="#">Page</a></li>
+                            <li><a href="#">Page</a></li>
+                            <li><a href="#">Page</a></li>
+                        </ul>
+                        </li>
                     *@
                 </ul>
             </div>
@@ -160,14 +163,14 @@
                         </div>
                         <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                             @*
-                            <!-- Languages dropdown    -->
-                            <li class="nav-item dropdown">
-                                <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
-                                <ul aria-labelledby="languages" class="dropdown-menu">
-                                    <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a></li>
-                                    <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French                                                         </span></a></li>
-                                </ul>
-                            </li>
+                                <!-- Languages dropdown    -->
+                                <li class="nav-item dropdown">
+                                    <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
+                                    <ul aria-labelledby="languages" class="dropdown-menu">
+                                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a></li>
+                                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French                                                         </span></a></li>
+                                    </ul>
+                                </li>
                             *@
                             <!-- Log out-->
                             @if (SignInManager.IsSignedIn(User))
@@ -222,31 +225,11 @@
     <script src="~/vendor/popper.js/umd/popper.min.js"></script>
     <script src="~/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
     <script src="~/vendor/jquery.cookie/jquery.cookie.js"></script>
-    <script src="~/vendor/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/js/front.js"></script>
+    <script src="~/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/site.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
 
-@*
-    <div class="sidebar-container">
-        <div class="sidebar-logo">
-            NamirniceDelivery
-        </div>
-    </div>
-    <div class="content-container">
-        <div class="container-fluid">
-            <div>
-                @RenderBody()
-            </div>
-        </div>
-    </div>
-*@
-@*
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-*@

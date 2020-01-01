@@ -1,4 +1,7 @@
 /* your styles go here */
+a{
+    cursor:pointer;
+}
 #mainSection input {
     text-align: center;
 }

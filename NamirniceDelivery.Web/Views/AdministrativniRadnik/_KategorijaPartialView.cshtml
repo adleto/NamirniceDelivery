@@ -1,0 +1,37 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.KategorijaPartialViewModel
+@{ 
+    var url = "";
+    if(Model.KategorijaId == 0)
+    {
+        url = Url.Action("KategorijaAdd");
+    }
+    else
+    {
+        url = Url.Action("KategorijaEdit");
+    }
+}
+<div class="modal fade" id="add-kategorija" tabindex="-1" role="dialog" aria-labelledby="addKategorijaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addKategorijaLabel">Kategorija</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form data-post="@url">
+                    <input type="hidden" asp-for="KategorijaId" />
+                    <div class="form-group">
+                        <label asp-for="Naziv" class="font-weight-bold"></label>
+                        <input asp-for="Naziv" class="form-control" />
+                        <span asp-validation-for="Naziv" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal">Spremi</button>
+            </div>
+        </div>
+    </div>
+</div>
