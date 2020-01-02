@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace NamirniceDelivery.Web.ViewModels.AdministrativniRadnik
 {
-    public class KreirajPopustViewModel
+    public class PopustPartialViewModel
     {
-        public string ReturnUrl { get; set; }
+        [Required]
+        public int PopustId { get; set; }
         [Required(ErrorMessage = "Opis popusta mora biti unesen.")]
         public string Opis { get; set; }
         [Required(ErrorMessage = "Iznos popusta mora biti unesen.")]

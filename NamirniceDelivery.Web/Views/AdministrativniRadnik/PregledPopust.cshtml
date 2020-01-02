@@ -1,65 +1,23 @@
-﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.PregledPopustViewModel
+﻿@model NamirniceDelivery.Web.ViewModels.Shared.PregledViewModel
 @{
     ViewData["Title"] = "PregledPopust";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div id="modal-placeholder"></div>
 <div class="text-center row justify-content-center">
     <div>
         <h1>Pregled Popusta</h1>
         <br />
-        @if (Model.PopustList.Any())
-        {
-            <div class="row">
-                <div class="col-md-12 text-right mb-1">
-                    <a asp-controller="AdministrativniRadnik" asp-action="KreirajPopust" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novi popust">+</a>
-                </div>
+        <div class="row">
+            <div class="col-md-12 text-right mb-1">
+                <button title="Dodaj novi popust" type="button" class="btn btn-success rounded" data-toggle="ajax-modal" data-target="#add-popust" data-url="@Url.Action("Popust")">
+                    +
+                </button>
             </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Opis</th>
-                            <th>Iznos</th>
-                            <th>Akcije</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var p in Model.PopustList)
-                        {
-                            <tr>
-                                <th>@(Model.PopustList.IndexOf(p) + 1).</th>
-                                <td>@p.Opis</td>
-                                <td>@((p.Iznos * 100).ToString() + "%")</td>
-                                <td>
-                                    @if (Model.Deletable[Model.PopustList.IndexOf(p)])
-                                    {
-                                        <a asp-action="UkloniPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
-                                    }
-                                    else
-                                    {
-                                        <a href="" title="Popust ne može biti obrisan jer postoje namrinice u podružnicama koje ga koriste."><i class="material-icons text-dark">delete</i></a>
-                                    }
-                                    <a asp-action="EditPopust" asp-route-popustId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <p><span>Trenutno ne postoji nijedan popust. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="KreirajPopust" asp-route-returnUrl="@Context.Request.Path">nove?</a></span></p>
-        }
-        @if (string.IsNullOrEmpty(Model.ReturnUrl))
-        {
-            <div>
-                <a asp-action="Index">Nazad na panel</a>
-            </div>
-        }
-        else
+        </div>
+        <div class="row" id="dataStorage"></div>
+        @if (!string.IsNullOrEmpty(Model.ReturnUrl))
         {
             <div>
                 <a href="@Model.ReturnUrl">Idi nazad</a>
@@ -67,4 +25,33 @@
         }
     </div>
 </div>
+
+
+@section Scripts{
+    <script>
+        $(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/myHub").build();
+
+            connection.start().then(function () {
+                getData();
+            });
+
+            connection.on("Repopulate", function () {
+                getData();
+            });
+        });
+
+        function getData() {
+            var container = $('#dataStorage');
+            $.ajax({
+                url: '/AdministrativniRadnik/PregledPopustGetData',
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html'
+            })
+                .done(function (result) { container.empty().append(result); })
+        }
+    </script>
+}
+
 

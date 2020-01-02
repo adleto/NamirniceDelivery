@@ -50,6 +50,9 @@ namespace NamirniceDelivery.Web.Controllers
             await _signInManager.PasswordSignInAsync("testRadnik", "password", false, lockoutOnFailure: true);
             return RedirectToAction(nameof(Index));
         }
+
+        //KATEGORIJA DOWN
+
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult PregledKategorijaGetData()
         {
@@ -120,6 +123,11 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return Ok("Failed to delete");
         }
+
+        //KATEGORIJA UP
+        
+        //NAMIRNICA DOWN
+
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult KreirajNamirnica(string returnUrl = "")
         {
@@ -217,17 +225,44 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return RedirectToAction(nameof(PregledNamirnica));
         }
+
+        //NAMIRNICA UP
+
+        //POPUST DOWN
+
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult KreirajPopust(string returnUrl = "")
+        public IActionResult PregledPopustGetData()
         {
-            return View(new KreirajPopustViewModel
+            var popustList = _popustService.GetPopusti();
+            return PartialView("_PopustListPartialView", new PopustListViewModel
+            {
+                PopustList = popustList,
+                Deletable = _popustService.GetIsDeletable(popustList)
+            });
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public IActionResult PregledPopust(string returnUrl = "")
+        {
+            return View(new PregledViewModel
             {
                 ReturnUrl = returnUrl
             });
         }
-        [HttpPost]
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult KreirajPopust(KreirajPopustViewModel model)
+        public IActionResult Popust(int id = 0)
+        {
+            var model = new PopustPartialViewModel { PopustId = id };
+            if (id != 0)
+            {
+                var popust = _popustService.GetPopust(id);
+                model.Opis = popust.Opis;
+                model.Iznos = popust.Iznos*100;
+            }
+            return PartialView("_PopustPartialView", model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        [HttpPost]
+        public async Task<IActionResult> PopustAdd(PopustPartialViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -236,39 +271,14 @@ namespace NamirniceDelivery.Web.Controllers
                     Iznos = (model.Iznos / 100) ?? 1,
                     Opis = model.Opis
                 });
-                if (!string.IsNullOrEmpty(model.ReturnUrl))
-                {
-                    return Redirect(model.ReturnUrl);
-                }
-                return RedirectToAction(nameof(PregledPopust));
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
             }
-            return View(model);
-        }
-        [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult PregledPopust(string returnUrl = "")
-        {
-            var v = new PregledPopustViewModel
-            {
-                ReturnUrl = returnUrl,
-                PopustList = _popustService.GetPopusti()
-            };
-            v.Deletable = _popustService.GetIsDeletable(v.PopustList);
-            return View(v);
-        }
-        [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult EditPopust(int popustId, string returnUrl = "")
-        {
-            var popust = _popustService.GetPopust(popustId);
-            return View(new EditPopustViewModel
-            {
-                Iznos = popust.Iznos*100,
-                Opis = popust.Opis,
-                ReturnUrl = returnUrl,
-            });
+            return PartialView("_PopustPartialView", model);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         [HttpPost]
-        public IActionResult EditPopust(EditPopustViewModel model)
+        public async Task<IActionResult> PopustEdit(PopustPartialViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -276,29 +286,27 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     Id = model.PopustId,
                     Opis = model.Opis,
-                    Iznos = (model.Iznos/100)??1
+                    Iznos = (model.Iznos / 100) ?? 1
                 });
-                if (!string.IsNullOrEmpty(model.ReturnUrl))
-                {
-                    return Redirect(model.ReturnUrl);
-                }
-                return RedirectToAction(nameof(PregledNamirnica));
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
             }
-            return View(model);
+            return PartialView("_PopustPartialView", model);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult UkloniPopust(int popustId, string returnUrl = "")
+        public async Task<IActionResult> UkloniPopust(int id)
         {
-            if (!_namirnicaPodruznicaService.GetNamirnicePodruznicaPopust(_popustService.GetPopust(popustId)).Any())
+            if (!_namirnicaPodruznicaService.GetNamirnicePodruznicaPopust(_popustService.GetPopust(id)).Any())
             {
-                _popustService.UkloniPopust(popustId);
+                _popustService.UkloniPopust(id);
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
             }
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction(nameof(PregledPopust));
+            return Ok("Failed to delete");
         }
+
+        //POPUST UP
+
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult DodajNamirnicu(string returnUrl = "")
         {

@@ -1,0 +1,42 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.PopustPartialViewModel
+@{
+    var url = "";
+    if (Model.PopustId == 0)
+    {
+        url = Url.Action("PopustAdd");
+    }
+    else
+    {
+        url = Url.Action("PopustEdit");
+    }
+}
+<div class="modal fade" id="add-popust" tabindex="-1" role="dialog" aria-labelledby="addPopustLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPopustLabel">Popust</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form data-post="@url">
+                    <input type="hidden" asp-for="PopustId" />
+                    <div class="form-group">
+                        <label asp-for="Opis" class="control-label"></label>
+                        <input asp-for="Opis" class="form-control" placeholder="e.g. Black Friday" />
+                        <span asp-validation-for="Opis" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Iznos" class="control-label"></label>
+                        <input asp-for="Iznos" class="form-control" placeholder="e.g. 15 (%)" title="Unesi postotak bez znaka" />
+                        <span asp-validation-for="Iznos" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal">Spremi</button>
+            </div>
+        </div>
+    </div>
+</div>
