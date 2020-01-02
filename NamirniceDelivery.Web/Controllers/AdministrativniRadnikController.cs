@@ -131,7 +131,7 @@ namespace NamirniceDelivery.Web.Controllers
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult PregledNamirnicaGetData(int kategorijaId = 0)
         {
-            var v = new NamirnicaListViewModel{ };
+            var v = new NamirnicaListViewModel { };
             if (kategorijaId != 0)
             {
                 v.NamirnicaList = _namirnicaService.GetNamirnicePoKategorijama(_kategorijaService.GetKategorija(kategorijaId));
@@ -297,114 +297,86 @@ namespace NamirniceDelivery.Web.Controllers
         //NAMIRNICA PODRUZNICA DOWN
 
 
-        //[Authorize(Roles = "AdministrativniRadnik")]
-        //public IActionResult DodajNamirnicu(string returnUrl = "")
-        //{
-        //    return View(new DodajNamirnicuViewModel
-        //    {
-        //        PopustList = _popustService.GetPopusti(),
-        //        NamirnicaList = _namirnicaService.GetNamirnice(),
-        //        ReturnUrl = returnUrl
-        //    });
-        //}
-        //[HttpPost]
-        //[Authorize(Roles = "AdministrativniRadnik")]
-        //public IActionResult DodajNamirnicu(DodajNamirnicuViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var namirnica = new NamirnicaPodruznica
-        //        {
-        //            Aktivna = true,
-        //            Cijena = model.Cijena ?? 1,
-        //            KolicinaNaStanju = model.KolicinaNaStanju ?? 1,
-        //            NamirnicaId = model.NamirnicaId,
-        //            PodruznicaId = _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name)
-        //        };
-        //        if (model.PopustId != 0)
-        //        {
-        //            namirnica.PopustId = model.PopustId;
-        //        }
-        //        _namirnicaPodruznicaService.DodajNamirnicu(namirnica);
-        //        if (!string.IsNullOrEmpty(model.ReturnUrl))
-        //        {
-        //            return Redirect(model.ReturnUrl);
-        //        }
-        //        return RedirectToAction(nameof(PregledNamirnicaPodruznica));
-        //    }
-        //    model.PopustList = _popustService.GetPopusti();
-        //    model.NamirnicaList = _namirnicaService.GetNamirnice();
-        //    return View(model);
-        //}
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult PregledNamirnicaPodruznica(string returnUrl = "", int kategorijaId = 0)
+        public IActionResult PregledNamirnicaPodruznicaGetData(int kategorijaId = 0)
         {
+            var v = new NamirnicaPodruznicaListViewModel { };
             int podruznicaId = _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name);
-            var v = new PregledNamirnicaPodruznicaViewModel
-            {
-                ReturnUrl = returnUrl,
-                KategorijaList = _kategorijaService.GetKategorije()
-            };
             if (kategorijaId != 0)
             {
                 v.NamirnicaList = _namirnicaPodruznicaService.GetNamirnicePodruznicaKategorija(_kategorijaService.GetKategorija(kategorijaId), podruznicaId);
-                v.KategorijaId = kategorijaId;
             }
             else
             {
                 v.NamirnicaList = _namirnicaPodruznicaService.GetNamirnicePodruznica(podruznicaId);
-                v.KategorijaId = 0;
             }
-            return View(v);
+            return PartialView("_NamirnicaPodruznicaListPartialView", v);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult UkloniNamirnicaPodruznica(int namirnicaPodruznicaId, string returnUrl = "")
+        public IActionResult PregledNamirnicaPodruznica(string returnUrl = "", int kategorijaId = 0)
         {
-            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(namirnicaPodruznicaId).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            return View(new PregledNamirnicaViewModel
             {
-                _namirnicaPodruznicaService.UkloniNamirnicaPodruznica(namirnicaPodruznicaId);
-            }
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction(nameof(PregledNamirnicaPodruznica));
+                ReturnUrl = returnUrl,
+                KategorijaId = kategorijaId,
+                KategorijaList = _kategorijaService.GetKategorije()
+            });
         }
         [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult NamirnicaToogleStatus(int namirnicaPodruznicaId, string returnUrl = "")
+        public IActionResult NamirnicaPodruznica(int id = 0)
         {
-            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(namirnicaPodruznicaId).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            var model = new NamirnicaPodruznicaPartialViewModel
             {
-                _namirnicaPodruznicaService.ToogleStatusNamirnicaPodruznica(namirnicaPodruznicaId);
-            }
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction(nameof(PregledNamirnicaPodruznica));
-        }
-        [Authorize(Roles = "AdministrativniRadnik")]
-        public IActionResult EditNamirnicaPodruznica(int namirnicaPodruznicaId, string returnUrl = "")
-        {
-            var namirnica = _namirnicaPodruznicaService.GetNamirnicaPodruznica(namirnicaPodruznicaId);
-            var model = new EditNamirnicaPodruznicaViewModel
-            {
-                Aktivna = namirnica.Aktivna,
-                Cijena = namirnica.Cijena,
-                KolicinaNaStanju = namirnica.KolicinaNaStanju,
-                Naziv = namirnica.Namirnica.Naziv,
-                NamirnicaPodruznicaId = namirnica.Id,
-                PopustList = _popustService.GetPopusti()
+                NamirnicaPodruznicaId = id,
+                PopustList = _popustService.GetPopusti(),
+                NamirnicaList = _namirnicaService.GetNamirnice(),
+                Aktivna = true
             };
-            if (namirnica.Popust != null)
+            if (id != 0)
             {
-                model.PopustId = namirnica.PopustId ?? 1;
+                var namirnicaPodruznica = _namirnicaPodruznicaService.GetNamirnicaPodruznica(id);
+                model.NamirnicaPodruznicaId = namirnicaPodruznica.NamirnicaId;
+                model.Cijena = namirnicaPodruznica.Cijena;
+                model.Aktivna = namirnicaPodruznica.Aktivna;
+                model.KolicinaNaStanju = namirnicaPodruznica.KolicinaNaStanju;
+                model.Naziv = namirnicaPodruznica.Namirnica.Naziv;
+
+                if (namirnicaPodruznica.Popust != null)
+                {
+                    model.PopustId = namirnicaPodruznica.PopustId ?? 1;
+                }
             }
-            return View(model);
+            return PartialView("_NamirnicaPodruznicaPartialView", model);
         }
         [Authorize(Roles = "AdministrativniRadnik")]
         [HttpPost]
-        public IActionResult EditNamirnicaPodruznica(EditNamirnicaPodruznicaViewModel model)
+        public async Task<IActionResult> NamirnicaPodruznicaAdd(NamirnicaPodruznicaPartialViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var namirnica = new NamirnicaPodruznica
+                {
+                    Aktivna = true,
+                    Cijena = model.Cijena ?? 1,
+                    KolicinaNaStanju = model.KolicinaNaStanju,
+                    NamirnicaId = model.NamirnicaId,
+                    PodruznicaId = _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name),
+                };
+                if (model.PopustId != 0)
+                {
+                    namirnica.PopustId = model.PopustId;
+                }
+                _namirnicaPodruznicaService.DodajNamirnicu(namirnica);
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
+            }
+            model.PopustList = _popustService.GetPopusti();
+            model.NamirnicaList = _namirnicaService.GetNamirnice();
+            return PartialView("_NamirnicaPodruznicaPartialView", model);
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        [HttpPost]
+        public async Task<IActionResult> NamirnicaPodruznicaEdit(NamirnicaPodruznicaPartialViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -422,16 +394,39 @@ namespace NamirniceDelivery.Web.Controllers
                         namirnica.PopustId = model.PopustId;
                     }
                     _namirnicaPodruznicaService.EditNamirnicaPodruznica(namirnica);
+                    await _hubContext.Clients.All.SendAsync("Repopulate");
+                    return Ok("Ok");
                 }
-                if (!string.IsNullOrEmpty(model.ReturnUrl))
-                {
-                    return Redirect(model.ReturnUrl);
-                }
-                return RedirectToAction(nameof(PregledNamirnicaPodruznica));
             }
             model.PopustList = _popustService.GetPopusti();
-            return View(model);
+            return PartialView("_NamirnicaPodruzicaPartialView", model);
         }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public async Task<IActionResult> UkloniNamirnicaPodruznica(int id)
+        {
+            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(id).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            {
+                _namirnicaPodruznicaService.UkloniNamirnicaPodruznica(id);
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
+            }
+            return Ok("Failed to delete");
+        }
+        [Authorize(Roles = "AdministrativniRadnik")]
+        public async Task<IActionResult> NamirnicaToogleStatus(int id)
+        {
+            if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(id).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
+            {
+                _namirnicaPodruznicaService.ToogleStatusNamirnicaPodruznica(id);
+                await _hubContext.Clients.All.SendAsync("Repopulate");
+                return Ok("Ok");
+            }
+            return Ok("Failed to toogle");
+        }
+
+        //NAMIRNICA PODRUZNICA UP
+
+
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult PrihvatiNarudzbu(int transakcijaId, string returnUrl = "")
         {
@@ -472,7 +467,6 @@ namespace NamirniceDelivery.Web.Controllers
             stream.Position = 0;
             string excelName = $"Namirnice-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xlsx";
 
-            //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
     }

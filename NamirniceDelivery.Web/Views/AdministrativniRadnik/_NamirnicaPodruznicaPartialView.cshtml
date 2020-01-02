@@ -1,0 +1,101 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.NamirnicaPodruznicaPartialViewModel
+
+@{
+    var url = "";
+    if (Model.NamirnicaPodruznicaId == 0)
+    {
+        url = Url.Action("NamirnicaPodruznicaAdd");
+    }
+    else
+    {
+        url = Url.Action("NamirnicaPodruznicaEdit");
+    }
+}
+
+<div class="modal fade" id="add-namirnicaPodruznica" tabindex="-1" role="dialog" aria-labelledby="addNamirnicaPodruznicaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNamirnicaPodruznicaLabel">Namirnica</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form data-post="@url">
+                    <input type="hidden" asp-for="NamirnicaPodruznicaId" />
+                    @if (Model.NamirnicaPodruznicaId != 0)
+                    {
+                        <div class="form-group">
+                            <label asp-for="Naziv" class="control-label"></label>
+                            <input title="Ovo polje se ne može mijenjati" disabled asp-for="Naziv" class="form-control" />
+                        </div>
+                    }
+                    @if (Model.NamirnicaPodruznicaId == 0)
+                    {
+                        <div class="form-group">
+                            <label asp-for="NamirnicaId"></label>
+                            <select class="form-control" asp-for="NamirnicaId">
+                                <option value="">--Odaberi vrstu--</option>
+                                @foreach (var namirnica in Model.NamirnicaList)
+                                {
+                                    if (namirnica.Id == Model.NamirnicaId)
+                                    {
+                                        <option selected value="@namirnica.Id">@namirnica.Naziv</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@namirnica.Id">@namirnica.Naziv</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="NamirnicaId" class="text-danger"></span>
+                            <a asp-action="PregledNamirnica">Dodaj novu vrstu</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <input name="NamirnicaId" value="0" type="hidden" />
+                    }
+                    <div class="form-group">
+                        <label asp-for="Cijena" class="control-label"></label>
+                        <input asp-for="Cijena" class="form-control" />
+                        <span asp-validation-for="Cijena" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KolicinaNaStanju" class="control-label"></label>
+                        <input asp-for="KolicinaNaStanju" class="form-control" />
+                        <span asp-validation-for="KolicinaNaStanju" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Aktivna" /> @Html.DisplayNameFor(model => model.Aktivna)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PopustId"></label>
+                        <select class="form-control" asp-for="PopustId">
+                            <option value="0">Nema</option>
+                            @foreach (var popust in Model.PopustList)
+                            {
+                                if (popust.Id == Model.PopustId)
+                                {
+                                    <option title="@(popust.Iznos*100)%" selected value="@popust.Id">@popust.Opis</option>
+                                }
+                                else
+                                {
+                                    <option title="@(popust.Iznos*100)%" value="@popust.Id">@popust.Opis</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="PopustId" class="text-danger"></span>
+                        <a asp-action="PregledPopust">Dodaj novi popust</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal">Spremi</button>
+            </div>
+        </div>
+    </div>
+</div>

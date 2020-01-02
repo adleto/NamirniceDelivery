@@ -1,0 +1,77 @@
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.NamirnicaPodruznicaListViewModel
+
+<div class="table-responsive" id="filtriranaData">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Namirnica</th>
+                <th>Cijena</th>
+                <th>Cijena sa popustom</th>
+                <th>Količina na stanju</th>
+                <th>Aktivna</th>
+                <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var n in Model.NamirnicaList)
+            {
+                <tr>
+                    <th>@(Model.NamirnicaList.IndexOf(n) + 1).</th>
+                    <td>@n.Namirnica.Naziv</td>
+                    <td>@(n.Cijena.ToString("F") + "KM")</td>
+                    <td>@((n.CijenaSaPopustom).ToString("F") + "KM")</td>
+                    <td>@n.KolicinaNaStanju</td>
+                    @if (n.Aktivna)
+                    {
+                        <td class="bg-primary">Aktivna</td>
+                    }
+                    else
+                    {
+                        <td class="bg-danger">Nektivna</td>
+                    }
+                    <td>
+                        @if (n.Aktivna == true)
+                        {
+                            <a role="button" data-url="@Url.Action("NamirnicaToogleStatus", new { id = n.Id })" title="Deaktiviraj"><i class="material-icons text-warning">assignment_late</i></a>
+                        }
+                        else
+                        {
+                            <a role="button" data-url="@Url.Action("NamirnicaToogleStatus", new { id = n.Id })" title="Aktiviraj"><i class="material-icons text-success">check_circle</i></a>
+                        }
+                        <a role="button" data-url="@Url.Action("UkloniNamirnicaPodruznica", new { id = n.Id })"><i class="material-icons text-danger">delete</i></a>
+                        <a role="button" data-toggle="ajax-modal" data-target="#add-namirnicaPodruznica" data-url="@Url.Action("NamirnicaPodruznica", new { id = n.Id })"><i class="material-icons text-info">edit</i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(function () {
+        var placeholderElement = $('#modal-placeholder');
+
+        $('a[data-toggle="ajax-modal"]').click(function (event) {
+            var url = $(this).data('url');
+            $.get(url).done(function (data) {
+                placeholderElement.html(data);
+                placeholderElement.find('.modal').modal('show');
+
+                var forms = placeholderElement.find('form');
+                $.validator.unobtrusive.parse(forms[forms.length - 1]);
+            });
+        });
+
+        $('a[role="button"').click(function () {
+            var url = $(this).data('url');
+
+            $.ajax({
+                url: url,
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html'
+            });
+        })
+    });
+</script>

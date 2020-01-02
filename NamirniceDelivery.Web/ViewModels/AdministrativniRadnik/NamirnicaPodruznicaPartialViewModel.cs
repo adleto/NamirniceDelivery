@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 
 namespace NamirniceDelivery.Web.ViewModels.AdministrativniRadnik
 {
-    public class EditNamirnicaPodruznicaViewModel
+    public class NamirnicaPodruznicaPartialViewModel
     {
-        public string ReturnUrl { get; set; }
-        public string Naziv { get; set; }
         [Required]
         public int NamirnicaPodruznicaId { get; set; }
+        public string Naziv { get; set; }
+        public List<Namirnica> NamirnicaList { get; set; }
+        [Required(ErrorMessage = "Vrsta mora biti odabrana.")]
+        [Display(Name="Vrsta namirnice")]
+        public int NamirnicaId { get; set; }
+        
         [Required(ErrorMessage = "Cijena mora biti unesena.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Najmanja moguća količina je {1}KM.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Najmanja moguća cijena je {1}KM.")]
         public decimal? Cijena { get; set; }
         [Display(Name = "Popust")]
         public int PopustId { get; set; }

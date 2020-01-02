@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace NamirniceDelivery.Web.ViewModels.AdministrativniRadnik
 {
-    public class PregledNamirnicaPodruznicaViewModel
+    public class NamirnicaPodruznicaListViewModel
     {
-        public string ReturnUrl { get; set; }
         public List<NamirnicaPodruznica> NamirnicaList { get; set; }
-        public int KategorijaId { get; set; }
-        public List<Kategorija> KategorijaList { get; set; }
     }
 }

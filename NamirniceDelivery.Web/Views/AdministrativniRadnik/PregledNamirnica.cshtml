@@ -11,14 +11,6 @@
         <br />
 
         <div class="row">
-            <div class="col-md-12 text-right mb-1">
-                <button title="Dodaj novu vrstu namirnica" type="button" class="btn btn-success rounded" data-toggle="ajax-modal" data-target="#add-namirnica" data-url="@Url.Action("Namirnica")">
-                    +
-                </button>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-md-12 mb-1">
                 <select id="kategorijaFilter" onchange="filtrirajKategorija()" title="Filter po kategorijama">
                     <option value="0">Sve kategorije</option>
@@ -35,6 +27,14 @@
                         <option value="@k.Id">@k.Naziv</option>
                     }
                 </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-right mb-1">
+                <button title="Dodaj novu vrstu namirnica" type="button" class="btn btn-success rounded" data-toggle="ajax-modal" data-target="#add-namirnica" data-url="@Url.Action("Namirnica")">
+                    +
+                </button>
             </div>
         </div>
 
@@ -64,45 +64,12 @@
         });
 
         function getData() {
-            var container = $('#dataStorage');
-            $.ajax({
-                url: '/AdministrativniRadnik/PregledNamirnicaGetData',
-                contentType: 'application/html ; charset:utf-8',
-                type: 'GET',
-                dataType: 'html'
-            })
-                .done(function (result) { container.empty().append(result); })
+            filtrirajKategorija();
         }
 
-        function URL_add_parameter(url, param, value) {
-            var hash = {};
-            var parser = document.createElement('a');
-
-            parser.href = url;
-
-            var parameters = parser.search.split(/\?|&/);
-
-            for (var i = 0; i < parameters.length; i++) {
-                if (!parameters[i])
-                    continue;
-
-                var ary = parameters[i].split('=');
-                hash[ary[0]] = ary[1];
-            }
-
-            hash[param] = value;
-
-            var list = [];
-            Object.keys(hash).forEach(function (key) {
-                list.push(key + '=' + hash[key]);
-            });
-
-            parser.search = '?' + list.join('&');
-            return parser.href;
-        }
         function filtrirajKategorija() {
             var loc = URL_add_parameter('PregledNamirnicaGetData', 'kategorijaId', $("#kategorijaFilter").val());
-            var container = $('#filtriranaData');
+            var container = $('#dataStorage');
             $.ajax({
                 url: loc,
                 contentType: 'application/html ; charset:utf-8',

@@ -1,8 +1,10 @@
-﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.PregledNamirnicaPodruznicaViewModel
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.PregledNamirnicaViewModel
 @{
     ViewData["Title"] = "PregledNamirnicaPodruznica";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div id="modal-placeholder"></div>
 <div class="text-center row justify-content-center">
     <div>
         <h1>Pregled Namirnica</h1>
@@ -26,78 +28,24 @@
                 </select>
             </div>
         </div>
-        @if (Model.NamirnicaList.Any())
-        {
-            <div class="row">
-                <div class="col-md-12 text-right mb-1">
-                    <a asp-action="DodajNamirnicu" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novu namirnicu">+</a>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Namirnica</th>
-                            <th>Cijena</th>
-                            <th>Cijena sa popustom</th>
-                            <th>Količina na stanju</th>
-                            <th>Aktivna</th>
-                            <th>Akcije</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var n in Model.NamirnicaList)
-                        {
-                            <tr>
-                                <th>@(Model.NamirnicaList.IndexOf(n) + 1).</th>
-                                <td>@n.Namirnica.Naziv</td>
-                                <td>@(n.Cijena.ToString("F") + "KM")</td>
-                                <td>@((n.CijenaSaPopustom).ToString("F") + "KM")</td>
-                                <td>@n.KolicinaNaStanju</td>
-                                @if (n.Aktivna)
-                                {
-                                    <td class="bg-primary">Aktivna</td>
-                                }
-                                else
-                                {
-                                    <td class="bg-danger">Nektivna</td>
-                                }
-                                <td>
-                                    @if (n.Aktivna == true)
-                                    {
-                                        <a asp-action="NamirnicaToogleStatus" asp-route-namirnicaPodruznicaId="@n.Id" title="Deaktiviraj"><i class="material-icons text-warning">assignment_late</i></a>
-                                    }
-                                    else
-                                    {
-                                        <a asp-action="NamirnicaToogleStatus" asp-route-namirnicaPodruznicaId="@n.Id" title="Aktiviraj"><i class="material-icons text-success">check_circle</i></a>
-                                    }
-                                    <a asp-action="UkloniNamirnicaPodruznica" asp-route-namirnicaPodruznicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
-                                    <a asp-action="EditNamirnicaPodruznica" asp-route-namirnicaPodruznicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="row">
-                <div class="col-md-12 text-left mb-1">
-                    <a asp-action="GetExcelNamirnicePodruznica" class="btn btn-info rounded">Export to Excel</a>
-                </div>
-            </div>
 
-        }
-        else
-        {
-            <p><span>Trenutno ne postoji nijedna namirnica u ovoj podružnici. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="DodajNamirnicu" asp-route-returnUrl="@Context.Request.Path">novu?</a></span></p>
-        }
-        @if (string.IsNullOrEmpty(Model.ReturnUrl))
-        {
-            <div>
-                <a asp-action="Index">Nazad na panel</a>
+        <div class="row">
+            <div class="col-md-12 text-right mb-1">
+                <button title="Dodaj novu namirnicu" type="button" class="btn btn-success rounded" data-toggle="ajax-modal" data-target="#add-namirnicaPodruznica" data-url="@Url.Action("NamirnicaPodruznica")">
+                    +
+                </button>
             </div>
-        }
-        else
+        </div>
+
+        <div class="row" id="dataStorage"></div>
+
+        <div class="row">
+            <div class="col-md-12 text-left mb-1">
+                <a asp-action="GetExcelNamirnicePodruznica" class="btn btn-info rounded">Export to Excel</a>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ReturnUrl))
         {
             <div>
                 <a href="@Model.ReturnUrl">Idi nazad</a>
@@ -105,35 +53,39 @@
         }
     </div>
 </div>
-<script>
-    function URL_add_parameter(url, param, value){
-    var hash       = {};
-    var parser     = document.createElement('a');
 
-    parser.href    = url;
+@section Scripts{
+    <script>
+        $(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/myHub").build();
 
-    var parameters = parser.search.split(/\?|&/);
+            connection.start().then(function () {
+                getData();
+            });
 
-    for(var i=0; i < parameters.length; i++) {
-        if(!parameters[i])
-            continue;
+            connection.on("Repopulate", function () {
+                getData();
+            });
+        });
 
-        var ary      = parameters[i].split('=');
-        hash[ary[0]] = ary[1];
-    }
+        function getData() {
+            filtrirajKategorija();
+        }
 
-    hash[param] = value;
-
-    var list = [];
-    Object.keys(hash).forEach(function (key) {
-        list.push(key + '=' + hash[key]);
-    });
-
-    parser.search = '?' + list.join('&');
-    return parser.href;
+        function filtrirajKategorija() {
+            var loc = URL_add_parameter('PregledNamirnicaPodruznicaGetData', 'kategorijaId', $("#kategorijaFilter").val());
+            var container = $('#dataStorage');
+            $.ajax({
+                url: loc,
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html'
+            })
+                .done(function (result) { container.empty().append(result); })
+        }
+    </script>
 }
-    function filtrirajKategorija() {
-        location.href = URL_add_parameter(location.href, 'kategorijaId', $("#kategorijaFilter").val());
-    }
-</script>
+
+
+
 
