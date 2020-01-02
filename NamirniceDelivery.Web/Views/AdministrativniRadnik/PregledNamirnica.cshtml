@@ -4,10 +4,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div id="modal-placeholder"></div>
 <div class="text-center row justify-content-center">
     <div>
         <h1>Pregled Vrsta Namirnica</h1>
         <br />
+
+        <div class="row">
+            <div class="col-md-12 text-right mb-1">
+                <button title="Dodaj novu vrstu namirnica" type="button" class="btn btn-success rounded" data-toggle="ajax-modal" data-target="#add-namirnica" data-url="@Url.Action("Namirnica")">
+                    +
+                </button>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12 mb-1">
@@ -28,58 +37,10 @@
                 </select>
             </div>
         </div>
-        @if (Model.NamirnicaList.Any())
-        {
-            <div class="row">
-                <div class="col-md-12 text-right mb-1">
-                    <a asp-controller="AdministrativniRadnik" asp-action="KreirajNamirnica" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success rounded" title="Dodaj novu vrstu namirnice">+</a>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-responsive-lg table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Naziv</th>
-                            <th>Kategorija</th>
-                            <th>Akcije</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var n in Model.NamirnicaList)
-                        {
-                            <tr>
-                                <th>@(Model.NamirnicaList.IndexOf(n) + 1).</th>
-                                <td>@n.Naziv</td>
-                                <td>@n.Kategorija.Naziv</td>
-                                <td>
-                                    @if (Model.Deletable[Model.NamirnicaList.IndexOf(n)])
-                                    {
-                                        <a asp-action="UkloniNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger">delete</i></a>
-                                    }
-                                    else
-                                    {
-                                        <a href="" title="Namirnica ne može biti obrisana jer postoje namrinice u podružnicama ovog tipa."><i class="material-icons text-dark">delete</i></a>
-                                    }
-                                    <a asp-action="EditNamirnica" asp-route-namirnicaId="@n.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons">edit</i></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <p><span>Trenutno ne postoji nijedna vrsta namirnica. Kreirajte <a asp-controller="AdministrativniRadnik" asp-action="KreirajNamirnica" asp-route-returnUrl="@Context.Request.Path">nove?</a></span></p>
-        }
-        @if (string.IsNullOrEmpty(Model.ReturnUrl))
-        {
-            <div>
-                <a asp-action="Index">Nazad na panel</a>
-            </div>
-        }
-        else
+
+        <div class="row" id="dataStorage"></div>
+
+        @if (!string.IsNullOrEmpty(Model.ReturnUrl))
         {
             <div>
                 <a href="@Model.ReturnUrl">Idi nazad</a>
@@ -87,34 +48,72 @@
         }
     </div>
 </div>
-<script>
-    function URL_add_parameter(url, param, value){
-    var hash       = {};
-    var parser     = document.createElement('a');
 
-    parser.href    = url;
+@section Scripts{
+    <script>
+        $(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/myHub").build();
 
-    var parameters = parser.search.split(/\?|&/);
+            connection.start().then(function () {
+                getData();
+            });
 
-    for(var i=0; i < parameters.length; i++) {
-        if(!parameters[i])
-            continue;
+            connection.on("Repopulate", function () {
+                getData();
+            });
+        });
 
-        var ary      = parameters[i].split('=');
-        hash[ary[0]] = ary[1];
-    }
+        function getData() {
+            var container = $('#dataStorage');
+            $.ajax({
+                url: '/AdministrativniRadnik/PregledNamirnicaGetData',
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html'
+            })
+                .done(function (result) { container.empty().append(result); })
+        }
 
-    hash[param] = value;
+        function URL_add_parameter(url, param, value) {
+            var hash = {};
+            var parser = document.createElement('a');
 
-    var list = [];  
-    Object.keys(hash).forEach(function (key) {
-        list.push(key + '=' + hash[key]);
-    });
+            parser.href = url;
 
-    parser.search = '?' + list.join('&');
-    return parser.href;
+            var parameters = parser.search.split(/\?|&/);
+
+            for (var i = 0; i < parameters.length; i++) {
+                if (!parameters[i])
+                    continue;
+
+                var ary = parameters[i].split('=');
+                hash[ary[0]] = ary[1];
+            }
+
+            hash[param] = value;
+
+            var list = [];
+            Object.keys(hash).forEach(function (key) {
+                list.push(key + '=' + hash[key]);
+            });
+
+            parser.search = '?' + list.join('&');
+            return parser.href;
+        }
+        function filtrirajKategorija() {
+            var loc = URL_add_parameter('PregledNamirnicaGetData', 'kategorijaId', $("#kategorijaFilter").val());
+            var container = $('#filtriranaData');
+            $.ajax({
+                url: loc,
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html'
+            })
+                .done(function (result) { container.empty().append(result); })
+        }
+    </script>
 }
-    function filtrirajKategorija() {
-        location.href = URL_add_parameter(location.href, 'kategorijaId', $("#kategorijaFilter").val());
-    }
-</script>
+
+
+
+

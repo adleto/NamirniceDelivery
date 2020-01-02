@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace NamirniceDelivery.Web.ViewModels.AdministrativniRadnik
 {
-    public class PregledNamirnicaViewModel
+    public class NamirnicaListViewModel
     {
-        public string ReturnUrl { get; set; }
-        public int KategorijaId { get; set; }
-        public List<Kategorija> KategorijaList { get; set; }
+        public List<Namirnica> NamirnicaList { get; set; }
+        public List<bool> Deletable { get; set; }
     }
 }

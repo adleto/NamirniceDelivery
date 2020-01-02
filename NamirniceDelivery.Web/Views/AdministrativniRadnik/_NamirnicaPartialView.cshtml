@@ -1,21 +1,29 @@
-﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.EditNamirnicaViewModel
+﻿@model NamirniceDelivery.Web.ViewModels.AdministrativniRadnik.NamirnicaPartialViewModel
+
 @{
-    ViewData["Title"] = "Edit Namirnica";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    var url = "";
+    if (Model.NamirnicaId == 0)
+    {
+        url = Url.Action("NamirnicaAdd");
+    }
+    else
+    {
+        url = Url.Action("NamirnicaEdit");
+    }
 }
 
-<div class="text-center row justify-content-center">
-    <div class="">
-        <h1>Edit Vrsta Namirnice</h1>
-
-        <h4>Kategorija</h4>
-        <hr />
-        <div @*class="row"*@>
-            <div @*class="col-md-4"*@>
-                <form asp-action="EditNamirnica">
-                    <input type="hidden" asp-for="ReturnUrl" />
+<div class="modal fade" id="add-namirnica" tabindex="-1" role="dialog" aria-labelledby="addNamirnicaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNamirnicaLabel">Vrsta Namirnica</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form data-post="@url">
                     <input type="hidden" asp-for="NamirnicaId" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Naziv" class="control-label"></label>
                         <input asp-for="Naziv" class="form-control" />
@@ -37,27 +45,13 @@
                             }
                         </select>
                         <span asp-validation-for="KategorijaId" class="text-danger"></span><br />
-                        <a asp-action="KreirajKategoriju">Dodaj novu kategoriju</a>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Edit" class="btn btn-primary" />
+                        <a asp-action="PregledKategorija">Dodaj novu kategoriju</a>
                     </div>
                 </form>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-save="modal">Spremi</button>
+            </div>
         </div>
-
-        @if (string.IsNullOrEmpty(Model.ReturnUrl))
-        {
-            <div>
-                <a asp-action="Index">Nazad na panel</a>
-            </div>
-        }
-        else
-        {
-            <div>
-                <a href="@Model.ReturnUrl">Idi nazad</a>
-            </div>
-        }
     </div>
 </div>
-

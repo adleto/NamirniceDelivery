@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace NamirniceDelivery.Web.ViewModels.AdministrativniRadnik
 {
-    public class KreirajNamirnicaViewModel
+    public class NamirnicaPartialViewModel
     {
-        public string ReturnUrl { get; set; }
+        [Required]
+        public int NamirnicaId { get; set; }
         [Required(ErrorMessage = "Naziv namirnice mora biti unesen.")]
         public string Naziv { get; set; }
         [Required(ErrorMessage = "Kategorija mora biti odabrana.")]
