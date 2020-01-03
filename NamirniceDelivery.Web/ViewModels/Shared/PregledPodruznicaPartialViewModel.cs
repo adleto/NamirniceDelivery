@@ -8,7 +8,7 @@ namespace NamirniceDelivery.Web.ViewModels.Shared
 {
     public class PregledPodruznicaPartialViewModel
     {
-        public List<NamirniceDelivery.Data.Entities.Podruznica> SpremljenePodruzniceList { get; set; }
-        public List<NamirniceDelivery.Data.Entities.Podruznica> PodruznicaList { get; set; }
+        public List<Data.Entities.Podruznica> SpremljenePodruzniceList { get; set; }
+        public List<Data.Entities.Podruznica> PodruznicaList { get; set; }
     }
 }

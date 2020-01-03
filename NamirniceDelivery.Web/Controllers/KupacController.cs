@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.Web.ViewModels.Kupac;
+using NamirniceDelivery.Web.ViewModels.Shared;
 
 namespace NamirniceDelivery.Web.Controllers
 {
@@ -46,6 +47,16 @@ namespace NamirniceDelivery.Web.Controllers
                 NamirnicaList = _namirnicaPodruznicaService.GetNamirniceForKupac(kupac),
                 PodruznicaList = _podruznicaService.GetPodruzniceForKupac(kupac),
                 SpremljeneNamirniceList = KonvertujSpremljeneUNamirnice(_kupacService.GetSpremljeneNamirnice(kupac.Id)),
+                SpremljenePodruzniceList = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id))
+            });
+        }
+        [Authorize(Roles="Kupac")]
+        public IActionResult GetDataPodruznice()
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            return PartialView("_PodruznicePregledPartial", new PregledPodruznicaPartialViewModel
+            {
+                PodruznicaList = _podruznicaService.GetPodruzniceForKupac(kupac),
                 SpremljenePodruzniceList = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id))
             });
         }
@@ -122,6 +133,7 @@ namespace NamirniceDelivery.Web.Controllers
         {
             var kupac = _kupacService.GetKupac(User.Identity.Name);
             _kupacService.DodajSpremljenuPodruznicu(kupac.Id, podruznicaId);
+            //return Ok("Ok");
             if (string.IsNullOrEmpty(returnUrl))
             {
                 return RedirectToAction(nameof(Index));
@@ -144,6 +156,7 @@ namespace NamirniceDelivery.Web.Controllers
         {
             var kupac = _kupacService.GetKupac(User.Identity.Name);
             _kupacService.UkloniSpremljenuPodruznicu(kupac.Id, podruznicaId);
+            //return Ok("Ok");
             if (string.IsNullOrEmpty(returnUrl))
             {
                 return RedirectToAction(nameof(Index));
@@ -168,6 +181,16 @@ namespace NamirniceDelivery.Web.Controllers
             return View(new SpremljenePodruzniceViewModel
             {
                 SpremljenePodruzniceList = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id))
+            });
+        }
+        public IActionResult GetDataSpremljenePodruznice()
+        {
+            var kupac = _kupacService.GetKupac(User.Identity.Name);
+            var spremljene = KonvertujSpremljeneUPodruznice(_kupacService.GetSpremljenePodruznice(kupac.Id));
+            return PartialView("_PodruznicePregledPartial", new PregledPodruznicaPartialViewModel
+            {
+                PodruznicaList = spremljene,
+                SpremljenePodruzniceList = spremljene
             });
         }
         [Authorize(Roles = "Kupac")]

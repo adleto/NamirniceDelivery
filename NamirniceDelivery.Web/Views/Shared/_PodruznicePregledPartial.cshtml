@@ -1,39 +1,66 @@
 ﻿@model NamirniceDelivery.Web.ViewModels.Shared.PregledPodruznicaPartialViewModel
 
-@if (Model.PodruznicaList.Any())
-{
-    <div class="card-deck">
-        @foreach (var p in Model.PodruznicaList)
-        {
-            <div class="card text-white bg-secondary mb-3 rounded" style="width: 18rem;">
-                <div class="card-body">
-                    @if (User.IsInRole("Kupac") && Model.SpremljenePodruzniceList != null)
-                    {
-                        if (Model.SpremljenePodruzniceList.Contains(p))
+<div id="dataContent">
+    @if (Model.PodruznicaList.Any())
+    {
+        <div class="card-deck">
+            @foreach (var p in Model.PodruznicaList)
+            {
+                <div class="card text-white bg-secondary mb-3 rounded" style="width: 18rem;">
+                    <div class="card-body">
+                        @if (User.IsInRole("Kupac") && Model.SpremljenePodruzniceList != null)
                         {
-                            <a asp-controller="Kupac" asp-action="UkloniSpremljenuPodruznicu" asp-route-podruznicaId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger" title="Ukloni iz spremljenih">favorite</i></a>
+                            if (Model.SpremljenePodruzniceList.Contains(p))
+                            {
+                                @*data-value="@p.Id" data-request="p" data-send="/Kupac/UkloniSpremljenuPodruznicu"*@
+                                <a asp-controller="Kupac" asp-action="UkloniSpremljenuPodruznicu" asp-route-podruznicaId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-danger" title="Ukloni iz spremljenih">favorite</i></a>
+                            }
+                            else
+                            {
+                                @*data-value="@p.Id" data-request="p" data-send="/Kupac/DodajSpremljenuPodruznicu"*@
+                                <a asp-controller="Kupac" asp-action="DodajSpremljenuPodruznicu" asp-route-podruznicaId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-dark" title="Dodaj u spremljene">favorite</i></a>
+                            }
                         }
-                        else
-                        {
-                            <a asp-controller="Kupac" asp-action="DodajSpremljenuPodruznicu" asp-route-podruznicaId="@p.Id" asp-route-returnUrl="@Context.Request.Path"><i class="material-icons text-dark" title="Dodaj u spremljene">favorite</i></a>
+                        <h5 class="card-title">@p.Naziv</h5>
+                        <p class="card-text">
+                            @p.Opis<br />
+                            Adresa: @p.Adresa<br />
+                        </p>
+                        <a asp-controller="Podruznica" asp-route-id="@p.Id" class="btn btn-primary rounded">Posjeti Shop</a>
+                    </div>
+                </div>
+                @if (Model.PodruznicaList.IndexOf(p) + 1 % 4 == 0)
+                {
+                    <div class="w-100 d-none d-md-block d-lg-block"><!-- wrap every 3 on md--></div>
+                }
+            }
+        </div>
+    }
+    else
+    {
+        <p><span>Nema podružnica na listi.</span></p>
+    }
+</div>
+@*<script>
+        $(function () {
+            var placeholderElement = $("#dataContent");
+            $('a[data-request="p"]').click(function (event) {
+                var value = $(this).data('value');
+                var route = $(this).data('send');
+                var url = URL_add_parameter(route, "podruznicaId", value);
+                $.get(url).done(function (data) {
+                    if (data == "Ok") {
+                        if ("@Context.Request.Path" == "/Kupac/SpremljenePodruznice") {
+                            $.get("/Kupac/GetDataSpremljenePodruznice").done(function (dataPodruznice) {
+                                placeholderElement.html(dataPodruznice);
+                            });
+                        } else {
+                            $.get("/Kupac/GetDataPodruznice").done(function (dataPodruznice) {
+                                placeholderElement.html(dataPodruznice);
+                            });
                         }
                     }
-                    <h5 class="card-title">@p.Naziv</h5>
-                    <p class="card-text">
-                        @p.Opis<br />
-                        Adresa: @p.Adresa<br />
-                    </p>
-                    <a asp-controller="Podruznica" asp-route-id="@p.Id" class="btn btn-primary rounded">Posjeti Shop</a>
-                </div>
-            </div>
-            @if (Model.PodruznicaList.IndexOf(p) + 1 % 4 == 0)
-            {
-                <div class="w-100 d-none d-md-block d-lg-block"><!-- wrap every 3 on md--></div>
-            }
-        }
-    </div>
-}
-else
-{
-    <p><span>Nema podružnica na listi.</span></p>
-}
+                });
+            });
+        });
+    </script>*@

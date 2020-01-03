@@ -17,16 +17,6 @@
                 <span>Nemate završenih transakcija.</span>
             </p>
         }
-        <div>
-            @if (User.IsInRole("Kupac"))
-            {
-                <a asp-controller="Kupac" asp-action="Index">Nazad na panel</a>
-            }
-            else if (User.IsInRole("AdministrativniRadnik"))
-            {
-                <a asp-controller="AdministrativniRadnik" asp-action="Index">Nazad na panel</a>
-            }
-        </div>
     </div>
 </div>
 

@@ -90,6 +90,22 @@ namespace NamirniceDelivery.Web.Controllers
             }
             return View(v);
         }
+        public IActionResult GetDataNepotvrdjeneNarudzbe()
+        {//redundant
+            var v = new PregledTransakcijaPartialViewModel();
+            if (User.IsInRole("Kupac"))
+            {
+                var kupac = _kupacService.GetKupac(User.Identity.Name);
+                v.TransakcijaList = _transakcijaService.GetNepotvrdjeneTransakcijeForKupac(kupac);
+            }
+            else if (User.IsInRole("AdministrativniRadnik"))
+            {
+                var radnik = _administrativniRadnikService.GetRadnik(User.Identity.Name);
+                v.TransakcijaList = _transakcijaService.GetNepotvrdjeneTransakcijeForPodruznica(radnik.Podruznica);
+            }
+            v.ListType = ListType.narucene;
+            return PartialView("_PregledTransakcijaPartial",v);
+        }
         public IActionResult DostaveUToku()
         {
             var v = new NarudzbeViewModel();

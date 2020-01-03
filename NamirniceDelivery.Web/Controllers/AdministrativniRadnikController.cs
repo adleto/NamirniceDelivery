@@ -43,7 +43,7 @@ namespace NamirniceDelivery.Web.Controllers
         [Authorize(Roles = "AdministrativniRadnik")]
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction(nameof(PregledNamirnicaPodruznica));
         }
         public async Task<IActionResult> DemoLogin()
         {
