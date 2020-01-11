@@ -1,7 +1,90 @@
-﻿
+﻿@model NamirniceDelivery.Web.ViewModels.Account.RegisterVM
 @{
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
+
+<div @*class="page login-page"*@ class="login-page">
+    <div class="container">
+        <div class="form-outer text-center d-flex align-items-center">
+            <div class="form-inner">
+                <div class="logo text-uppercase"><span></span><strong class="text-primary">Registracija</strong></div>
+                <p>Unesite informacije za registraciju.</p>
+                <form method="post" class="text-left form-validate">
+                    <div class="form-group-material">
+                        <input id="login-username" asp-for="Username" required data-msg="Unesite korisničko ime" class="input-material">
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <label asp-for="Username" class="label-material"></label>
+                    </div>
+                    <div class="form-group-material">
+                        <input id="login-password" asp-for="Password" required data-msg="Unesite lozinku" class="input-material">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <label asp-for="Password" class="label-material"></label>
+                    </div>
+                    <div class="form-group-material">
+                        <input id="login-password-repeat" asp-for="ConfirmPassword" required data-msg="Ponovite lozinku" class="input-material">
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        <label asp-for="ConfirmPassword" class="label-material"></label>
+                    </div>
+
+                    <div class="form-group-material">
+                        <input asp-for="Email" required data-msg="Unesite email" class="input-material">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <label asp-for="Email" class="label-material"></label>
+                    </div>
+                    <div class="form-group-material">
+                        <input asp-for="Ime" required data-msg="Unesite vaše ime" class="input-material">
+                        <span asp-validation-for="Ime" class="text-danger"></span>
+                        <label asp-for="Ime" class="label-material"></label>
+                    </div>
+                    <div class="form-group-material">
+                        <input asp-for="Prezime" required data-msg="Unesite vaše prezime" class="input-material">
+                        <span asp-validation-for="Prezime" class="text-danger"></span>
+                        <label asp-for="Prezime" class="label-material"></label>
+                    </div>
+
+                    <div class="form-group-material">
+                        <label asp-for="OpcinaRodjenjaId" class="label-material"></label><br />
+                        <select asp-for="OpcinaRodjenjaId" required data-msg="Odaberite općinu rođenja" class="input-material">
+                            <option value="">Odaberi općinu</option>
+                            @foreach (var o in Model.OpcinaList)
+                            {
+                                <option value="@o.Id">@o.Naziv</option>
+                            }
+                        </select>
+                        <span asp-validation-for="OpcinaRodjenjaId" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group-material">
+                        <label asp-for="OpcinaBoravkaId" class="label-material"></label><br />
+                        <select asp-for="OpcinaBoravkaId" required data-msg="Odaberite općinu boravka" class="input-material">
+                            <option value="">Odaberi općinu</option>
+                            @foreach (var o in Model.OpcinaList)
+                            {
+                                <option value="@o.Id">@o.Naziv</option>
+                            }
+                        </select>
+                        <span asp-validation-for="OpcinaBoravkaId" class="text-danger"></span>
+
+                    </div>
+
+
+                    <div class="form-group-material">
+                        <input asp-for="Adresa" required data-msg="Unesite vašu adresu" class="input-material">
+                        <span asp-validation-for="Adresa" class="text-danger"></span>
+                        <label asp-for="Adresa" class="label-material"></label>
+                    </div>
+
+
+                    @*<div asp-validation-summary="All" class="text-danger"></div>*@
+                    <div class="form-group text-center">
+                        @*<a id="login" href="index.html" class="btn btn-primary">Login</a>*@
+                        <input type="submit" id="login" class="btn btn-primary" value="Registracija">
+                    </div>
+                </form>
+                <small>Već ste registrovani? </small><a asp-action="Login" class="signup">Prijavi se</a>
+            </div>
+        </div>
+    </div>
+</div>
 

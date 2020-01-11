@@ -4,7 +4,7 @@
 }
 
 
-<div class="page login-page">
+<div class="login-page">
     <div class="container">
         <div class="form-outer text-center d-flex align-items-center">
             <div class="form-inner">
@@ -12,12 +12,12 @@
                 <p>Unesite korisničko ime i lozinku za prijavu na sistem.</p>
                 <form method="post" class="text-left form-validate">
                     <div class="form-group-material">
-                        <input id="login-username" asp-for="Username" required data-msg="Please enter your username" class="input-material">
+                        <input id="login-username" asp-for="Username" required data-msg="Unesite korisničko ime" class="input-material">
                         <span asp-validation-for="Username" class="text-danger"></span>
                         <label asp-for="Username" class="label-material"></label>
                     </div>
                     <div class="form-group-material">
-                        <input id="login-password" asp-for="Password" required data-msg="Please enter your password" class="input-material">
+                        <input id="login-password" asp-for="Password" required data-msg="Unesite lozinku" class="input-material">
                         <span asp-validation-for="Password" class="text-danger"></span>
                         <label asp-for="Password" class="label-material"></label>
                     </div>
