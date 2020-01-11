@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.Web.ViewModels.Account;
 
 namespace NamirniceDelivery.Web.Controllers
@@ -19,14 +20,19 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IOpcina _opcinaService;
+        private readonly IKupac _kupacService;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IEmailSender emailSender)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IEmailSender emailSender, IOpcina opcinaService, IKupac kupacService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _opcinaService = opcinaService;
+            _kupacService = kupacService;
         }
+
         public async Task<IActionResult> Login(string returnUrl = null)
         {
             var model = new LoginVM
@@ -81,14 +87,68 @@ namespace NamirniceDelivery.Web.Controllers
             // If we got this far, something failed, redisplay form
             return RedirectToAction(nameof(Login));
         }
-        public IActionResult Register()
+        public IActionResult Register(string returnUrl = null)
         {
-            return Ok();
+            var model = new RegisterVM{
+                ReturnUrl = returnUrl,
+                OpcinaList = _opcinaService.GetOpcine(),
+                ErrorMessage = ""
+            };
+
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            return View(model);
         }
         [HttpPost]
-        public IActionResult Register(RegisterVM model)
+        public async Task<IActionResult> Register(RegisterVM model)
         {
-            return Ok();
+            model.ReturnUrl = model.ReturnUrl ?? Url.Content("~/");
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (ModelState.IsValid)
+            {
+                var user = new Kupac { 
+                    UserName = model.Username, 
+                    Email = model.Email,
+                    Adresa = model.Adresa,
+                    Ime = model.Ime,
+                    OpcinaBoravkaId = model.OpcinaBoravkaId,
+                    OpcinaRodjenjaId = model.OpcinaRodjenjaId,
+                    RejtingKupac = 0,
+                    Prezime = model.Prezime
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    //var callbackUrl = Url.Page(
+                    //    "/Account/ConfirmEmail",
+                    //    pageHandler: null,
+                    //    values: new { area = "Identity", userId = user.Id, code = code },
+                    //    protocol: Request.Scheme);
+
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    {
+                        return RedirectToPage("RegisterConfirmation", new { email = model.Email });
+                    }
+                    else
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect("/Home/Index");
+                    }
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction(nameof(Register));
         }
     }
 }
