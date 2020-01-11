@@ -1,1 +1,45 @@
-﻿
+﻿@model NamirniceDelivery.Web.ViewModels.Account.LoginVM
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<div class="page login-page">
+    <div class="container">
+        <div class="form-outer text-center d-flex align-items-center">
+            <div class="form-inner">
+                <div class="logo text-uppercase"><span></span><strong class="text-primary">Prijava na sistem</strong></div>
+                <p>Unesite korisničko ime i lozinku za prijavu na sistem.</p>
+                <form method="post" class="text-left form-validate">
+                    <div class="form-group-material">
+                        <input id="login-username" asp-for="Username" required data-msg="Please enter your username" class="input-material">
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <label asp-for="Username" class="label-material"></label>
+                    </div>
+                    <div class="form-group-material">
+                        <input id="login-password" asp-for="Password" required data-msg="Please enter your password" class="input-material">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <label asp-for="Password" class="label-material"></label>
+                    </div>
+                    <div class="form-group-material">
+                        <div class="checkbox">
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group text-center">
+                        @*<a id="login" href="index.html" class="btn btn-primary">Login</a>*@
+                        <input type="submit" id="login" class="btn btn-primary" value="Prijavi se">
+                    </div>
+                </form>
+                @*<a href="#" class="forgot-pass">Forgot Password?</a>*@
+                <small>Niste registrovani? </small><a asp-action="Register" class="signup">Registruj se</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
