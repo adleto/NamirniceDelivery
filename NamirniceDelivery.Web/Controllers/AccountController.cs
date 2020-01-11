@@ -85,5 +85,10 @@ namespace NamirniceDelivery.Web.Controllers
         {
             return Ok();
         }
+        [HttpPost]
+        public IActionResult Register(RegisterVM model)
+        {
+            return Ok();
+        }
     }
 }
