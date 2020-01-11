@@ -91,7 +91,7 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     Naziv = model.Naziv
                 });
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateKategorija");
                 return Ok("Ok");
             }
             return PartialView("_KategorijaPartialView", model);
@@ -107,7 +107,7 @@ namespace NamirniceDelivery.Web.Controllers
                     Id = model.KategorijaId,
                     Naziv = model.Naziv
                 });
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateKategorija");
                 return Ok("Ok");
             }
             return PartialView("_KategorijaPartialView", model);
@@ -118,7 +118,7 @@ namespace NamirniceDelivery.Web.Controllers
             if (!_namirnicaService.GetNamirnicePoKategorijama(_kategorijaService.GetKategorija(id)).Any())
             {
                 _kategorijaService.UkloniKategorija(id);
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateKategorija");
                 return Ok("Ok");
             }
             return Ok("Failed to delete");
@@ -177,7 +177,7 @@ namespace NamirniceDelivery.Web.Controllers
                     KategorijaId = model.KategorijaId,
                     Naziv = model.Naziv
                 });
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateNamirnica");
                 return Ok("Ok");
             }
             model.KategorijaList = _kategorijaService.GetKategorije();
@@ -195,7 +195,7 @@ namespace NamirniceDelivery.Web.Controllers
                     KategorijaId = model.KategorijaId,
                     Naziv = model.Naziv
                 });
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateNamirnica");
                 return Ok("Ok");
             }
             model.KategorijaList = _kategorijaService.GetKategorije();
@@ -207,7 +207,7 @@ namespace NamirniceDelivery.Web.Controllers
             if (!_namirnicaPodruznicaService.GetNamirnicePodruznicaVrsta(_namirnicaService.GetNamirnica(id)).Any())
             {
                 _namirnicaService.UkloniNamirnica(id);
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateNamirnica");
                 return Ok("Ok");
             }
             return Ok("Failed to delete");
@@ -258,7 +258,7 @@ namespace NamirniceDelivery.Web.Controllers
                     Iznos = (model.Iznos / 100) ?? 1,
                     Opis = model.Opis
                 });
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulatePopust");
                 return Ok("Ok");
             }
             return PartialView("_PopustPartialView", model);
@@ -275,7 +275,7 @@ namespace NamirniceDelivery.Web.Controllers
                     Opis = model.Opis,
                     Iznos = (model.Iznos / 100) ?? 1
                 });
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulatePopust");
                 return Ok("Ok");
             }
             return PartialView("_PopustPartialView", model);
@@ -286,7 +286,7 @@ namespace NamirniceDelivery.Web.Controllers
             if (!_namirnicaPodruznicaService.GetNamirnicePodruznicaPopust(_popustService.GetPopust(id)).Any())
             {
                 _popustService.UkloniPopust(id);
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulatePopust");
                 return Ok("Ok");
             }
             return Ok("Failed to delete");
@@ -367,7 +367,7 @@ namespace NamirniceDelivery.Web.Controllers
                     namirnica.PopustId = model.PopustId;
                 }
                 _namirnicaPodruznicaService.DodajNamirnicu(namirnica);
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateNamirnicaPodruznica");
                 return Ok("Ok");
             }
             model.PopustList = _popustService.GetPopusti();
@@ -394,7 +394,7 @@ namespace NamirniceDelivery.Web.Controllers
                         namirnica.PopustId = model.PopustId;
                     }
                     _namirnicaPodruznicaService.EditNamirnicaPodruznica(namirnica);
-                    await _hubContext.Clients.All.SendAsync("Repopulate");
+                    await _hubContext.Clients.All.SendAsync("RepopulateNamirnicaPodruznica");
                     return Ok("Ok");
                 }
             }
@@ -407,7 +407,7 @@ namespace NamirniceDelivery.Web.Controllers
             if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(id).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
             {
                 _namirnicaPodruznicaService.UkloniNamirnicaPodruznica(id);
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateNamirnicaPodruznica");
                 return Ok("Ok");
             }
             return Ok("Failed to delete");
@@ -418,7 +418,7 @@ namespace NamirniceDelivery.Web.Controllers
             if (_namirnicaPodruznicaService.GetNamirnicaPodruznica(id).PodruznicaId == _administrativniRadnikService.GetPodruznicaIdOdRadnika(User.Identity.Name))
             {
                 _namirnicaPodruznicaService.ToogleStatusNamirnicaPodruznica(id);
-                await _hubContext.Clients.All.SendAsync("Repopulate");
+                await _hubContext.Clients.All.SendAsync("RepopulateNamirnicaPodruznica");
                 return Ok("Ok");
             }
             return Ok("Failed to toogle");

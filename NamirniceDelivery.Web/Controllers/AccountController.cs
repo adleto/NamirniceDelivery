@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.Web.Helper;
 using NamirniceDelivery.Web.ViewModels.Account;
 
 namespace NamirniceDelivery.Web.Controllers
@@ -32,7 +34,7 @@ namespace NamirniceDelivery.Web.Controllers
             _opcinaService = opcinaService;
             _kupacService = kupacService;
         }
-
+        [AnonymousOnly]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
             var model = new LoginVM
@@ -53,7 +55,7 @@ namespace NamirniceDelivery.Web.Controllers
             model.ReturnUrl = returnUrl;
             return View(model);
         }
-
+        [AnonymousOnly]
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
@@ -87,6 +89,7 @@ namespace NamirniceDelivery.Web.Controllers
             // If we got this far, something failed, redisplay form
             return RedirectToAction(nameof(Login));
         }
+        [AnonymousOnly]
         public IActionResult Register(string returnUrl = null)
         {
             var model = new RegisterVM{
@@ -98,6 +101,7 @@ namespace NamirniceDelivery.Web.Controllers
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             return View(model);
         }
+        [AnonymousOnly]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
@@ -118,6 +122,8 @@ namespace NamirniceDelivery.Web.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "Kupac");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -149,6 +155,17 @@ namespace NamirniceDelivery.Web.Controllers
 
             // If we got this far, something failed, redisplay form
             return RedirectToAction(nameof(Register));
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout(string returnUrl = null)
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return Redirect("/Home/");
+            }
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return Redirect("/Home/");
         }
     }
 }

@@ -183,10 +183,10 @@ namespace NamirniceDelivery.Services.Services
                 _context.Transakcija.Add(t);
             }
             _context.SaveChanges();
-            foreach(var p in razlicitePodruznice)
+            foreach (var p in razlicitePodruznice)
             {
                 ObavjestiRadnike(p.Id);
-            } 
+            }
         }
 
         public List<Transakcija> GetZavrseneTransakcijeForKupac(Kupac kupac)
@@ -221,9 +221,9 @@ namespace NamirniceDelivery.Services.Services
         public decimal GetTotalProtok(ApplicationUser user)
         {
             return _context.KupljeneNamirnice
-                .Include(kn=>kn.Transakcija)
+                .Include(kn => kn.Transakcija)
                 .Where(kn => kn.Transakcija.KupacId == user.Id || kn.Transakcija.AdministrativniRadnikId == user.Id)
-                .Select(kn=>kn.Cijena*kn.Kolicina)
+                .Select(kn => kn.Cijena * kn.Kolicina)
                 .Cast<decimal?>()
                 .Sum() ?? 0;
         }
@@ -243,14 +243,14 @@ namespace NamirniceDelivery.Services.Services
         {
             var t = _context.Transakcija
                 .Include(t => t.KupljeneNamirnice)
-                    .ThenInclude(t=>t.Namirnica)
+                    .ThenInclude(t => t.Namirnica)
                 .Where(t => t.KupacId == user.Id || t.AdministrativniRadnikId == user.Id)
                 .ToList();
             if (!t.Any()) return null;
             List<KupljeneN> list = new List<KupljeneN>();
-            foreach(var transakcija in t)
+            foreach (var transakcija in t)
             {
-                foreach(var namirnica in transakcija.KupljeneNamirnice)
+                foreach (var namirnica in transakcija.KupljeneNamirnice)
                 {
                     if (PostojiNamirnica(list, namirnica))
                     {
@@ -271,7 +271,7 @@ namespace NamirniceDelivery.Services.Services
                 Namirnica = list[0].Namirnica,
                 Kolicina = list[0].Kolicina
             };
-            foreach(var n in list)
+            foreach (var n in list)
             {
                 if (n.Kolicina > naj.Kolicina)
                 {
@@ -281,11 +281,11 @@ namespace NamirniceDelivery.Services.Services
             return Tuple.Create(naj.Namirnica.Naziv, naj.Kolicina);
         }
 
-        public Tuple<ApplicationUser,int> GetNajPartner(ApplicationUser user)
+        public Tuple<ApplicationUser, int> GetNajPartner(ApplicationUser user)
         {
             var t = _context.Transakcija
-                .Include(t=>t.Kupac)
-                .Include(t=>t.AdministrativniRadnik)
+                .Include(t => t.Kupac)
+                .Include(t => t.AdministrativniRadnik)
                 .Where(t => t.KupacId == user.Id || t.AdministrativniRadnikId == user.Id)
                 .ToList();
             if (!t.Any()) return null;
@@ -294,7 +294,10 @@ namespace NamirniceDelivery.Services.Services
             {
                 if (transakcija.KupacId == user.Id)
                 {
-                    DodajKorisnika(list, transakcija.AdministrativniRadnik);
+                    if (transakcija.AdministrativniRadnik != null)
+                    {
+                        DodajKorisnika(list, transakcija.AdministrativniRadnik);
+                    }
                 }
                 else
                 {
@@ -318,13 +321,13 @@ namespace NamirniceDelivery.Services.Services
         public List<TransakcijeNamirnica> GetNamirniceUTransakcijiama(ApplicationUser user)
         {
             var kn = _context.KupljeneNamirnice
-                .Include(kn=>kn.Namirnica)
-                .Include(kn=>kn.Transakcija)
+                .Include(kn => kn.Namirnica)
+                .Include(kn => kn.Transakcija)
                 .Where(kn => kn.Transakcija.KupacId == user.Id || kn.Transakcija.AdministrativniRadnikId == user.Id)
                 .ToList();
             //if (!kn.Any()) return null;
             List<TransakcijeNamirnica> list = new List<TransakcijeNamirnica>();
-            foreach(var n in kn)
+            foreach (var n in kn)
             {
                 if (PostojiTransakcijeNamirnica(list, n))
                 {
@@ -347,7 +350,7 @@ namespace NamirniceDelivery.Services.Services
             var radnici = _context.AdministrativniRadnik
                 .Where(a => a.PodruznicaId == podruznicaId)
                 .ToList();
-            foreach(var r in radnici)
+            foreach (var r in radnici)
             {
                 //ugaseno za sad
                 //NexmoSend.ObavjestiRadnikaNovaNarudzba(r);
@@ -355,9 +358,9 @@ namespace NamirniceDelivery.Services.Services
         }
         private bool PostojiTransakcijeNamirnica(List<TransakcijeNamirnica> list, KupljeneNamirnice n)
         {
-            foreach(var item in list)
+            foreach (var item in list)
             {
-                if(item.name == n.Namirnica.Naziv)
+                if (item.name == n.Namirnica.Naziv)
                 {
                     return true;
                 }
@@ -396,9 +399,9 @@ namespace NamirniceDelivery.Services.Services
 
         private void DodajKolicinu(List<KupljeneN> list, KupljeneNamirnice namirnica)
         {
-            foreach(var item in list)
+            foreach (var item in list)
             {
-                if(item.Namirnica == namirnica.Namirnica)
+                if (item.Namirnica == namirnica.Namirnica)
                 {
                     item.Kolicina += namirnica.Kolicina;
                     return;
