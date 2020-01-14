@@ -137,5 +137,11 @@ namespace NamirniceDelivery.Web.Controllers
             model.OpcinaList = _opcinaService.GetOpcine();
             return View(model);
         }
+        [Authorize(Roles = "Menadzer")]
+        public IActionResult ObrisiPodruznica(int podruznicaId = 0)
+        {
+            _podruznicaService.ObrisiPodruznicu(podruznicaId);
+            return RedirectToAction(nameof(PregledPodruznica));
+        }
     }
 }

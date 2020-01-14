@@ -60,5 +60,11 @@ namespace NamirniceDelivery.Services.Services
             _context.Podruznica.Add(podruznica);
             _context.SaveChanges();
         }
+
+        public void ObrisiPodruznicu(int podruznicaId)
+        {
+            _context.Podruznica.Remove(GetPodruznica(podruznicaId));
+            _context.SaveChanges();
+        }
     }
 }

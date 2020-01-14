@@ -15,6 +15,7 @@
                 <th>Opis</th>
                 <th>Općina</th>
                 <th>Adresa</th>
+                <th>Akcije</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,7 @@
                     <td>@podruznica.Opis</td>
                     <td>@podruznica.Opcina.Naziv</td>
                     <td>@podruznica.Adresa</td>
+                    <td><a asp-action="ObrisiPodruznica" asp-route-podruznicaId="@podruznica.Id">Delete</a></td>
                 </tr>
             }
         </tbody>
