@@ -21,7 +21,7 @@
             @foreach (var podruznica in Model.PodruznicaList)
             {
                 <tr>
-                    <td>@podruznica.Naziv</td>
+                    <td><a href="/Podruznica/Podruznica/@podruznica.Id">@podruznica.Naziv</a></td>
                     <td>@podruznica.Opis</td>
                     <td>@podruznica.Opcina.Naziv</td>
                     <td>@podruznica.Adresa</td>
@@ -29,5 +29,6 @@
             }
         </tbody>
     </table>
+    <a class="btn btn-success" asp-action="Podruznica">Dodaj novu podružnicu</a>
 </div>
 

@@ -1,0 +1,59 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Podruznica.PodruznicaVM
+@{
+    ViewData["Title"] = "Podruznica";
+}
+
+<h4>Podruznica</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Podruznica" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PodruznicaId" />
+            <div class="form-group">
+                <label asp-for="Naziv" class="control-label"></label>
+                <input asp-for="Naziv" class="form-control" />
+                <span asp-validation-for="Naziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Opis" class="control-label"></label>
+                <input asp-for="Opis" class="form-control" />
+                <span asp-validation-for="Opis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpcinaId" class="control-label"></label>
+                <select asp-for="OpcinaId" class="form-control">
+                    <option value="">Odaberi opcinu</option>
+                    @foreach (var o in Model.OpcinaList)
+                    {
+                        if (o.Id == Model.OpcinaId)
+                        {
+                            <option selected value="@o.Id">@o.Naziv</option>
+                        }
+                        else
+                        {
+                            <option value="@o.Id">@o.Naziv</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="OpcinaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adresa" class="control-label"></label>
+                <input asp-for="Adresa" class="form-control" />
+                <span asp-validation-for="Adresa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (Model.PodruznicaId == 0)
+                {
+                    <input type="submit" value="Dodaj" class="btn btn-primary" />
+                }
+                else
+                {
+                    <input type="submit" value="Spasi izmjene" class="btn btn-primary" />
+                }
+            </div>
+        </form>
+    </div>
+</div>
+

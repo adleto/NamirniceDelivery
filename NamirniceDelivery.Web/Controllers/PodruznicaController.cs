@@ -17,17 +17,20 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
         private readonly IAdministrativniRadnik _administrativniRadnikService;
         private readonly IApplicationUser _applicationUserService;
+        private readonly IOpcina _opcinaService;
 
-        public PodruznicaController(IPodruznica podruznicaService, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService, IApplicationUser applicationUserService)
+        public PodruznicaController(IPodruznica podruznicaService, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService, IApplicationUser applicationUserService, IOpcina opcinaService)
         {
             _podruznicaService = podruznicaService;
             _kupacService = kupacService;
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
             _administrativniRadnikService = administrativniRadnikService;
             _applicationUserService = applicationUserService;
+            _opcinaService = opcinaService;
         }
+
         [Authorize(Roles = "Kupac,AdministrativniRadnik,Menadzer")]
-        public IActionResult Index(int id, string returnUrl="")
+        public IActionResult Index(int id, string returnUrl = "")
         {
             var podruznica = _podruznicaService.GetPodruznica(id);
             var v = new IndexViewModel
@@ -45,7 +48,7 @@ namespace NamirniceDelivery.Web.Controllers
             if (User.IsInRole("Kupac"))
             {
                 var kupac = _kupacService.GetKupac(User.Identity.Name);
-                if(kupac.OpcinaBoravkaId == podruznica.OpcinaId)
+                if (kupac.OpcinaBoravkaId == podruznica.OpcinaId)
                 {
                     v.MozeKupovati_ZaKupca = true;
                 }
@@ -73,13 +76,65 @@ namespace NamirniceDelivery.Web.Controllers
 
 
         // -- FROM HERE (down) ZA MENADZERA
-        [Authorize(Roles ="Menadzer")]
+        [Authorize(Roles = "Menadzer")]
         public IActionResult PregledPodruznica()
         {
             var model = new PregledPodruznicaVM
             {
                 PodruznicaList = _podruznicaService.GetPodruznice()
             };
+            return View(model);
+        }
+        [Authorize(Roles = "Menadzer")]
+        public IActionResult Podruznica(int podruznicaId = 0)
+        {
+
+            var model = new PodruznicaVM
+            {
+                OpcinaList = _opcinaService.GetOpcine(),
+                PodruznicaId = podruznicaId
+            };
+            if (podruznicaId != 0)
+            {
+                var p = _podruznicaService.GetPodruznica(podruznicaId);
+                model.Naziv = p.Naziv;
+                model.Adresa = p.Adresa;
+                model.OpcinaId = p.OpcinaId;
+                model.Opis = p.Opis;
+                model.PodruznicaId = p.Id;
+            }
+            return View(model);
+        }
+        [Authorize(Roles = "Menadzer")]
+        [HttpPost]
+        public IActionResult Podruznica(PodruznicaVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.PodruznicaId != 0)
+                {
+                    _podruznicaService.EditPodruznica(new Podruznica
+                    {
+                        Adresa = model.Adresa,
+                        Naziv = model.Naziv,
+                        Opis = model.Opis,
+                        OpcinaId = model.OpcinaId,
+                        Id = model.PodruznicaId
+                    });
+                }
+                else
+                {
+                    _podruznicaService.KreirajPodruznicu(new Podruznica
+                    {
+                        Adresa = model.Adresa,
+                        Naziv = model.Naziv,
+                        Opis = model.Opis,
+                        OpcinaId = model.OpcinaId
+                    });
+                }
+                return RedirectToAction(nameof(PregledPodruznica));
+            }
+            model.OpcinaList = _opcinaService.GetOpcine();
             return View(model);
         }
     }

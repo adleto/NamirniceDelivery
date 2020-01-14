@@ -19,6 +19,16 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
+        public void EditPodruznica(Podruznica podruznica)
+        {
+            var p = GetPodruznica(podruznica.Id);
+            p.Naziv = podruznica.Naziv;
+            p.Adresa = podruznica.Adresa;
+            p.OpcinaId = podruznica.OpcinaId;
+            p.Opis = podruznica.Opis;
+            _context.SaveChanges();
+        }
+
         public Podruznica GetPodruznica(int podruznicaId)
         {
             return _context.Podruznica
