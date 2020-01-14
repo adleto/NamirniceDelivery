@@ -40,6 +40,10 @@ namespace NamirniceDelivery.Web.Controllers
                 {
                     return RedirectToAction("Index", "Kupac");
                 }
+                else if (User.IsInRole("Menadzer"))
+                {
+                    return RedirectToAction("Index", "Menadzer");
+                }
             }
             return View(new IndexViewModel { 
                 NamirnicaList = _namirnicaPodruznicaService.GetNamirnicePodruznica(),

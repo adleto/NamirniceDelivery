@@ -75,6 +75,7 @@ namespace NamirniceDelivery.Web
             services.AddScoped<IKorpaStavka, KorpaStavkaService>();
             services.AddScoped<ITransakcija, TransakcijaService>();
             services.AddScoped<IAkcijeTransakcija, AkcijeTransakcijaService>();
+            services.AddScoped<IApplicationUser, ApplicationUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

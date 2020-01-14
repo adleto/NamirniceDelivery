@@ -10,22 +10,23 @@ using NamirniceDelivery.Web.ViewModels.Podruznica;
 
 namespace NamirniceDelivery.Web.Controllers
 {
-    [Authorize(Roles="Kupac,AdministrativniRadnik")]
     public class PodruznicaController : Controller
     {
         private readonly IPodruznica _podruznicaService;
         private readonly IKupac _kupacService;
         private readonly INamirnicaPodruznica _namirnicaPodruznicaService;
         private readonly IAdministrativniRadnik _administrativniRadnikService;
+        private readonly IApplicationUser _applicationUserService;
 
-        public PodruznicaController(IPodruznica podruznicaService, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService)
+        public PodruznicaController(IPodruznica podruznicaService, IKupac kupacService, INamirnicaPodruznica namirnicaPodruznicaService, IAdministrativniRadnik administrativniRadnikService, IApplicationUser applicationUserService)
         {
             _podruznicaService = podruznicaService;
             _kupacService = kupacService;
             _namirnicaPodruznicaService = namirnicaPodruznicaService;
             _administrativniRadnikService = administrativniRadnikService;
+            _applicationUserService = applicationUserService;
         }
-
+        [Authorize(Roles = "Kupac,AdministrativniRadnik,Menadzer")]
         public IActionResult Index(int id, string returnUrl="")
         {
             var podruznica = _podruznicaService.GetPodruznica(id);
@@ -68,6 +69,18 @@ namespace NamirniceDelivery.Web.Controllers
             return list
                 .Select(ksp => _podruznicaService.GetPodruznica(ksp.PodruznicaId))
                 .ToList();
+        }
+
+
+        // -- FROM HERE (down) ZA MENADZERA
+        [Authorize(Roles ="Menadzer")]
+        public IActionResult PregledPodruznica()
+        {
+            var model = new PregledPodruznicaVM
+            {
+                PodruznicaList = _podruznicaService.GetPodruznice()
+            };
+            return View(model);
         }
     }
 }

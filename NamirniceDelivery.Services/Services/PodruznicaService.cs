@@ -31,6 +31,7 @@ namespace NamirniceDelivery.Services.Services
         public List<Podruznica> GetPodruznice()
         {
             return _context.Podruznica
+                .Include(p=>p.Opcina)
                 .Include(p=>p.NamirnicaPodruznica)
                     .ThenInclude(np=>np.Namirnica)
                         .ThenInclude(n=>n.Kategorija)

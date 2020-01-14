@@ -1,0 +1,33 @@
+﻿
+
+@model NamirniceDelivery.Web.ViewModels.Podruznica.PregledPodruznicaVM
+@{
+    ViewData["Title"] = "PregledPodruznica";
+}
+
+<h1>Podrzav gospodin menadzer - @User.Identity.Name - Pregled Podruznica</h1>
+
+<div class="table-responsive">
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Opis</th>
+                <th>Općina</th>
+                <th>Adresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var podruznica in Model.PodruznicaList)
+            {
+                <tr>
+                    <td>@podruznica.Naziv</td>
+                    <td>@podruznica.Opis</td>
+                    <td>@podruznica.Opcina.Naziv</td>
+                    <td>@podruznica.Adresa</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
