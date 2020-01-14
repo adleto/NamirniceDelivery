@@ -112,39 +112,57 @@
                                 <a asp-controller="Kupac" asp-action="SpremljenePodruznice">Spremljene Podruznice</a>
                             </li>
                         }
-                    </ul>
-                </div>
-                <div class="admin-menu">
-                    <h5 class="sidenav-heading">Narudžbe</h5>
-                    <ul id="side-admin-menu" class="side-menu list-unstyled">
-                        @if (User.IsInRole("AdministrativniRadnik"))
+                        else if (User.IsInRole("Menadzer"))
                         {
-                            <li>
-                                <a asp-controller="Transakcija" asp-action="NepotvrdjeneNarudzbe">Nove narudžbe</a>
-                            </li>
-                        }
-                        else if (User.IsInRole("Kupac"))
-                        {
-                            <li>
-                                <a asp-controller="Transakcija" asp-action="NepotvrdjeneNarudzbe">Nepotvrđene narudžbe</a>
-                            </li>
-                        }
+
                         <li>
-                            <a asp-controller="Transakcija" asp-action="DostaveUToku">Dostave u toku</a>
+                            <a asp-controller="Podruznica" asp-action="PregledPodruznica">Pregled podružnica</a>
                         </li>
                         <li>
-                            <a asp-controller="Transakcija" asp-action="ZavrseneTransakcije">Završene transakcije</a>
+                            <a asp-controller="Vozilo" asp-action="Index">Pregled vozila</a>
                         </li>
+
+                        }
                     </ul>
                 </div>
-                <div class="admin-menu">
-                    <h5 class="sidenav-heading">Dodatno</h5>
-                    <ul id="side-admin-menu" class="side-menu list-unstyled">
-                        <li>
-                            <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
-                        </li>
-                    </ul>
-                </div>
+                @if (User.IsInRole("AdministrativniRadnik") || User.IsInRole("Kupac"))
+                {
+                    <div class="admin-menu">
+                        <h5 class="sidenav-heading">Narudžbe</h5>
+                        <ul id="side-admin-menu" class="side-menu list-unstyled">
+                            @if (User.IsInRole("AdministrativniRadnik"))
+                            {
+                                <li>
+                                    <a asp-controller="Transakcija" asp-action="NepotvrdjeneNarudzbe">Nove narudžbe</a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Kupac"))
+                            {
+                                <li>
+                                    <a asp-controller="Transakcija" asp-action="NepotvrdjeneNarudzbe">Nepotvrđene narudžbe</a>
+                                </li>
+                            }
+
+                            <li>
+                                <a asp-controller="Transakcija" asp-action="DostaveUToku">Dostave u toku</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Transakcija" asp-action="ZavrseneTransakcije">Završene transakcije</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                @if (User.IsInRole("AdministrativniRadnik") || User.IsInRole("Kupac"))
+                {
+                    <div class="admin-menu">
+                        <h5 class="sidenav-heading">Dodatno</h5>
+                        <ul id="side-admin-menu" class="side-menu list-unstyled">
+                            <li>
+                                <a asp-controller="Transakcija" asp-action="Statistika">Statistika</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
             }
         </div>
     </nav>

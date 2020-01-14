@@ -19,6 +19,16 @@ namespace NamirniceDelivery.Services.Services
             _context = context;
         }
 
+        public void EditPodruznica(Podruznica podruznica)
+        {
+            var p = GetPodruznica(podruznica.Id);
+            p.Naziv = podruznica.Naziv;
+            p.Adresa = podruznica.Adresa;
+            p.OpcinaId = podruznica.OpcinaId;
+            p.Opis = podruznica.Opis;
+            _context.SaveChanges();
+        }
+
         public Podruznica GetPodruznica(int podruznicaId)
         {
             return _context.Podruznica
@@ -31,6 +41,7 @@ namespace NamirniceDelivery.Services.Services
         public List<Podruznica> GetPodruznice()
         {
             return _context.Podruznica
+                .Include(p=>p.Opcina)
                 .Include(p=>p.NamirnicaPodruznica)
                     .ThenInclude(np=>np.Namirnica)
                         .ThenInclude(n=>n.Kategorija)
@@ -47,6 +58,12 @@ namespace NamirniceDelivery.Services.Services
         public void KreirajPodruznicu(Podruznica podruznica)
         {
             _context.Podruznica.Add(podruznica);
+            _context.SaveChanges();
+        }
+
+        public void ObrisiPodruznicu(int podruznicaId)
+        {
+            _context.Podruznica.Remove(GetPodruznica(podruznicaId));
             _context.SaveChanges();
         }
     }

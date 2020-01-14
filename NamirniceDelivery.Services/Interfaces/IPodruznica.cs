@@ -12,5 +12,7 @@ namespace NamirniceDelivery.Services.Interfaces
         List<Podruznica> GetPodruzniceForKupac(Kupac kupac);
         List<Podruznica> GetPodruznice();
         Podruznica GetPodruznica(int podruznicaId);
+        void EditPodruznica(Podruznica podruznica);
+        void ObrisiPodruznicu(int podruznicaId);
     }
 }
