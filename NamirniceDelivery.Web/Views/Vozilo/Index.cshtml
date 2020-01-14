@@ -1,0 +1,32 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Vozilo.IndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="table-responsive">
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Tip vozila</th>
+                <th>Registarske oznake</th>
+                <th>Marka Vozila</th>
+                <th>Vozač</th>
+                <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var v in Model.VoziloList)
+            {
+                <tr>
+                    <td>@v.TipVozila</td>
+                    <td>@v.RegistarskeOznake</td>
+                    <td>@v.MarkaVozila</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @*<a class="btn btn-success" asp-action="">Dodaj novo vozilo</a>*@
+</div>
