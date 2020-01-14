@@ -19,7 +19,7 @@ namespace NamirniceDelivery.Web.ViewModels.Account
         [Display(Name = "Email")]
         public string Email { get; set; }
         
-        [Required]
+        [Required(ErrorMessage="Lozinka mora biti unesena.")]
         [StringLength(100, ErrorMessage = "{0} mora imati barem {2} karaktera.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Lozinka")]

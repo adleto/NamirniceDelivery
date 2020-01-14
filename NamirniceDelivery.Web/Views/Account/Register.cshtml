@@ -12,17 +12,17 @@
                 <p>Unesite informacije za registraciju.</p>
                 <form method="post" class="text-left form-validate">
                     <div class="form-group-material">
-                        <input id="login-username" asp-for="Username" required data-msg="Unesite korisničko ime" class="input-material">
+                        <input asp-for="Username" required data-msg="Unesite korisničko ime" class="input-material">
                         <span asp-validation-for="Username" class="text-danger"></span>
                         <label asp-for="Username" class="label-material"></label>
                     </div>
                     <div class="form-group-material">
-                        <input id="login-password" asp-for="Password" required data-msg="Unesite lozinku" class="input-material">
+                        <input asp-for="Password" required data-msg="Unesite lozinku" class="input-material">
                         <span asp-validation-for="Password" class="text-danger"></span>
                         <label asp-for="Password" class="label-material"></label>
                     </div>
                     <div class="form-group-material">
-                        <input id="login-password-repeat" asp-for="ConfirmPassword" required data-msg="Ponovite lozinku" class="input-material">
+                        <input asp-for="ConfirmPassword" required data-msg="Ponovite lozinku" class="input-material">
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         <label asp-for="ConfirmPassword" class="label-material"></label>
                     </div>
@@ -44,28 +44,25 @@
                     </div>
 
                     <div class="form-group-material">
-                        <label asp-for="OpcinaRodjenjaId" class="label-material"></label><br />
-                        <select asp-for="OpcinaRodjenjaId" required data-msg="Odaberite općinu rođenja" class="input-material">
-                            <option value="">Odaberi općinu</option>
+                        <select style="width: 100%;" class="input-material" asp-for="OpcinaRodjenjaId" required data-msg="Odaberite općinu rođenja">
+                            <option value="" disabled="disabled" selected="selected">Općina rođenja</option>
                             @foreach (var o in Model.OpcinaList)
                             {
                                 <option value="@o.Id">@o.Naziv</option>
                             }
                         </select>
                         <span asp-validation-for="OpcinaRodjenjaId" class="text-danger"></span>
-
                     </div>
+                    <br />
                     <div class="form-group-material">
-                        <label asp-for="OpcinaBoravkaId" class="label-material"></label><br />
-                        <select asp-for="OpcinaBoravkaId" required data-msg="Odaberite općinu boravka" class="input-material">
-                            <option value="">Odaberi općinu</option>
+                        <select style="width: 100%;"class="input-material" asp-for="OpcinaBoravkaId" required data-msg="Odaberite općinu boravka">
+                            <option value="" disabled="disabled" selected="selected">Općina boravka</option>
                             @foreach (var o in Model.OpcinaList)
                             {
                                 <option value="@o.Id">@o.Naziv</option>
                             }
                         </select>
                         <span asp-validation-for="OpcinaBoravkaId" class="text-danger"></span>
-
                     </div>
 
 

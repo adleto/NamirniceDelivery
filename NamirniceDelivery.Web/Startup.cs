@@ -34,7 +34,7 @@ namespace NamirniceDelivery.Web
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyContext>();
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            //services.AddRazorPages();
 
             services.AddSignalR();
 
@@ -58,6 +58,15 @@ namespace NamirniceDelivery.Web
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
             });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Account/Login";
+                //options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Account/Login";
+            });
+
+
 
             services.AddHostedService<Worker>();
 

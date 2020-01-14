@@ -159,7 +159,7 @@ namespace NamirniceDelivery.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout(string returnUrl = null)
         {
-            if (_signInManager.IsSignedIn(User))
+            if (!_signInManager.IsSignedIn(User))
             {
                 return Redirect("/Home/");
             }
