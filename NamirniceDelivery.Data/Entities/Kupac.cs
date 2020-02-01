@@ -11,5 +11,6 @@ namespace NamirniceDelivery.Data.Entities
         public virtual List<KupacSpremljenePodruznice> SpremljenePodruznice { get; set; }
         public virtual List<Transakcija> Transakcije { get; set; }
         public int RejtingKupac { get; set; }
+        public DateTime? ZadnjaSMSObavijest { get; set; }
     }
 }

@@ -57,6 +57,22 @@ namespace NamirniceDelivery.Services.Services
             return _context.Kupac.ToList();
         }
 
+        public List<Kupac> GetKupciZaSMSObavijest()
+        {
+            var rightNowMinusFiveDays = DateTime.Now.AddDays(-5);
+            return _context.Kupac
+                .Where(k=> (k.LastLoginTimestamp == null || rightNowMinusFiveDays > k.LastLoginTimestamp) &&
+                    (k.ZadnjaSMSObavijest == null || rightNowMinusFiveDays > k.ZadnjaSMSObavijest))
+                .Take(10)
+                .ToList();
+        }
+
+        public void SMSObavjestPoslana(Kupac kupac)
+        {
+            GetKupac(kupac.UserName).ZadnjaSMSObavijest = DateTime.Now;
+            _context.SaveChanges();
+        }
+
         public List<KupacSpremljeneNamirnice> GetSpremljeneNamirnice(string id)
         {
             return _context.KupacSpremljeneNamirnice

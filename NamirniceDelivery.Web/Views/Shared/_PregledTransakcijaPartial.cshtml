@@ -51,131 +51,131 @@
             <tbody>
                 @foreach (var x in Model.TransakcijaList)
                 {
-                <tr>
-                    <th><a asp-action="Index" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path">@(Model.TransakcijaList.IndexOf(x) + 1).</a></th>
-                    @if (User.IsInRole("Kupac"))
-                    {
-                        <td><a asp-controller="Podruznica" asp-action="Index" asp-route-id="@x.PodruznicaId" asp-route-returnUrl="@Context.Request.Path">@x.Podruznica.Naziv</a></td>
-                        @if (Model.ListType != ListType.narucene)
+                    <tr>
+                        <th><a asp-action="Index" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path">@(Model.TransakcijaList.IndexOf(x) + 1).</a></th>
+                        @if (User.IsInRole("Kupac"))
                         {
-                            <td>@x.AdministrativniRadnik.UserName</td>
-                        }
-                        <td>@(x.IznosTotal.ToString("F") + "KM")</td>
-                        <td>@x.TipTransakcije.NazivTipa</td>
-                        <td>@(x.DatumIniciranjaTransakcije.ToString("dd/MM/yy H:mm"))</td>
-                        @if (Model.ListType != ListType.narucene)
-                        {
-                            @if (x.NarudzbaPrihvacenaOdRadnika)
+                            <td><a asp-controller="Podruznica" asp-action="Index" asp-route-id="@x.PodruznicaId" asp-route-returnUrl="@Context.Request.Path">@x.Podruznica.Naziv</a></td>
+                            @if (Model.ListType != ListType.narucene)
                             {
-                                <td>@(x.DatumPrihvacanjaNarudzbe?.ToString("dd/MM/yy H:mm"))</td>
+                                <td>@x.AdministrativniRadnik.UserName</td>
                             }
-                        }
-                        @if (Model.ListType == ListType.zavrsene)
-                        {
-                            @if (x.DostavaUspjesna)
+                            <td>@(x.IznosTotal.ToString("F") + "KM")</td>
+                            <td>@x.TipTransakcije.NazivTipa</td>
+                            <td>@(x.DatumIniciranjaTransakcije.ToString("dd/MM/yy H:mm"))</td>
+                            @if (Model.ListType != ListType.narucene)
                             {
-                                <td>@(x.DatumUspjesneDostave?.ToString("dd/MM/yy H:mm"))</td>
-                                @if (x.RadnikOstavioDojam)
+                                @if (x.NarudzbaPrihvacenaOdRadnika)
                                 {
-                                    @if (x.DojamRadnik == "Pozitivan")
+                                    <td>@(x.DatumPrihvacanjaNarudzbe?.ToString("dd/MM/yy H:mm"))</td>
+                                }
+                            }
+                            @if (Model.ListType == ListType.zavrsene)
+                            {
+                                @if (x.DostavaUspjesna)
+                                {
+                                    <td>@(x.DatumUspjesneDostave?.ToString("dd/MM/yy H:mm"))</td>
+                                    @if (x.RadnikOstavioDojam)
                                     {
-                                        <td class="text-primary">@x.DojamRadnik</td>
+                                        @if (x.DojamRadnik == "Pozitivan")
+                                        {
+                                            <td class="text-primary">@x.DojamRadnik</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-danger">@x.DojamRadnik</td>
+                                        }
                                     }
                                     else
                                     {
-                                        <td class="text-danger">@x.DojamRadnik</td>
+                                        <td>Nema</td>
                                     }
                                 }
-                                else
-                                {
-                                    <td>Nema</td>
-                                }
                             }
-                        }
-                        @*Akcije za kupca*@
-                        @if (Model.ListType == ListType.narucene)
-                        {
-                            <td>Nema</td>
-                        }
-                        @if (Model.ListType == ListType.prihvacene)
-                        {
-                            <td><a asp-controller="Kupac" asp-action="DostavaUspjesna" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="" class="btn btn-primary rounded" title="Namirnice su stigle na vrata!">Dostava uspješna</a></td>
-                        }
-                        @if (Model.ListType == ListType.zavrsene)
-                        {
-                            <td>
-                                @if (!x.KupacOstavioDojam)
-                                {
-                                    <a asp-controller="Transakcija" asp-action="OstaviPozitivanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
-                                    <a asp-controller="Transakcija" asp-action="OstaviNegativanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
-                                }
-                                else
-                                {
-                                    <span>Nema</span>
-                                }
-                            </td>
-                        }
-                    }
-                    @if (User.IsInRole("AdministrativniRadnik"))
-                    {
-                        <td><a @*asp-controller="Kupac" asp-action="Profil"*@>@x.Kupac.UserName</a></td>
-                        <td>@(x.IznosTotal.ToString("F") + "KM")</td>
-                        <td>@x.TipTransakcije.NazivTipa</td>
-                        <td>@(x.DatumIniciranjaTransakcije.ToString("dd/MM/yy H:mm"))</td>
-                        @if (Model.ListType != ListType.narucene)
-                        {
-                            @if (x.NarudzbaPrihvacenaOdRadnika)
+                            @*Akcije za kupca*@
+                            @if (Model.ListType == ListType.narucene)
                             {
-                                <td>@(x.DatumPrihvacanjaNarudzbe?.ToString("dd/MM/yy H:mm"))</td>
+                                <td>Nema</td>
                             }
-                        }
-                        @if (Model.ListType == ListType.zavrsene)
-                        {
-                            @if (x.DostavaUspjesna)
+                            @if (Model.ListType == ListType.prihvacene)
                             {
-                                <td>@(x.DatumUspjesneDostave?.ToString("dd/MM/yy H:mm"))</td>
-                                @if (x.KupacOstavioDojam)
-                                {
-                                    @if (x.DojamKupac == "Pozitivan")
+                                <td><a asp-controller="Kupac" asp-action="DostavaUspjesna" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="" class="btn btn-primary rounded" title="Namirnice su stigle na vrata!">Dostava uspješna</a></td>
+                            }
+                            @if (Model.ListType == ListType.zavrsene)
+                            {
+                                <td>
+                                    @if (!x.KupacOstavioDojam)
                                     {
-                                        <td class="text-primary">@x.DojamKupac</td>
+                                        <a asp-controller="Transakcija" asp-action="OstaviPozitivanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
+                                        <a asp-controller="Transakcija" asp-action="OstaviNegativanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
                                     }
                                     else
                                     {
-                                        <td class="text-danger">@x.DojamKupac</td>
+                                        <span>Nema</span>
                                     }
-                                }
-                                else
-                                {
-                                    <td>Nema</td>
-                                }
+                                </td>
                             }
                         }
-                        @*Akcije za radnika*@
-                        @if (Model.ListType == ListType.narucene)
+                        @if (User.IsInRole("AdministrativniRadnik"))
                         {
-                            <td><a asp-controller="AdministrativniRadnik" asp-action="PrihvatiNarudzbu" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="" class="btn btn-primary rounded">Prihvati narudžbu</a></td>
-                        }
-                        @if (Model.ListType == ListType.prihvacene)
-                        {
-                            <td>Nema</td>
-                        }
-                        @if (Model.ListType == ListType.zavrsene)
-                        {
-                            <td>
-                                @if (!x.RadnikOstavioDojam)
+                            <td><a @*asp-controller="Kupac" asp-action="Profil"*@ title="Adresa: @(x.Kupac.OpcinaBoravka.Naziv + ", " + x.Kupac.Adresa)">@x.Kupac.UserName</a></td>
+                            <td>@(x.IznosTotal.ToString("F") + "KM")</td>
+                            <td>@x.TipTransakcije.NazivTipa</td>
+                            <td>@(x.DatumIniciranjaTransakcije.ToString("dd/MM/yy H:mm"))</td>
+                            @if (Model.ListType != ListType.narucene)
+                            {
+                                @if (x.NarudzbaPrihvacenaOdRadnika)
                                 {
-                                    <a asp-controller="Transakcija" asp-action="OstaviPozitivanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
-                                    <a asp-controller="Transakcija" asp-action="OstaviNegativanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
+                                    <td>@(x.DatumPrihvacanjaNarudzbe?.ToString("dd/MM/yy H:mm"))</td>
                                 }
-                                else
+                            }
+                            @if (Model.ListType == ListType.zavrsene)
+                            {
+                                @if (x.DostavaUspjesna)
                                 {
-                                    <span>Nema</span>
+                                    <td>@(x.DatumUspjesneDostave?.ToString("dd/MM/yy H:mm"))</td>
+                                    @if (x.KupacOstavioDojam)
+                                    {
+                                        @if (x.DojamKupac == "Pozitivan")
+                                        {
+                                            <td class="text-primary">@x.DojamKupac</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-danger">@x.DojamKupac</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td>Nema</td>
+                                    }
                                 }
-                            </td>
+                            }
+                            @*Akcije za radnika*@
+                            @if (Model.ListType == ListType.narucene)
+                            {
+                                <td><a asp-controller="AdministrativniRadnik" asp-action="PrihvatiNarudzbu" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="" class="btn btn-primary rounded">Prihvati narudžbu</a></td>
+                            }
+                            @if (Model.ListType == ListType.prihvacene)
+                            {
+                                <td>Nema</td>
+                            }
+                            @if (Model.ListType == ListType.zavrsene)
+                            {
+                                <td>
+                                    @if (!x.RadnikOstavioDojam)
+                                    {
+                                        <a asp-controller="Transakcija" asp-action="OstaviPozitivanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi pozitivan dojam"><i class="material-icons text-success">thumb_up_alt</i></a>
+                                        <a asp-controller="Transakcija" asp-action="OstaviNegativanDojam" asp-route-transakcijaId="@x.Id" asp-route-returnUrl="@Context.Request.Path" title="Ostavi negativan dojam"><i class="material-icons text-danger">thumb_down_alt</i></a>
+                                    }
+                                    else
+                                    {
+                                        <span>Nema</span>
+                                    }
+                                </td>
+                            }
                         }
-                    }
-                </tr>
+                    </tr>
                 }
             </tbody>
         </table>

@@ -80,7 +80,9 @@ namespace NamirniceDelivery.Services.Services
         {
             return _context.Transakcija
                 .Include(t => t.Kupac)
+                    .ThenInclude(k=>k.OpcinaBoravka)
                 .Include(t => t.AdministrativniRadnik)
+                    .ThenInclude(ar => ar.OpcinaBoravka)
                 .Include(t => t.Podruznica)
                 .Include(t => t.TipTransakcije)
                 .Include(t => t.KupljeneNamirnice)

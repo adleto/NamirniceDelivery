@@ -24,8 +24,9 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IOpcina _opcinaService;
         private readonly IKupac _kupacService;
+        private readonly IApplicationUser _applicationUserService;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IEmailSender emailSender, IOpcina opcinaService, IKupac kupacService)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IEmailSender emailSender, IOpcina opcinaService, IKupac kupacService, IApplicationUser applicationUserService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,6 +34,7 @@ namespace NamirniceDelivery.Web.Controllers
             _emailSender = emailSender;
             _opcinaService = opcinaService;
             _kupacService = kupacService;
+            _applicationUserService = applicationUserService;
         }
         [AnonymousOnly]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -68,6 +70,8 @@ namespace NamirniceDelivery.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    _applicationUserService.SetLogedInTimeStamp(_applicationUserService.GetUser(model.Username));
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect("/Home/Index");
                 }

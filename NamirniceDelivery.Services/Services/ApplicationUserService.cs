@@ -26,5 +26,10 @@ namespace NamirniceDelivery.Services.Services
                .Where(a => a.UserName == username)
                .FirstOrDefault();
         }
+        public void SetLogedInTimeStamp(ApplicationUser user)
+        {
+            user.LastLoginTimestamp = DateTime.Now;
+            _context.SaveChanges();
+        }
     }
 }

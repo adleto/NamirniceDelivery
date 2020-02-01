@@ -16,5 +16,6 @@ namespace NamirniceDelivery.Data.Entities
         public virtual Opcina OpcinaRodjenja { get; set; }
         [ForeignKey("Opcina")]
         public int? OpcinaRodjenjaId { get; set; }
+        public DateTime? LastLoginTimestamp { get; set; }
     }
 }

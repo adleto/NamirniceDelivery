@@ -8,5 +8,6 @@ namespace NamirniceDelivery.Services.Interfaces
     public interface IApplicationUser
     {
         ApplicationUser GetUser(string username);
+        void SetLogedInTimeStamp(ApplicationUser user);
     }
 }

@@ -7,6 +7,8 @@ namespace NamirniceDelivery.Services.Interfaces
 {
     public interface IKupac
     {
+        void SMSObavjestPoslana(Kupac kupac);
+        List<Kupac> GetKupciZaSMSObavijest();
         Kupac GetKupac(string username);
         void DodajSpremljenuNamiricu(string id, int namirnicaPodruznicaId);
         void DodajSpremljenuPodruznicu(string id, int podruznicaId);
