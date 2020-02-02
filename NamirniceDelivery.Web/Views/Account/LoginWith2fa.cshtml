@@ -1,0 +1,55 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Account.LoginWith2faVM
+@{
+    ViewData["Title"] = "LoginWith2fa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center row justify-content-center">
+    <div>
+        @if (!string.IsNullOrEmpty(Model.StatusMessage))
+        {
+            <p>@Model.StatusMessage</p>
+            <br />
+        }
+
+        <p>Unesite kod iz autentifikator aplikacije.</p>
+
+    </div>
+</div>
+
+<div class="text-center row justify-content-center">
+    <div>
+        <form method="post">
+            <input asp-for="RememberMe" type="hidden" />
+            <div class="form-group">
+                <label asp-for="TwoFactorCode"></label>
+                <input asp-for="TwoFactorCode" class="form-control" autocomplete="off" />
+                <span asp-validation-for="TwoFactorCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label asp-for="RememberMachine">
+                        <input asp-for="RememberMachine" />
+                        @Html.DisplayNameFor(m => m.RememberMachine)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+        </form>
+        <hr />
+        <p>
+            Nemate pristup autentifikatoru? Iskoristi recovery kod:
+        </p>
+        <form method="post" asp-action="LoginRecoveryCode">
+            <div class="form-group">
+                <label>Recovery kod</label>
+                <input class="form-control input-validation-error" autocomplete="off" type="text" data-val="true" data-val-required="Kod mora biti unesen." id="RecoveryCodeId" name="RecoveryCode" value="" aria-describedby="RecoveryCode-error" aria-invalid="true">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -115,12 +115,12 @@
                         else if (User.IsInRole("Menadzer"))
                         {
 
-                        <li>
-                            <a asp-controller="Podruznica" asp-action="PregledPodruznica">Pregled podružnica</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Vozilo" asp-action="Index">Pregled vozila</a>
-                        </li>
+                            <li>
+                                <a asp-controller="Podruznica" asp-action="PregledPodruznica">Pregled podružnica</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Vozilo" asp-action="Index">Pregled vozila</a>
+                            </li>
 
                         }
                     </ul>
@@ -180,19 +180,26 @@
                             </a>
                         </div>
                         <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-                            @*
-                                <!-- Languages dropdown    -->
-                                <li class="nav-item dropdown">
-                                    <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
-                                    <ul aria-labelledby="languages" class="dropdown-menu">
-                                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a></li>
-                                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French                                                         </span></a></li>
-                                    </ul>
-                                </li>
-                            *@
-                            <!-- Log out-->
                             @if (SignInManager.IsSignedIn(User))
                             {
+                                @*
+                                    <!-- Languages dropdown    -->
+                                    <li class="nav-item dropdown">
+                                        <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
+                                        <ul aria-labelledby="languages" class="dropdown-menu">
+                                            <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a></li>
+                                            <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French                                                         </span></a></li>
+                                        </ul>
+                                    </li>
+                                *@
+                                <li class="nav-item dropdown">
+                                    <a id="profileSettings" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><span class="d-none d-sm-inline-block">Profil</span></a>
+                                    <ul aria-labelledby="profileSettings" class="dropdown-menu">
+                                        <li><a asp-controller="Account" asp-action="TwoFactorAuth" class="dropdown-item"> <span>2FA Konfiguracija</span></a></li>
+                                    </ul>
+                                </li>
+                                <!-- Log out-->
+
                                 <li class="nav-item" onclick="document.getElementById('logoutForm').submit()">
                                     <form id="logoutForm" class="form-inline" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Context.Request.Path">
                                         <a href="#" class="nav-link logout">

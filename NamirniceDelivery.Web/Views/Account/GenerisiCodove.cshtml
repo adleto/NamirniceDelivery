@@ -1,0 +1,17 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "GenerisiCodove";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center row justify-content-center">
+    <div>
+        <h4>Recovery kodovi</h4>
+        @foreach(var kod in Model)
+        {
+            <p>@kod</p>
+        }
+    </div>
+</div>
+

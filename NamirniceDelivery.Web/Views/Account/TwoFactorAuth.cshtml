@@ -1,0 +1,49 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Account.TwoFactorAuthVM
+
+@{
+    ViewData["Title"] = "TwoFactorAuth";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center row justify-content-center">
+    <div>
+        @if (!string.IsNullOrEmpty(Model.StatusMessage))
+        {
+            <p>@Model.StatusMessage</p>
+            <br />
+        }
+
+        @if (Model.Is2faEnabled)
+        {
+            if (Model.RecoveryCodesLeft == 0)
+            {
+                <div class="alert alert-danger">
+                    <strong>Nestalo vam je kodova za login.</strong>
+                    <p><a asp-action="GenerisiCodove">Generišite nove</a></p>
+                </div>
+            }
+
+            if (Model.IsMachineRemembered)
+            {
+                <form method="post" asp-action="ForgetBrowser2FA" style="display: inline-block">
+                    <button type="submit" class="btn btn-primary">Zaboravi ovaj browser</button>
+                </form>
+            }
+            <a asp-action="Disable2FA" class="btn btn-primary">Isključi 2FA</a>
+            <a asp-action="GenerisiCodove" class="btn btn-primary">Generiši recovery kodove</a>
+        }
+    </div>
+</div>
+<br />
+<div class="text-center row justify-content-center">
+    <div>
+        @if (!Model.HasAuthenticator)
+        {
+            <a asp-action="Enable2FA" class="btn btn-primary">Uključi 2FA</a>
+        }
+        else
+        {
+            <a asp-action="Enable2FA" class="btn btn-primary">Podesi 2FA</a>
+        }
+    </div>
+</div>

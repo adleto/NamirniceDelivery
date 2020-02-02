@@ -1,0 +1,63 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Account.Enable2FAVM
+@{
+    ViewData["Title"] = "Enable2FA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center row justify-content-center">
+    <div>
+        @if (!string.IsNullOrEmpty(Model.StatusMessage))
+        {
+            <p>@Model.StatusMessage</p>
+            <br />
+        }
+
+        <p>Konfiguracija 2FA:</p>
+        <p>
+            1. Skini Google Authenticator za
+            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a> ili
+            <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
+        </p>
+        <p>2. Skeniraj QR ili unesi ovaj kod <kbd>@Model.SharedKey</kbd> u Google autentifikator.</p>
+    </div>
+</div>
+
+<div class="text-center row justify-content-center">
+    <div id="qrCode">
+    </div>
+</div>
+
+<div id="qrCodeData" data-url="@Html.Raw(@Model.AuthenticatorUri)"></div>
+
+<br />
+<div class="text-center row justify-content-center">
+    <div>
+        <p>
+            3. Unesi dobijeni verifikacijski kod.
+        </p>
+    </div>
+</div>
+
+<div class="text-center row justify-content-center">
+    <div class="col-md-6">
+        <form id="send-code" method="post">
+            <div class="form-group">
+                <label asp-for="VerificationCode" class="control-label"></label>
+                <input asp-for="VerificationCode" class="form-control" autocomplete="off" />
+                <span asp-validation-for="VerificationCode" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Potvrdi</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/js/qrcode.js"></script>
+<script type="text/javascript">
+        new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Html.Raw(Model.AuthenticatorUri)",
+                width: 150,
+                height: 150
+            });
+</script>
+
