@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NamirniceDelivery.Data.Context;
 
 namespace NamirniceDelivery.Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20200203153323_Zadnje povecanje rejtinga")]
+    partial class Zadnjepovecanjerejtinga
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -698,6 +700,9 @@ namespace NamirniceDelivery.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ZadnjaSMSObavijest")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ZadnjePovecanjeRejtinga")
                         .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("Kupac");

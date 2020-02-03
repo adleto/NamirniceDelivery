@@ -96,7 +96,15 @@ window.onload = function () {
                     }
                     @if (Model.NajvecaTransakcija != null)
                     {
-                        <td>@Model.NajNamirnica.Item1 (<span title="Količina kupljena">@Model.NajNamirnica.Item2)</span></td>
+                        if (User.IsInRole("Kupac"))
+                        {
+                            <td>@Model.NajNamirnica.Item1 (<span title="Količina kupljena">@Model.NajNamirnica.Item2)</span></td>
+
+                        }
+                        else if (User.IsInRole("AdministrativniRadnik"))
+                        {
+                            <td>@Model.NajNamirnica.Item1 (<span title="Količina prodata">@Model.NajNamirnica.Item2)</span></td>
+                        }
                     }
                     else
                     {

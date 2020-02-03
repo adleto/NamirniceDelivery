@@ -12,6 +12,7 @@ using NamirniceDelivery.Services.Services;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.WorkerProject;
 using NamirniceDelivery.Web.Hubs;
+using Microsoft.AspNetCore.Http;
 
 namespace NamirniceDelivery.Web
 {
@@ -67,8 +68,7 @@ namespace NamirniceDelivery.Web
             });
 
 
-
-            services.AddHostedService<Worker>();
+            
 
 
             services.AddScoped<IKanton, KantonService>();
@@ -86,6 +86,12 @@ namespace NamirniceDelivery.Web
             services.AddScoped<IAkcijeTransakcija, AkcijeTransakcijaService>();
             services.AddScoped<IApplicationUser, ApplicationUserService>();
             services.AddScoped<IVozilo, VoziloService>();
+
+            //services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddTransient<IUserResolverService, UserResolverService>();
+            
+            //Worker service za sad ugasen
+            //services.AddHostedService<Worker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

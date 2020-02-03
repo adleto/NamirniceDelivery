@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,11 +16,13 @@ namespace NamirniceDelivery.WorkerProject
     {
         private readonly ILogger<Worker> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public Worker(ILogger<Worker> logger, IServiceScopeFactory serviceScopeFactory)
+        public Worker(ILogger<Worker> logger, IServiceScopeFactory serviceScopeFactory, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _serviceScopeFactory = serviceScopeFactory;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -28,15 +31,22 @@ namespace NamirniceDelivery.WorkerProject
             {
                 using var scope = _serviceScopeFactory.CreateScope();
                 var _kupacService = scope.ServiceProvider.GetRequiredService<IKupac>();
-                var kupci = _kupacService.GetKupciZaSMSObavijest();
+                
+                //var _userResolverService = scope.ServiceProvider.GetRequiredService<IUserResolverService>();
+                //var currentUserName = _userResolverService.GetUsernameOfCurrentUser();
+                //if (currentUserName != null)
+                //{
+                //    _kupacService.PovecajRejtingUkolikoZadovoljavaUslove(currentUserName);
+                //}
 
-                NexmoSend.PodsjetiKupce(kupci);
-                foreach (var k in kupci)
-                {
-                    _kupacService.SMSObavjestPoslana(k);
-                }
+                //var kupci = _kupacService.GetKupciZaSMSObavijest();
 
-                await Task.Delay(2*24*60*60*1000, stoppingToken);
+                //NexmoSend.PodsjetiKupce(kupci);
+                //foreach (var k in kupci)
+                //{
+                //    _kupacService.SMSObavjestPoslana(k);
+                //}
+                await Task.Delay(5000, stoppingToken);
             }
         }
     }
