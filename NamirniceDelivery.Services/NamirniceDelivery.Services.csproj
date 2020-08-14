@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NamirniceDelivery.Data\NamirniceDelivery.Data.csproj" />
+    <ProjectReference Include="..\NamirniceDelivery.ViewModels\NamirniceDelivery.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

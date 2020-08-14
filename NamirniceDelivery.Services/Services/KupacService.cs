@@ -2,6 +2,7 @@
 using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +107,23 @@ namespace NamirniceDelivery.Services.Services
                     .FirstOrDefault()
             );
             _context.SaveChanges();
+        }
+
+        public KupacProfilViewModel GetKupacData(string username)
+        {
+            var databaseEntry = _context.Kupac
+                .Include(k => k.OpcinaBoravka)
+                .Where(k => k.UserName == username)
+                .FirstOrDefault();
+            var returnModel = new KupacProfilViewModel
+            {
+                Adresa = databaseEntry.Adresa,
+                Ime = databaseEntry.Ime,
+                Prezime = databaseEntry.Prezime,
+                RejtingKupac = databaseEntry.RejtingKupac.ToString(),
+                NazivOpcineBoravista = databaseEntry.OpcinaBoravka.Naziv
+            };
+            return returnModel;
         }
     }
 }

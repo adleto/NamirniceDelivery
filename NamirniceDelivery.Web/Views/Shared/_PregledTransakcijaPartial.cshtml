@@ -118,7 +118,7 @@
                         }
                         @if (User.IsInRole("AdministrativniRadnik"))
                         {
-                            <td><a @*asp-controller="Kupac" asp-action="Profil"*@ title="Adresa: @(x.Kupac.OpcinaBoravka.Naziv + ", " + x.Kupac.Adresa)">@x.Kupac.UserName</a></td>
+                            <td><a asp-controller="Kupac" asp-action="Profil" asp-route-username="@x.Kupac.UserName" title="Adresa: @(x.Kupac.OpcinaBoravka.Naziv + ", " + x.Kupac.Adresa)">@x.Kupac.UserName</a></td>
                             <td>@(x.IznosTotal.ToString("F") + "KM")</td>
                             <td>@x.TipTransakcije.NazivTipa</td>
                             <td>@(x.DatumIniciranjaTransakcije.ToString("dd/MM/yy H:mm"))</td>

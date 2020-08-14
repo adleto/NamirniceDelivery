@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
+using NamirniceDelivery.ViewModels;
 using NamirniceDelivery.Web.ViewModels.Kupac;
 using NamirniceDelivery.Web.ViewModels.Shared;
 
@@ -217,6 +218,13 @@ namespace NamirniceDelivery.Web.Controllers
             return list
                 .Select(ksp => _podruznicaService.GetPodruznica(ksp.PodruznicaId))
                 .ToList();
+        }
+
+        [Authorize]
+        public IActionResult Profil(string username)
+        {
+            KupacProfilViewModel model = _kupacService.GetKupacData(username);
+            return View(model);
         }
     }
 }

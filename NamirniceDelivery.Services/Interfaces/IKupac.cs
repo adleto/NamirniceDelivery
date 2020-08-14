@@ -1,4 +1,5 @@
 ﻿using NamirniceDelivery.Data.Entities;
+using NamirniceDelivery.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,5 +18,6 @@ namespace NamirniceDelivery.Services.Interfaces
         List<KupacSpremljenePodruznice> GetSpremljenePodruznice(string id);
         List<KupacSpremljeneNamirnice> GetSpremljeneNamirnice(string id);
         List<Kupac> GetKupci();
+        KupacProfilViewModel GetKupacData(string username);
     }
 }

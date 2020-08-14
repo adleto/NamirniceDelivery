@@ -198,6 +198,10 @@
                                 <li class="nav-item dropdown">
                                     <a id="profileSettings" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><span class="d-none d-sm-inline-block">Profil</span></a>
                                     <ul aria-labelledby="profileSettings" class="dropdown-menu">
+                                        @if (User.IsInRole("Kupac"))
+                                        {
+                                            <li><a asp-controller="Kupac" asp-action="Profil" asp-route-username="@User.Identity.Name" class="dropdown-item"> <span>Moj profil</span></a></li>
+                                        }
                                         <li><a asp-controller="Account" asp-action="TwoFactorAuth" class="dropdown-item"> <span>2FA Konfiguracija</span></a></li>
                                     </ul>
                                 </li>
