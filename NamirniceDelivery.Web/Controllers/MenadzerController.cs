@@ -23,11 +23,11 @@ namespace NamirniceDelivery.Web.Controllers
             _kupacService = kupacService;
         }
 
-        //public async Task<IActionResult> DemoLogin()
-        //{
-        //    await _signInManager.PasswordSignInAsync("menadzerMain", "password", false, lockoutOnFailure: true);
-        //    return RedirectToAction(nameof(Index));
-        //}
+        public async Task<IActionResult> DemoLogin()
+        {
+            await _signInManager.PasswordSignInAsync("menadzerMain", "password", false, lockoutOnFailure: true);
+            return RedirectToAction(nameof(Index));
+        }
         [Authorize(Roles = "Menadzer")]
         public IActionResult Index()
         {

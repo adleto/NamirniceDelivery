@@ -86,6 +86,7 @@ namespace NamirniceDelivery.Web
             services.AddScoped<IAkcijeTransakcija, AkcijeTransakcijaService>();
             services.AddScoped<IApplicationUser, ApplicationUserService>();
             services.AddScoped<IVozilo, VoziloService>();
+            services.AddScoped<IVozac, VozacService>();
 
             //services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddTransient<IUserResolverService, UserResolverService>();

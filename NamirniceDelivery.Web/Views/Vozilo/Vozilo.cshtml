@@ -1,0 +1,29 @@
+﻿@model NamirniceDelivery.ViewModels.VoziloModel
+@{
+    ViewData["Title"] = "Vozilo";
+}
+
+<form asp-action="Vozilo" method="POST">
+    <input type="hidden" asp-for="Id" />
+    <label class="control-label"> Marka vozila </label>
+    <input asp-for="MarkaVozila" class="form-control" />
+    <span asp-validation-for="MarkaVozila" class="text-danger"></span><br />
+
+    <label class="control-label"> Registarske oznake </label>
+    <input asp-for="RegistarskeOznake" class="form-control" />
+    <span asp-validation-for="RegistarskeOznake" class="text-danger"></span><br />
+
+    <label class="control-label"> Tip vozila </label>
+    <input asp-for="TipVozila" class="form-control" />
+    <span asp-validation-for="TipVozila" class="text-danger"></span><br />
+
+
+    <label class="control-label"> Vozač </label>
+    <select asp-for="VozacId" class="form-control">
+        @foreach (var v in Model.Vozaci)
+        {
+            <option value="@v.Id">@v.ImeIPrezime</option>
+        }
+    </select>
+    <br /><button type="submit" class="btn btn-primary">Potvrdi</button>
+</form>

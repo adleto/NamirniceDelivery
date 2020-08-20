@@ -22,11 +22,15 @@
                     <td>@v.TipVozila</td>
                     <td>@v.RegistarskeOznake</td>
                     <td>@v.MarkaVozila</td>
-                    <td></td>
-                    <td></td>
+                    <td>@if (!string.IsNullOrEmpty(v.VozacImePrezime)){
+                        @v.VozacImePrezime
+                    }
+                    </td>
+                    <td><a asp-action="Vozilo" asp-route-id="@v.Id">Edit</a> |
+                        <a asp-action="DeleteVozilo" asp-route-id="@v.Id">Delete</a></td>
                 </tr>
             }
         </tbody>
     </table>
-    @*<a class="btn btn-success" asp-action="">Dodaj novo vozilo</a>*@
+    <a class="btn btn-success" asp-action="Vozilo">Dodaj novo vozilo</a>
 </div>
