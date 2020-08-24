@@ -114,7 +114,12 @@
                         }
                         else if (User.IsInRole("Menadzer"))
                         {
-
+                            <li>
+                                <a asp-controller="Menadzer" asp-action="PregledAdmin">Pregled administrativnih radnika</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Menadzer" asp-action="PregledVozaca">Pregled vozača</a>
+                            </li>
                             <li>
                                 <a asp-controller="Podruznica" asp-action="PregledPodruznica">Pregled podružnica</a>
                             </li>

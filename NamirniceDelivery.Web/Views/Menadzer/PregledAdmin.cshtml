@@ -1,0 +1,32 @@
+﻿@model List<NamirniceDelivery.Data.Entities.AdministrativniRadnik>
+
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <td>Ime</td>
+            <td>Prezime</td>
+            <td>JMBG</td>
+           <td>Podružnica</td>
+            <td>Rejting</td>
+            <td>Broj transakcija</td>
+            <td>Akcije</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var r in Model) {
+        <tr>
+            <td>@r.Ime</td>
+            <td>@r.Prezime</td>
+            <td>@r.JMBG</td>
+            <td>@(r.Podruznica.Naziv + "(" + r.Podruznica.Adresa  + ")")</td>
+            <td>@r.RejtingRadnik.ToString()</td>
+            <td>@r.Transakcije.Count</td>
+            <td><a asp-action="Radnik" asp-route-radnikId="@r.Id">Edit</a> | <a asp-action="DeleteRadnik" asp-route-radnikId="@r.Id">Delete</a></td>
+        </tr>
+        }
+    </tbody>
+    
+</table>
+<a asp-action="Radnik" class="btn btn-success">+</a>
