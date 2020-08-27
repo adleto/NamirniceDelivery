@@ -21,8 +21,10 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IVozac _vozacService;
         private readonly IOpcina _opcinaService;
         private readonly IPodruznica _podruznicaService;
+        private readonly IVozilo _voziloService;
 
-        public MenadzerController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, IAdministrativniRadnik administrativniRadniKService, IVozac vozacService, IOpcina opcinaService, IPodruznica podruznicaService)
+
+        public MenadzerController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, IAdministrativniRadnik administrativniRadniKService, IVozac vozacService, IOpcina opcinaService, IPodruznica podruznicaService, IVozilo voziloService)
         {
             _signInManager = signInManager;
             _kupacService = kupacService;
@@ -30,6 +32,7 @@ namespace NamirniceDelivery.Web.Controllers
             _vozacService = vozacService;
             _opcinaService = opcinaService;
             _podruznicaService = podruznicaService;
+            _voziloService = voziloService;
         }
 
         public async Task<IActionResult> DemoLogin()
@@ -113,6 +116,68 @@ namespace NamirniceDelivery.Web.Controllers
         {
             _administrativniRadniKService.Deactivate(radnikId);
             return RedirectToAction(nameof(PregledAdmin));
+        }
+
+        [Authorize(Roles = "Menadzer")]
+        public IActionResult PregledVozaca()
+        {
+            var vm = _vozacService.Get();
+            return View(vm);
+        }
+        [Authorize(Roles = "Menadzer")]
+        public IActionResult DeleteVozac(string vozacId)
+        {
+            _vozacService.Deactivate(vozacId);
+            return RedirectToAction(nameof(PregledVozaca));
+        }
+        [Authorize(Roles = "Menadzer")]
+        public IActionResult Vozac(string vozacId = "")
+        {
+            var opcine = _opcinaService.GetOpcine();
+            var vozila = _voziloService.GetVozila();
+            var myList = new List<OpcinaVM>();
+            var myListVozila = new List<VoziloVM>();
+
+            foreach (var o in opcine) myList.Add(new OpcinaVM { Id = o.Id, Naziv = o.Naziv });
+            foreach (var v in vozila) myListVozila.Add(new VoziloVM { Id = v.Id, Naziv = v.MarkaVozila });
+            var vm = new VozacViewModel
+            {
+                OpcineList = myList,
+               VoziloList = myListVozila
+            };
+            if (vozacId != "")
+            {
+                var r = _vozacService.GetVozacById(vozacId);
+                vm.Id = r.Id;
+                vm.Ime = r.Ime;
+                vm.KategorijaVozackeDozvole = r.KategorijaVozackeDozvole;
+                vm.OpcinaIdBoravka = (int)r.OpcinaBoravkaId;
+                vm.OpcinaIdRodjenja = (int)r.OpcinaRodjenjaId;
+                vm.Prezime = r.Prezime;
+                vm.Username = r.UserName;
+            }
+            return View(vm);
+        }
+        [Authorize(Roles = "Menadzer")]
+        [HttpPost]
+        public async Task<IActionResult> Vozac(VozacViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _vozacService.Vozac(model);
+                return RedirectToAction(nameof(PregledVozaca));
+            }
+
+            var opcine = _opcinaService.GetOpcine();
+            var vozila = _voziloService.GetVozila();
+            var myListVozila = new List<VoziloVM>();
+            var myList = new List<OpcinaVM>();
+            foreach (var o in opcine) myList.Add(new OpcinaVM { Id = o.Id, Naziv = o.Naziv });
+            foreach (var v in vozila) myListVozila.Add(new VoziloVM { Id = v.Id, Naziv = v.MarkaVozila });
+            model.OpcineList = myList;
+            model.VoziloList = myListVozila;
+            return View(model);
+
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@model NamirniceDelivery.ViewModels.VozacViewModel
+
+
+<form method="post" asp-action="Vozac">
+    <input asp-for="Id" type="hidden" />
+    <label class="control-label">Ime</label>
+    <input asp-for="@Model.Ime" class="form-control" />
+    <label class="control-label">Prezime</label>
+    <input asp-for="@Model.Prezime" class="form-control" />
+    <label class="control-label">Kategorija vozačke dozvole</label>
+    <input asp-for="@Model.KategorijaVozackeDozvole" class="form-control" />
+    <label class="control-label">Username</label>
+    <input asp-for="@Model.Username" class="form-control" />
+    <label class="control-label">Password</label>
+    <input asp-for="@Model.Password" class="form-control" />
+    <label class="control-label">Općina boravka</label>
+
+    <select asp-for="@Model.OpcinaIdBoravka" class="form-control">
+        <option>Odaberi</option>
+        @foreach (var i in Model.OpcineList)
+        {
+            <option value="@i.Id">@i.Naziv</option>
+        }
+    </select>
+    <label class="control-label">Općina rođenja</label>
+
+    <select asp-for="@Model.OpcinaIdRodjenja" class="form-control">
+        <option>Odaberi</option>
+        @foreach (var i in Model.OpcineList)
+        {
+            <option value="@i.Id">@i.Naziv</option>
+        }
+    </select>
+
+    <label class="control-label">Vozilo</label>
+    <select asp-for="@Model.VoziloId" class="form-control">
+        <option>Odaberi</option>
+        @foreach (var i in Model.VoziloList)
+        {
+            <option value="@i.Id">@i.Naziv</option>
+        }
+    </select>
+
+    <br /><button type="submit" class="btn btn-primary">Potvrdi</button>
+</form>
+

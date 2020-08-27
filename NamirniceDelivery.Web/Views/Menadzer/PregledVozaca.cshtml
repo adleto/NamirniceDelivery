@@ -1,0 +1,37 @@
+﻿@model List<NamirniceDelivery.Data.Entities.Vozac>
+
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <td>Ime</td>
+            <td>Prezime</td>
+            <td>Kategorija vozačke dozvole</td>
+            <td>Vozilo</td>
+            <td>Akcije</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Ime</td>
+                <td>@r.Prezime</td>
+                <td>@r.KategorijaVozackeDozvole</td>
+
+                <td>
+                    @if (r.Vozilo != null)
+                    {
+                        <span>@r.Vozilo.MarkaVozila</span>
+                    }
+                </td>
+
+                <td><a asp-action="Vozac" asp-route-vozacId="@r.Id">Edit</a> | <a asp-action="DeleteVozac" asp-route-vozacId="@r.Id">Delete</a></td>
+
+            </tr>
+        }
+    </tbody>
+
+</table>
+<a asp-action="Vozac" class="btn btn-success">+</a>
