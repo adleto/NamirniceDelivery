@@ -22,9 +22,12 @@ namespace NamirniceDelivery.Web.Controllers
         private readonly IOpcina _opcinaService;
         private readonly IPodruznica _podruznicaService;
         private readonly IVozilo _voziloService;
+        private readonly IVoznja _voznjaService;
 
 
-        public MenadzerController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, IAdministrativniRadnik administrativniRadniKService, IVozac vozacService, IOpcina opcinaService, IPodruznica podruznicaService, IVozilo voziloService)
+
+
+        public MenadzerController(SignInManager<ApplicationUser> signInManager, IKupac kupacService, IAdministrativniRadnik administrativniRadniKService, IVozac vozacService, IOpcina opcinaService, IPodruznica podruznicaService, IVozilo voziloService, IVoznja voznjaService)
         {
             _signInManager = signInManager;
             _kupacService = kupacService;
@@ -33,6 +36,7 @@ namespace NamirniceDelivery.Web.Controllers
             _opcinaService = opcinaService;
             _podruznicaService = podruznicaService;
             _voziloService = voziloService;
+            _voznjaService = voznjaService;
         }
 
         public async Task<IActionResult> DemoLogin()

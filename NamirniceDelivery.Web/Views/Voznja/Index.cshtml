@@ -1,0 +1,85 @@
+﻿@model NamirniceDelivery.Web.ViewModels.Voznja.IndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <td>Preuzeta roba</td>
+            <td>Obavljena voznja</td>
+            <td>Početak vožnje</td>
+            <td>Kraj vožnje</td>
+            <td>Podružnica početak</td>
+            <td>Podružnica kraj</td>
+            <td>Vozač</td>
+            @*<td>Lista namirnica</td>*@
+            <td>Akcija</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model.VoznjaList)
+        {
+            <tr>
+                <td>
+                    @if (v.PreuzetaRoba)
+                    {
+                        <span>Da</span>
+                    }
+                    else
+                    {
+                        <span>Ne</span>}
+                </td>
+                <td>
+                    @if (v.ObavljenaVoznja)
+                    {
+                        <span>Da</span>
+                    }
+                    else
+                    {
+                        <span>Ne</span>}
+                </td>
+                <td> @if (v.VoznjaPocetak != null)
+                {
+                    <span>@v.VoznjaPocetak</span>
+                }
+                </td>
+                <td>
+                    @if (v.VoznjaKraj != null)
+                    {
+                        <span>@v.VoznjaKraj</span>
+                    }
+                </td>
+                <td>@v.PodruznicaPocetakNaziv</td>
+                <td>@v.PodruznicaKrajNaziv</td>
+                <td>@v.VozacIme</td>
+                @if (User.IsInRole("Menadzer"))
+                {
+                    <td><a asp-action="Voznja" asp-route-voznjaId="@v.Id">Edit</a> | <a asp-action="DeleteVoznja" asp-route-voznjaId="@v.Id">Delete</a></td>
+
+                }
+                else
+                {
+                    <td>
+                        @if (!v.PreuzetaRoba)
+                        {
+                            <a asp-action="PreuzmiRobu" asp-route-voznjaId="@v.Id">Započni vožnju</a>
+                        }
+                        else
+                        {
+                            @if (!v.ObavljenaVoznja)
+                            {
+                                <a asp-action="OznaciKaoZavrsenu" asp-route-voznjaId="@v.Id">Označi vožnju kao završenu</a>
+                            }
+                            else
+                            {
+                                <span>Nema</span>
+                            }
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Voznja" class="btn btn-success">+</a>

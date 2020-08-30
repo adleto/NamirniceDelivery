@@ -87,10 +87,14 @@ namespace NamirniceDelivery.Web
             services.AddScoped<IApplicationUser, ApplicationUserService>();
             services.AddScoped<IVozilo, VoziloService>();
             services.AddScoped<IVozac, VozacService>();
+            services.AddScoped<IVoznja, VoznjaService>();
+
+
+
 
             //services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddTransient<IUserResolverService, UserResolverService>();
-            
+
             //Worker service za sad ugasen
             //services.AddHostedService<Worker>();
         }
