@@ -5,10 +5,29 @@
     ViewData["Title"] = "PregledPodruznica";
 }
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 <h1>Pozdrav menadžer - @User.Identity.Name - Pregled Podruznica</h1>
 
 <div class="table-responsive">
-    <table class="table table-dark">
+    <div class="card-header bg-dark text-light">
+        <p class="h5">Pretraga podruznica: <br> </p>
+
+        <input type="text" style="color:black; margin-left:5%;" id="myInput" onkeyup="myFunction()" placeholder="Pretrazi..">
+
+    </div>
+    <table class="table table-dark" id="myUL">
         <thead>
             <tr>
                 <th>Naziv</th>
@@ -18,7 +37,7 @@
                 <th>Akcije</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="myTable">
             @foreach (var podruznica in Model.PodruznicaList)
             {
                 <tr>

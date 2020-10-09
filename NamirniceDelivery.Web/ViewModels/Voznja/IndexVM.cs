@@ -13,8 +13,8 @@ namespace NamirniceDelivery.Web.ViewModels.Voznja
             public int Id { get; set; }
             public bool PreuzetaRoba { get; set; }
             public bool ObavljenaVoznja { get; set; }
-            public string VoznjaPocetak { get; set; }
-            public string VoznjaKraj{ get; set; }
+            public DateTime VoznjaPocetak { get; set; }
+            public DateTime VoznjaKraj { get; set; }
 
             public string PodruznicaPocetakNaziv { get; set; }
             public string PodruznicaKrajNaziv { get; set; }

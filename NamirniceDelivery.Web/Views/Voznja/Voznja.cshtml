@@ -1,0 +1,34 @@
+﻿@model NamirniceDelivery.ViewModels.VoznjaViewModel
+
+<form method="post" asp-action="Voznja">
+    <input asp-for="@Model.VoznjaId" type="hidden" />
+    <label class="control-label">Podružnica početak</label>
+    <select asp-for="@Model.PodruznicaPocetakId" class="form-control">
+        <option>Odaberi</option>
+        @foreach (var i in Model.PodruzniceList)
+        {
+            <option value="@i.Id">@i.Naziv</option>
+        }
+    </select>
+
+    <label class="control-label">Podružnica kraj</label>
+    <select asp-for="@Model.PodruznicaKrajId" class="form-control">
+        <option>Odaberi</option>
+        @foreach (var i in Model.PodruzniceList)
+        {
+            <option value="@i.Id">@i.Naziv</option>
+        }
+    </select>
+
+    <label class="control-label">Vozač</label>
+    <select asp-for="@Model.VozacId" class="form-control">
+        <option>Odaberi</option>
+        @foreach (var i in Model.VozaciList)
+        {
+            <option value="@i.Id">@i.ImeIPrezime</option>
+        }
+    </select>
+
+    <br /><button type="submit" class="btn btn-primary">Potvrdi</button>
+
+</form>

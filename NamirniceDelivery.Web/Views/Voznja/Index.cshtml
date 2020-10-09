@@ -39,15 +39,15 @@
                     {
                         <span>Ne</span>}
                 </td>
-                <td> @if (v.VoznjaPocetak != null)
+                <td> @if (v.VoznjaPocetak != null && v.VoznjaPocetak.Year != 1940)
                 {
-                    <span>@v.VoznjaPocetak</span>
+                    <span>@v.VoznjaPocetak.ToString()</span>
                 }
                 </td>
                 <td>
-                    @if (v.VoznjaKraj != null)
+                    @if (v.VoznjaKraj != null && v.VoznjaPocetak.Year != 1940)
                     {
-                        <span>@v.VoznjaKraj</span>
+                        <span>@v.VoznjaKraj.ToString()</span>
                     }
                 </td>
                 <td>@v.PodruznicaPocetakNaziv</td>

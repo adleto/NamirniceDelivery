@@ -134,6 +134,12 @@
                             </li>
 
                         }
+                        else if (User.IsInRole("Vozac"))
+                        {
+                            <li>
+                                <a asp-controller="Voznja" asp-action="Index">Pregled zadataka</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 @if (User.IsInRole("AdministrativniRadnik") || User.IsInRole("Kupac"))

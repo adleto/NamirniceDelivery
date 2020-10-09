@@ -15,6 +15,7 @@ using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.Web.Helper;
 using NamirniceDelivery.Web.ViewModels.Account;
+using Nexmo.Api;
 
 namespace NamirniceDelivery.Web.Controllers
 {
@@ -74,6 +75,17 @@ namespace NamirniceDelivery.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    var client = new Client(creds: new Nexmo.Api.Request.Credentials
+                    {
+                        ApiKey = "c5a955d2",
+                        ApiSecret = "NDufdSI857gZiXvy"
+                    });
+                    var results = client.SMS.Send(request: new SMS.SMSRequest
+                    {
+                        from = "Vonage APIs",
+                        to = "38763671092",
+                        text = "Uspješno ste se prijavili na NamirniceDelivery. <3"
+                    });
                     _applicationUserService.SetLogedInTimeStamp(_applicationUserService.GetUser(model.Username));
 
                     _logger.LogInformation("User logged in.");
