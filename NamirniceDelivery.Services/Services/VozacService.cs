@@ -96,6 +96,7 @@ namespace NamirniceDelivery.Services.Services
                 };
                 if (vozac.VoziloId != 0) newRadnik.VoziloId = vozac.VoziloId;
                 var result = await _userManager.CreateAsync(newRadnik, vozac.Password);
+                var isOk = await _userManager.AddToRoleAsync(newRadnik, "Vozac");
             }
         }
 
