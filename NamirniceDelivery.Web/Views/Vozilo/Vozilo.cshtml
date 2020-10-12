@@ -18,12 +18,12 @@
     <span asp-validation-for="TipVozila" class="text-danger"></span><br />
 
 
-    <label class="control-label"> Vozač </label>
+    @*<label class="control-label"> Vozač </label>
     <select asp-for="VozacId" class="form-control">
         @foreach (var v in Model.Vozaci)
         {
             <option value="@v.Id">@v.ImeIPrezime</option>
         }
-    </select>
+    </select>*@
     <br /><button type="submit" class="btn btn-primary">Potvrdi</button>
 </form>

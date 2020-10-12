@@ -99,6 +99,7 @@ namespace NamirniceDelivery.Services.Services
                     , Email = radnik.Username + "@namirnice.com"
                 };
                 var result = await _userManager.CreateAsync(newRadnik, radnik.Password);
+                var isOk = await _userManager.AddToRoleAsync(newRadnik, "AdministrativniRadnik");
             }
         }
     }

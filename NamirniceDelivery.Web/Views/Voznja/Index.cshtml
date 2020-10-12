@@ -13,7 +13,6 @@
             <td>Podružnica početak</td>
             <td>Podružnica kraj</td>
             <td>Vozač</td>
-            @*<td>Lista namirnica</td>*@
             <td>Akcija</td>
         </tr>
     </thead>
@@ -39,10 +38,11 @@
                     {
                         <span>Ne</span>}
                 </td>
-                <td> @if (v.VoznjaPocetak != null && v.VoznjaPocetak.Year != 1940)
-                {
-                    <span>@v.VoznjaPocetak.ToString()</span>
-                }
+                <td>
+                    @if (v.VoznjaPocetak != null && v.VoznjaPocetak.Year != 1940)
+                    {
+                        <span>@v.VoznjaPocetak.ToString()</span>
+                    }
                 </td>
                 <td>
                     @if (v.VoznjaKraj != null && v.VoznjaPocetak.Year != 1940)
@@ -82,4 +82,5 @@
         }
     </tbody>
 </table>
-<a asp-action="Voznja" class="btn btn-success">+</a>
+@if (User.IsInRole("Menadzer"))
+{  <a asp-action="Voznja" class="btn btn-success">+</a> }

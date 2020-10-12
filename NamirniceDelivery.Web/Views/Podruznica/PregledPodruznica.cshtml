@@ -40,13 +40,17 @@
         <tbody id="myTable">
             @foreach (var podruznica in Model.PodruznicaList)
             {
-                <tr>
-                    <td><a href="/Podruznica/Podruznica/@podruznica.Id">@podruznica.Naziv</a></td>
-                    <td>@podruznica.Opis</td>
-                    <td>@podruznica.Opcina.Naziv</td>
-                    <td>@podruznica.Adresa</td>
-                    <td><a asp-action="ObrisiPodruznica" asp-route-podruznicaId="@podruznica.Id">Delete</a></td>
-                </tr>
+            <tr>
+                @*<td><a href="/Podruznica/Podruznica/@podruznica.Id">@podruznica.Naziv</a></td>*@
+                <td><a asp-action="Podruznica" asp-route-podruznicaId="@podruznica.Id">@podruznica.Naziv</a></td>
+
+
+                <td>@podruznica.Opis</td>
+                <td>@podruznica.Opcina.Naziv</td>
+                <td>@podruznica.Adresa</td>
+                <td><a asp-action="ObrisiPodruznica" asp-route-podruznicaId="@podruznica.Id">Delete</a></td>
+
+            </tr>
             }
         </tbody>
     </table>

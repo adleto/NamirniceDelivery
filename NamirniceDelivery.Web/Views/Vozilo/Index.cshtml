@@ -11,7 +11,7 @@
                 <th>Tip vozila</th>
                 <th>Registarske oznake</th>
                 <th>Marka Vozila</th>
-                <th>Vozač</th>
+                @*//<th>Vozač</th>*@
                 <th>Akcije</th>
             </tr>
         </thead>
@@ -22,10 +22,10 @@
                     <td>@v.TipVozila</td>
                     <td>@v.RegistarskeOznake</td>
                     <td>@v.MarkaVozila</td>
-                    <td>@if (!string.IsNullOrEmpty(v.VozacImePrezime)){
+                    @*<td>@if (!string.IsNullOrEmpty(v.VozacImePrezime)){
                         @v.VozacImePrezime
                     }
-                    </td>
+                    </td>*@
                     <td><a asp-action="Vozilo" asp-route-id="@v.Id">Edit</a> |
                         <a asp-action="DeleteVozilo" asp-route-id="@v.Id">Delete</a></td>
                 </tr>

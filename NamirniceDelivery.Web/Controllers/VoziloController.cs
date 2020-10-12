@@ -51,10 +51,10 @@ namespace NamirniceDelivery.Web.Controllers
                     vm.MarkaVozila = v.MarkaVozila;
                     vm.RegistarskeOznake = v.RegistarskeOznake;
                     vm.TipVozila = v.TipVozila;
-                    if(v.VozacId != null)
-                    {
-                        vm.VozacId = v.VozacId;
-                    }
+                    //if(v.VozacId != null)
+                    //{
+                    //    vm.VozacId = v.VozacId;
+                    //}
                 }
                 return View(vm);
             }
