@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.Web.ViewModels.Podruznica;
+using cloudscribe.Pagination.Models;
 
 namespace NamirniceDelivery.Web.Controllers
 {
@@ -28,6 +29,27 @@ namespace NamirniceDelivery.Web.Controllers
             _applicationUserService = applicationUserService;
             _opcinaService = opcinaService;
         }
+
+
+        //public IActionResult Index(int pageNumber = 1, int pageSize = 3)
+        //{
+        //    var result = new PagedResult<Podruznica>();
+
+        //    int ExcludeRecords = (pageSize * pageNumber) - pageSize;
+
+        //    var query = _podruznicaService.GetPodruznice().Skip(ExcludeRecords).Take(pageSize);
+
+        //    result = new PagedResult<Podruznica>
+        //    {
+        //        //Data = query.AsNoTracking().ToList(),
+        //        TotalItems = _podruznicaService.GetPodruznice().Count(),
+        //        PageNumber = pageNumber,
+        //        PageSize = pageSize
+        //    };
+        //    return View(result);
+
+        //}
+
 
         [Authorize(Roles = "Kupac,AdministrativniRadnik,Menadzer")]
         public IActionResult Index(int id, string returnUrl = "")

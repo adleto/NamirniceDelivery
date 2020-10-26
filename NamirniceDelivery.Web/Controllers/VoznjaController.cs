@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NamirniceDelivery.Services.Interfaces;
 using NamirniceDelivery.ViewModels;
+using NamirniceDelivery.Web.Models;
 using NamirniceDelivery.Web.ViewModels.Voznja;
+using OfficeOpenXml;
 
 namespace NamirniceDelivery.Web.Controllers
 {
@@ -131,6 +135,37 @@ namespace NamirniceDelivery.Web.Controllers
             _voznjaService.DeleteVoznja(voznjaId);
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Menadzer")]
 
+        public async Task<IActionResult> GetExcelVoznje(CancellationToken cancellationToken)
+        {
+            await Task.Yield();
+            var vozac = _vozacService.GetVozac(User.Identity.Name);
+            var listVoznje = _voznjaService.GetVoznje();
+            var list = new List<VoznjaExcel>();
+            foreach (var item in listVoznje)
+            {
+                list.Add(new VoznjaExcel
+                {
+                    PocetakVoznje = item.VoznjaPocetak.ToString(),
+                    KrajVoznje=item.VoznjaKraj.ToString(),
+                    PodruznicaPocetak = item.PodruznicaPocetak.Naziv,
+                    PodruznicaKraj = item.PodruznicaKraj.Naziv,
+                    VozacIme = item.Vozac.Ime
+                });
+            }
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(list, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Voznje-{DateTime.Now.ToString("yyyy-MM-dd")}.xlsx";
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
     }
 }

@@ -1,23 +1,23 @@
 ﻿@model List<NamirniceDelivery.Data.Entities.Voznja>
 
-    <table class="table table-bordered">
+<table class="table table-bordered">
 
-        <thead>
-            <tr>
-                <td>Preuzeta roba</td>
-                <td>Obavljena voznja</td>
-                <td>Početak vožnje</td>
-                <td>Kraj vožnje</td>
-                <td>Podružnica početak</td>
-                <td>Podružnica kraj</td>
-                <td>Vozač</td>
-                @*<td>Lista namirnica</td>*@
-                <td>Akcija</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var v in Model)
-            {
+    <thead>
+        <tr>
+            <td>Preuzeta roba</td>
+            <td>Obavljena voznja</td>
+            <td>Početak vožnje</td>
+            <td>Kraj vožnje</td>
+            <td>Podružnica početak</td>
+            <td>Podružnica kraj</td>
+            <td>Vozač</td>
+            @*<td>Lista namirnica</td>*@
+            <td>Akcija</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model)
+        {
             <tr>
                 <td>
                     @if (v.PreuzetaRoba)
@@ -45,7 +45,9 @@
                 <td><a asp-action="Voznja" asp-route-voznjaId="@v.Id">Edit</a> | <a asp-action="DeleteVoznja" asp-route-voznjaId="@v.Id">Delete</a></td>
 
             </tr>
-            }
-        </tbody>
-    </table>
-    <a asp-action="Voznja" class="btn btn-success">+</a>
+        }
+    </tbody>
+    
+
+</table>
+<a asp-action="Voznja" class="btn btn-success">+</a>

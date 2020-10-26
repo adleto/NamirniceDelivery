@@ -80,12 +80,12 @@ namespace NamirniceDelivery.Web.Controllers
                         ApiKey = "c5a955d2",
                         ApiSecret = "NDufdSI857gZiXvy"
                     });
-                    var results = client.SMS.Send(request: new SMS.SMSRequest
-                    {
-                        from = "Vonage APIs",
-                        to = "38763671092",
-                        text = "Uspješno ste se prijavili na NamirniceDelivery. <3"
-                    });
+                    //var results = client.SMS.Send(request: new SMS.SMSRequest
+                    //{
+                    //    from = "Vonage APIs",
+                    //    to = "38763671092",
+                    //    text = "Uspješno ste se prijavili na NamirniceDelivery. <3"
+                    //});
                     _applicationUserService.SetLogedInTimeStamp(_applicationUserService.GetUser(model.Username));
 
                     _logger.LogInformation("User logged in.");
@@ -192,10 +192,9 @@ namespace NamirniceDelivery.Web.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Kupac");
+                    await _userManager.AddToRoleAsync(user, "Kupac"); 
 
                     _logger.LogInformation("User created a new account with password.");
-
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     //var callbackUrl = Url.Page(

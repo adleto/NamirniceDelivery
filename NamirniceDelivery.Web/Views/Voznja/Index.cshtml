@@ -1,7 +1,18 @@
-﻿@model NamirniceDelivery.Web.ViewModels.Voznja.IndexVM
+﻿@*@model cloudscribe.Pagination.Models.PagedResult<NamirniceDelivery.Web.ViewModels.Voznja.IndexVM>
+@addTagHelper *, cloudscribe.Web.Pagination*@
+@model NamirniceDelivery.Web.ViewModels.Voznja.IndexVM
 @{
+    //ViewData["Controller"] = "Podruznica";
+    //ViewData["Action"] = "Index";
     ViewData["Title"] = "Index";
 }
+@*<style>
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+</style>*@
 <table class="table table-bordered">
 
     <thead>
@@ -17,70 +28,90 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var v in Model.VoznjaList)
-        {
-            <tr>
-                <td>
-                    @if (v.PreuzetaRoba)
-                    {
-                        <span>Da</span>
-                    }
-                    else
-                    {
-                        <span>Ne</span>}
-                </td>
-                <td>
-                    @if (v.ObavljenaVoznja)
-                    {
-                        <span>Da</span>
-                    }
-                    else
-                    {
-                        <span>Ne</span>}
-                </td>
-                <td>
-                    @if (v.VoznjaPocetak != null && v.VoznjaPocetak.Year != 1940)
-                    {
-                        <span>@v.VoznjaPocetak.ToString()</span>
-                    }
-                </td>
-                <td>
-                    @if (v.VoznjaKraj != null && v.VoznjaPocetak.Year != 1940)
-                    {
-                        <span>@v.VoznjaKraj.ToString()</span>
-                    }
-                </td>
-                <td>@v.PodruznicaPocetakNaziv</td>
-                <td>@v.PodruznicaKrajNaziv</td>
-                <td>@v.VozacIme</td>
-                @if (User.IsInRole("Menadzer"))
-                {
-                    <td><a asp-action="Voznja" asp-route-voznjaId="@v.Id">Edit</a> | <a asp-action="DeleteVoznja" asp-route-voznjaId="@v.Id">Delete</a></td>
+        
+            @foreach (var v in Model.VoznjaList)
+            {
 
-                }
-                else
-                {
+
+                <tr>
                     <td>
-                        @if (!v.PreuzetaRoba)
+                        @if (v.PreuzetaRoba)
                         {
-                            <a asp-action="PreuzmiRobu" asp-route-voznjaId="@v.Id">Započni vožnju</a>
+                            <span>Da</span>
                         }
                         else
                         {
-                            @if (!v.ObavljenaVoznja)
+                            <span>Ne</span>}
+                    </td>
+                    <td>
+                        @if (v.ObavljenaVoznja)
+                        {
+                            <span>Da</span>
+                        }
+                        else
+                        {
+                            <span>Ne</span>}
+                    </td>
+                    <td>
+                        @if (v.VoznjaPocetak != null && v.VoznjaPocetak.Year != 1940)
+                        {
+                            <span>@v.VoznjaPocetak.ToString()</span>
+                        }
+                    </td>
+                    <td>
+                        @if (v.VoznjaKraj != null && v.VoznjaPocetak.Year != 1940)
+                        {
+                            <span>@v.VoznjaKraj.ToString()</span>
+                        }
+                    </td>
+                    <td>@v.PodruznicaPocetakNaziv</td>
+                    <td>@v.PodruznicaKrajNaziv</td>
+                    <td>@v.VozacIme</td>
+                    @if (User.IsInRole("Menadzer"))
+                    {
+                        <td><a asp-action="Voznja" asp-route-voznjaId="@v.Id">Edit</a> | <a asp-action="DeleteVoznja" asp-route-voznjaId="@v.Id">Delete</a></td>
+
+                    }
+                    else
+                    {
+                        <td>
+                            @if (!v.PreuzetaRoba)
                             {
-                                <a asp-action="OznaciKaoZavrsenu" asp-route-voznjaId="@v.Id">Označi vožnju kao završenu</a>
+                                <a asp-action="PreuzmiRobu" asp-route-voznjaId="@v.Id">Započni vožnju</a>
                             }
                             else
                             {
-                                <span>Nema</span>
+                                @if (!v.ObavljenaVoznja)
+                                {
+                                    <a asp-action="OznaciKaoZavrsenu" asp-route-voznjaId="@v.Id">Označi vožnju kao završenu</a>
+                                }
+                                else
+                                {
+                                    <span>Nema</span>
+                                }
                             }
-                        }
-                    </td>
-                }
-            </tr>
-        }
+                        </td>
+                    }
+                </tr>
+            }
     </tbody>
 </table>
 @if (User.IsInRole("Menadzer"))
-{  <a asp-action="Voznja" class="btn btn-success">+</a> }
+{
+
+    <a asp-action="GetExcelVoznje" class="btn btn-info rounded">Export to Excel</a>
+    <a asp-action="Voznja" class="btn btn-success">+</a>}
+
+@*<cs-pager cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalItems"
+          cs-paging-pagesize="@Model.PageSize"
+          cs-pagenumber-param="pagenumber"
+          asp-controller="Podruznica"
+          asp-action="Index"
+          cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link"></cs-pager>*@
+
+
