@@ -10,9 +10,7 @@ using NamirniceDelivery.Data.Context;
 using NamirniceDelivery.Data.Entities;
 using NamirniceDelivery.Services.Services;
 using NamirniceDelivery.Services.Interfaces;
-//using NamirniceDelivery.WorkerProject;
 using NamirniceDelivery.Web.Hubs;
-using Microsoft.AspNetCore.Http;
 
 namespace NamirniceDelivery.Web
 {
@@ -35,7 +33,6 @@ namespace NamirniceDelivery.Web
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyContext>();
             services.AddControllersWithViews();
-            //services.AddRazorPages();
 
             services.AddSignalR();
 
@@ -67,10 +64,6 @@ namespace NamirniceDelivery.Web
                 options.AccessDeniedPath = $"/Account/Login";
             });
 
-
-            
-
-
             services.AddScoped<IKanton, KantonService>();
             services.AddScoped<IOpcina, OpcinaService>();
             services.AddScoped<ITipTransakcije, TipTransakcijeService>();
@@ -88,15 +81,6 @@ namespace NamirniceDelivery.Web
             services.AddScoped<IVozilo, VoziloService>();
             services.AddScoped<IVozac, VozacService>();
             services.AddScoped<IVoznja, VoznjaService>();
-
-
-
-
-            //services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddTransient<IUserResolverService, UserResolverService>();
-
-            //Worker service za sad ugasen
-            //services.AddHostedService<Worker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -126,7 +110,6 @@ namespace NamirniceDelivery.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                //endpoints.MapRazorPages();
                 endpoints.MapHub<MyHub>("/myHub");
             });
         }

@@ -26,7 +26,6 @@
     <ProjectReference Include="..\NamirniceDelivery.Data\NamirniceDelivery.Data.csproj" />
     <ProjectReference Include="..\NamirniceDelivery.Services\NamirniceDelivery.Services.csproj" />
     <ProjectReference Include="..\NamirniceDelivery.ViewModels\NamirniceDelivery.ViewModels.csproj" />
-    <ProjectReference Include="..\NamirniceDelivery.WorkerProject\NamirniceDelivery.WorkerProject.csproj" />
   </ItemGroup>
 
 </Project>
