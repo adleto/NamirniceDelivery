@@ -16,7 +16,6 @@ Bitno je napomenuti i to da za uspješno poslovanje na Internetu potrebno je izv
 Authors:<br />
 [Arnela Manov](https://ba.linkedin.com/in/arnela-manov-323684198)<br />
 [Tarik Halilović](https://github.com/TarikHalilovic/)<br />
-<br />
 
 ### Functionalities
 
